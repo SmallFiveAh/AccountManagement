@@ -4,10 +4,8 @@ import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <>
-      <div>
-        测试多页面入口1111111
-      </div>
-    </>
+    <div>
+      测试多页面入口1111111
+    </div>
   </StrictMode>,
 )
