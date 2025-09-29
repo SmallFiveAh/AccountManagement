@@ -1,0 +1,89 @@
+/* 底部按钮容器 */
+.use-frequent-rate {
+    height: 100px;
+    gap: 5px;
+}
+
+/* 标签云容器 - 使用Flex布局实现响应式[7](@ref) */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* 控制标签间距 */
+    padding: 30px;
+    margin: 0 auto;
+}
+
+/* 单个标签的基础样式 - 圆角矩形，内边距，过渡效果[3,5](@ref) */
+.tag {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 50px; /* 胶囊形状 */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 交互反馈：悬停效果[3](@ref) */
+.tag:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 动态权重样式：通过内联样式设置字体大小和颜色透明度 */
+
+/* 排名第一的标签特殊样式 - 最突出[4](@ref) */
+.tag[data-rank="1"] {
+    background: linear-gradient(135deg, #FFD700, #eeff00); /* 金色渐变 */
+    color: #000;
+    z-index: 100;
+    animation: pulse 2s infinite;
+}
+
+/* 排名第二的标签样式 */
+.tag[data-rank="2"] {
+    background: linear-gradient(135deg, #C0C0C0, #A9A9A9); /* 银色渐变 */
+    color: #000;
+    z-index: 90;
+}
+
+/* 排名第三的标签样式 */
+.tag[data-rank="3"] {
+    background: linear-gradient(135deg, #CD7F32, #8C6B46); /* 铜色渐变 */
+    color: #fff;
+    z-index: 80;
+}
+
+/* 脉冲动画效果 */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 响应式设计：针对不同屏幕尺寸调整[7](@ref) */
+@media (max-width: 768px) {
+    .tag-cloud {
+        padding: 20px;
+    }
+    
+    .tag {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tag-cloud {
+        padding: 15px;
+    }
+    
+    .tag {
+        padding: 8px 16px;
+        border-radius: 40px;
+    }
+}

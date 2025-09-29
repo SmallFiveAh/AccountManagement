@@ -1,0 +1,30 @@
+/* 账号数量 大容器 */
+.account-quantity {
+    display: flex;
+    height: 90px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+/* 当日设置数量 */
+.Settings-quantity-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #6d6d6d;
+}
+
+/* 总计账户数量 */
+.total-account-quantity-text {
+    font-size: 15px;
+    color: #4d4d4d;
+}
+
+/* 文本容器 */
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px; /* 控制两行文字之间的间距 */
+}

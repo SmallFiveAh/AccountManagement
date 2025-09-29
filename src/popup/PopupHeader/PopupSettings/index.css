@@ -1,0 +1,20 @@
+/* 设置按钮图标的默认样式 */
+svg {
+    fill: #6d6d6d;
+}
+
+/* 隐藏按钮的边框 */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* 鼠标悬停时改变按钮图标的颜色 */
+button:hover {
+    opacity: 0.5;
+}
+
+.popup-GitHub-button {
+    margin-right: 4px;
+}

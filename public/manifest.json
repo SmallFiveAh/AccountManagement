@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "页面账号管理插件",
+    "version": "1.0.0",
+    "description": "存储页面账号信息,可本地存储,可github存储(个人账号),可导入导出数据",
+    "icons": {
+        "16": "images/icon/icon-16.png",
+        "32": "images/icon/icon-32.png",
+        "48": "images/icon/icon-48.png",
+        "128": "images/icon/icon-128.png"
+    },
+    "permissions": [
+        "activeTab",
+        "storage",
+        "declarativeContent",
+        "tabs"
+    ],
+    "host_permissions": [
+        "https://api.github.com/*"
+    ],
+    "options_ui": "pages/index.html",
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "index.html"
+    }
+}

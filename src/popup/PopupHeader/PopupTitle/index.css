@@ -1,0 +1,15 @@
+/* 标题栏样式 */
+.popup-Title {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 设置文本的样式 */
+.popup-Title-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #6d6d6d;
+}

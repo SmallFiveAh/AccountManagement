@@ -1,0 +1,7 @@
+/* 弹窗标题栏样式 */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
