@@ -1,0 +1,24 @@
+.add-account-btn {
+    position: fixed;
+    /* 添加绝对定位，使按钮相对于视口定位 */
+    bottom: 20px;
+    left: 20px;
+    width: 60px;
+}
+
+/* 隐藏按钮的边框 */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* 鼠标悬停时改变按钮图标的颜色 */
+button:hover {
+    opacity: 0.5;
+}
+
+/* 设置按钮图标的默认样式 */
+svg {
+    fill: #ebe7e7;
+}
