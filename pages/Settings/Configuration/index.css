@@ -1,7 +1,10 @@
 .add-account-btn {
+    display: flex;
     position: fixed;
     /* 添加绝对定位，使按钮相对于视口定位 */
-    bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    bottom: 30px;
     left: 20px;
     width: 60px;
 }
