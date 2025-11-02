@@ -1,14 +1,21 @@
 import { useState } from 'react'
 import './index.css'
 
-function SettingsPanel () { 
+function SettingsPanel ({isPanelOpen, setIsPanelOpen}) { 
+    const setRegionisPanelOpen = (e) => {
+      if (e.target.id === 'add-account-modal') {
+        setIsPanelOpen(false)
+      }
+    }
     return (
-        <div id="add-account-modal" className="modal-overlay" style={{ display: 'flex' }}>
+        <div
+          id="add-account-modal"
+          className="modal-overlay"
+          style={{ display: isPanelOpen ? 'flex' : 'none' }}
+          onClick={setRegionisPanelOpen}
+          >
             <div className="modal-content">
-                <button className="complete-btn" title="关闭">&times;</button>
-                <div className="modal-body">
-                    {/* 模态框主体内容 */}
-                </div>
+                <button className="complete-btn" title="关闭" onClick={setIsPanelOpen}>&times;</button>
             </div>
         </div>
     )

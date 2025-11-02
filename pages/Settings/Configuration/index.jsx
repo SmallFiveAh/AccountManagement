@@ -6,8 +6,16 @@ function Configuration() {
     const [isPanelOpen, setIsPanelOpen] = useState(false)
     return (
         <div className="add-account-btn">
-            {isPanelOpen && <SettingsPanel />}
-            <button className="popup-Settings-button" onClick={() => setIsPanelOpen(true)} type="button" title="设置面板">
+            <SettingsPanel 
+                isPanelOpen={isPanelOpen} 
+                setIsPanelOpen={() => setIsPanelOpen(false)}
+            />
+            <button 
+                className="popup-Settings-button" 
+                onClick={() => setIsPanelOpen(true)} 
+                type="button" 
+                title="设置面板"
+            >
                 <svg
                     t="1759281837292"
                     className="icon"
@@ -28,6 +36,5 @@ function Configuration() {
         </div>
     );
 }
-
 
 export default Configuration;
