@@ -1,4 +1,7 @@
-# 页面账号管理插件 (PAMP)
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <img src="public/resource/img/icon-128.png" alt="PAMP" />
+  <h1 style="margin:8px 0 0 0;">页面账号管理插件 (PAMP)</h1>
+</div>
 
 ## 项目概述
 
