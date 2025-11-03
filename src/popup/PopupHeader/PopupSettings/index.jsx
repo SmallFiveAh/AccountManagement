@@ -5,7 +5,7 @@ import './index.css';
 
 function PopupSettings() {
     const popupGitHub = () => {
-        window.open('https://github.com/fiveworldhuang/PAMP-React');
+        window.open('https://github.com/SmallFiveAh/AccountManagement');
     };
     const popupSettings = () => {
         console.log('点击了设置按钮');

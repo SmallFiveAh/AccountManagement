@@ -36,8 +36,38 @@ function AccountRegion() {
     { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
     { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
     { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
+    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' },
     // ...更多项...
   ]
+  console.log(accounts.length);
+  
   return (
       <div className="header-container">
         {accounts.map(account => {
