@@ -7,6 +7,7 @@
     bottom: 30px;
     left: 20px;
     width: 60px;
+    z-index: 999; /* 确保按钮在面板之上 */
 }
 
 /* 隐藏按钮的边框 */

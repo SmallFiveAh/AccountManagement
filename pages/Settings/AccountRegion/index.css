@@ -1,6 +1,7 @@
 
 .main-container {
     height: 100vh;
+    margin-top: 10%;
 }
 
 
@@ -73,4 +74,36 @@ img:hover {
 span {
     color: #ffffff;
     margin-top: 7px;
+}
+
+.add-btn { 
+    display: flex;
+    height: 100px;
+    width: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-icon-btn {
+    width: 62px;
+    height: 62px;
+    cursor: pointer;
+    /* 实现圆角 */
+    border-radius: 20px;
+    margin-block-end: 21px;
+    border: 1px solid rgba(204, 204, 204, 0.5);
+    background-color: rgba(204, 204, 204, 0.3);
+    /* 添加过渡效果 */
+    transition: all 0.3s ease;
+}
+
+.add-icon-btn:hover {
+    background-color: rgba(204, 204, 204, 0.5);
+    transform: scale(1.05);
+}
+
+svg { 
+    display: block; /* 确保SVG作为块级元素显示 */
+    margin: auto; /* 水平和垂直居中SVG */
+    height: 100%; /* 可选：让SVG填满父容器高度 */
 }
