@@ -7,10 +7,6 @@ function AccountRegion() {
   const [currentPage, setCurrentPage] = useState(0)
   // 存储所有账号的数组，按页组织
   const [pages, setPages] = useState([[]])
-  // 动画状态
-  const [isAnimating, setIsAnimating] = useState(false)
-  // 动画方向
-  const [animationDirection, setAnimationDirection] = useState('') 
   
   // 每页最大账号数和最大页数
   const ACCOUNTS_PER_PAGE = 59
@@ -59,30 +55,16 @@ function AccountRegion() {
     })
   }
 
-  // 处理页面切换动画
+  // 处理页面切换
   const switchPage = (newPage) => {
     if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
-      setIsAnimating(true)
-      // 根据滚动方向设置动画类型
-      setAnimationDirection(newPage > currentPage ? 'slide-up' : 'slide-down')
-      
-      setTimeout(() => {
-        setCurrentPage(newPage)
-        // 重置动画方向
-        setAnimationDirection('')
-        
-        setTimeout(() => {
-          setIsAnimating(false)
-        }, 300)
-      }, 300)
+      setCurrentPage(newPage)
     }
   }
 
   // 处理鼠标滚轮事件
   const handleWheel = (e) => {
     e.preventDefault()
-    
-    if (isAnimating) return
     
     if (e.deltaY > 0 && currentPage < totalPages - 1) {
       // 向下滚动，切换到下一页
@@ -102,11 +84,12 @@ function AccountRegion() {
     return () => {
       window.removeEventListener('wheel', handleWheel)
     }
-  }, [currentPage, totalPages, isAnimating])
+  }, [currentPage, totalPages])
 
   return (
     <div 
-      className={`header-container ${isAnimating ? `animate-${animationDirection}` : ''}`}
+      className="header-container"
+      data-page={currentPage}
     >
       {currentAccounts.map(account => {
         const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name

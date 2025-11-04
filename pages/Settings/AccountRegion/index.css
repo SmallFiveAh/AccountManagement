@@ -22,29 +22,34 @@
     align-items: center;
     /* 添加透视效果 */
     perspective: 1000px;
-}
-
-/* 修改动画类，实现淡入淡出效果 */
-
-.header-container.animate-slide-up,
-.header-container.animate-slide-down {
-  animation: fadeInOut 0.6s ease-in-out forwards;
-}
-
-
-@keyframes fadeInOut {
-  0% {
+    position: relative;
     opacity: 1;
-    transform: scale(1);
-  }
-  50% {
+    transform: translateZ(0);
+    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.header-container::before {
+    content: attr(data-page);
+    position: absolute;
+    top: -100%;
+    left: -100%;
     opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.header-container[data-page]:not([data-page="0"]) {
+    animation: pageTransition 0.5s ease forwards;
+}
+
+@keyframes pageTransition {
+    0% {
+        opacity: 0.5;
+        transform: translateY(20px) translateZ(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) translateZ(0);
+    }
 }
 
 .account-container {
