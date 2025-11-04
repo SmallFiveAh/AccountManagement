@@ -1,30 +1,97 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Addpanel from './Addpanel';
 import './index.css'
 
 function AccountRegion() {
-  const [videoSrc, setVideoSrc] = useState('')
-  // 要渲染的账号列表（可从 props 或接口获取）
-  const [accounts, setAccounts] = useState([
-    { id: 1, name: '账号账号账号账号账号', icon: '../../../public/resource/img/icon-48.png' },
-    { id: 2, name: '账号账号号账号账号账号账号账号账', icon: '../../../public/resource/img/icon-48.png' },
-    { id: 3, name: '账号3', icon: '../../../public/resource/img/icon-48.png' }
-    // ...更多项...
-  ])
+  // 当前页码状态
+  const [currentPage, setCurrentPage] = useState(0)
+  // 存储所有账号的数组，按页组织
+  const [pages, setPages] = useState([[]])
+  
+  // 每页最大账号数和最大页数
+  const ACCOUNTS_PER_PAGE = 59
+  const MAX_PAGES = 50
+  
+  // 获取当前页的账号列表
+  const currentAccounts = pages[currentPage] || []
+  
+  // 计算总页数
+  const totalPages = pages.length
 
   const handleAddAccount = () => {
-    const newAccount = {
-      id: accounts.length + 1,
-      name: `账号${accounts.length + 1}`,
-      icon: '../../../public/resource/img/icon-48.png'
+    // 检查是否达到最大页数限制
+    if (totalPages >= MAX_PAGES && currentAccounts.length >= ACCOUNTS_PER_PAGE) {
+      return // 达到最大限制，无法添加更多账号
     }
-    setAccounts([...accounts, newAccount])
+    
+    setPages(prevPages => {
+      const newPages = [...prevPages]
+      
+      // 如果当前页已满，则创建新页
+      if (currentAccounts.length >= ACCOUNTS_PER_PAGE) {
+        // 检查是否还能添加新页
+        if (totalPages >= MAX_PAGES) {
+          return prevPages // 已达最大页数限制
+        }
+        // 添加新的一页
+        newPages.push([{
+          id: Date.now(), // 使用时间戳作为唯一ID
+          name: `账号${newPages.flat().length + 1}`,
+          icon: '../../../public/resource/img/icon-48.png'
+        }])
+        // 更新到新页
+        setCurrentPage(newPages.length - 1)
+      } else {
+        // 在当前页添加账号
+        const newAccount = {
+          id: Date.now(),
+          name: `账号${newPages.flat().length + 1}`,
+          icon: '../../../public/resource/img/icon-48.png'
+        }
+        newPages[currentPage] = [...currentAccounts, newAccount]
+      }
+      
+      return newPages
+    })
   }
 
-  console.log(accounts.length);
-  
+  // 处理页面切换
+  const switchPage = (newPage) => {
+    if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+      setCurrentPage(newPage)
+    }
+  }
+
+  // 处理鼠标滚轮事件
+  const handleWheel = (e) => {
+    e.preventDefault()
+    
+    if (e.deltaY > 0 && currentPage < totalPages - 1) {
+      // 向下滚动，切换到下一页
+      switchPage(currentPage + 1)
+    } else if (e.deltaY < 0 && currentPage > 0) {
+      // 向上滚动，切换到上一页
+      switchPage(currentPage - 1)
+    }
+  }
+
+  // 在组件挂载时添加全局滚轮监听器
+  useEffect(() => {
+    // 添加全局监听器，监听整个文档的滚轮事件
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    
+    // 清理监听器
+    return () => {
+      window.removeEventListener('wheel', handleWheel)
+    }
+  }, [currentPage, totalPages])
+
   return (
-    <div className="header-container">
-      {accounts.map(account => {
+    <div 
+      className="header-container"
+      data-page={currentPage}
+    >
+      {currentAccounts.map(account => {
         const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name
         return (
           <div className="account-container" key={account.id}>
@@ -68,8 +135,10 @@ function AccountRegion() {
             </svg>
           </div>
         </div>
+        <Addpanel />
       </div>
     </div>
   )
 }
+
 export default AccountRegion;

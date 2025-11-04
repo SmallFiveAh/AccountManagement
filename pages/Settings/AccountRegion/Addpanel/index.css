@@ -1,0 +1,47 @@
+/* 添加功能选项面板样式 */
+.add-options-panel {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 20px;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    width: 120px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.add-account-container:hover .add-options-panel {
+    display: flex;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.option-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.option-icon {
+    margin-right: 8px;
+    color: #ccc;
+}
+
+.option-text {
+    font-size: 14px;
+    color: #dfdfdf;
+    font-weight: 500;
+}
+
+
