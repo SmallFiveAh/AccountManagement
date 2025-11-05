@@ -51,7 +51,7 @@ function AccountRegion() {
         newPages.push([{
           id: Date.now(), // 使用时间戳作为唯一ID
           name: `账号${newPages.flat().length + 1}`,
-          icon: '../../../public/resource/img/icon-48.png',
+          icon: '../resource/img/icon-48.png',
           url: `https://example.com/account/${Date.now()}` // 添加默认URL
         }])
         // 更新到新页
@@ -61,7 +61,7 @@ function AccountRegion() {
         const newAccount = {
           id: Date.now(),
           name: `账号${newPages.flat().length + 1}`,
-          icon: '../../../public/resource/img/icon-48.png',
+          icon: '../resource/img/icon-48.png',
           url: `https://example.com/account/${Date.now()}` // 添加默认URL
         }
         newPages[currentPage] = [...currentAccounts, newAccount]
