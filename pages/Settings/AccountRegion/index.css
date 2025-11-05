@@ -37,18 +37,18 @@
 
 /* 根据方向应用不同的动画 */
 .header-container[data-direction="forward"] {
-    animation: pageTransitionDownward 0.3s ease-out forwards;
+    animation: pageTransitionDownward 0.4s ease-in-out forwards;
 }
 
 .header-container[data-direction="backward"] {
-    animation: pageTransitionUpward 0.3s ease-out forwards;
+    animation: pageTransitionUpward 0.4s ease-in-out forwards;
 }
 
-/* 向下翻页动画 - 从上方滑入 */
+/* 向下翻页动画 - 从上方落下，平稳过渡 */
 @keyframes pageTransitionDownward {
     0% {
-        opacity: 0;
-        transform: translateY(-30px);
+        opacity: 1;
+        transform: translateY(-100%);
     }
     100% {
         opacity: 1;
@@ -56,11 +56,11 @@
     }
 }
 
-/* 向上翻页动画 - 从下方滑入 */
+/* 向上翻页动画 - 从下方出现，平稳过渡 */
 @keyframes pageTransitionUpward {
     0% {
-        opacity: 0;
-        transform: translateY(30px);
+        opacity: 1;
+        transform: translateY(100%);
     }
     100% {
         opacity: 1;
