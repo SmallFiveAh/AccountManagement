@@ -24,6 +24,14 @@ function AccountRegion() {
   // 计算总页数
   const totalPages = pages.length
 
+  // 处理账号点击事件，在新标签页中打开URL
+  const handleAccountClick = (account) => {
+    // 如果账号有URL属性，则在新标签页中打开
+    if (account.url) {
+      window.open(account.url, '_blank')
+    }
+  }
+
   const handleAddAccount = () => {
     // 检查是否达到最大页数限制
     if (totalPages >= MAX_PAGES && currentAccounts.length >= ACCOUNTS_PER_PAGE) {
@@ -43,7 +51,8 @@ function AccountRegion() {
         newPages.push([{
           id: Date.now(), // 使用时间戳作为唯一ID
           name: `账号${newPages.flat().length + 1}`,
-          icon: '../../../public/resource/img/icon-48.png'
+          icon: '../../../public/resource/img/icon-48.png',
+          url: `https://example.com/account/${Date.now()}` // 添加默认URL
         }])
         // 更新到新页
         setCurrentPage(newPages.length - 1)
@@ -52,7 +61,8 @@ function AccountRegion() {
         const newAccount = {
           id: Date.now(),
           name: `账号${newPages.flat().length + 1}`,
-          icon: '../../../public/resource/img/icon-48.png'
+          icon: '../../../public/resource/img/icon-48.png',
+          url: `https://example.com/account/${Date.now()}` // 添加默认URL
         }
         newPages[currentPage] = [...currentAccounts, newAccount]
       }
@@ -147,7 +157,13 @@ function AccountRegion() {
           <div className="account-container" key={account.id}>
             <div className="icon-container">
               <div className="icon-box">
-                <img src={account.icon} title={account.name} alt={account.id} />
+                <img 
+                  src={account.icon} 
+                  title={account.name} 
+                  alt={account.id} 
+                  onClick={() => handleAccountClick(account)}
+                  style={{ cursor: 'pointer' }}
+                />
                 <span>{label}</span>
               </div>
             </div>
