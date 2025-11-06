@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import AccountToken from './AccountToken'
 import './index.css'
 
 function SettingsPanel ({isPanelOpen, setIsPanelOpen}) { 
@@ -37,7 +38,8 @@ function SettingsPanel ({isPanelOpen, setIsPanelOpen}) {
           onClick={setRegionisPanelOpen}
           >
             <div className="modal-content">
-                <button className="complete-btn" title="关闭" onClick={setIsPanelOpen}>&times;</button>
+                <div className="complete-btn" title="关闭" onClick={setIsPanelOpen}>&times;</div>
+                <AccountToken />
             </div>
         </div>
     )
