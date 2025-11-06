@@ -20,12 +20,10 @@
     padding: 20px;
     justify-items: center;
     align-items: center;
-    /* 添加透视效果 */
-    perspective: 1000px;
     position: relative;
     opacity: 1;
-    transform: translateZ(0);
-    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform: translateY(0);
+    transition: all 0.3s ease-out; /* 使用更直接的缓动函数 */
 }
 
 .header-container::before {
@@ -34,21 +32,39 @@
     top: -100%;
     left: -100%;
     opacity: 0;
-    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.header-container[data-page]:not([data-page="0"]) {
-    animation: pageTransition 0.5s ease forwards;
+/* 根据方向应用不同的动画 */
+.header-container[data-direction="forward"] {
+    animation: pageTransitionDownward 0.4s ease-in-out forwards;
 }
 
-@keyframes pageTransition {
+.header-container[data-direction="backward"] {
+    animation: pageTransitionUpward 0.4s ease-in-out forwards;
+}
+
+/* 向下翻页动画 - 从上方落下，平稳过渡 */
+@keyframes pageTransitionDownward {
     0% {
-        opacity: 0.5;
-        transform: translateY(20px) translateZ(-100px);
+        opacity: 1;
+        transform: translateY(-100%);
     }
     100% {
         opacity: 1;
-        transform: translateY(0) translateZ(0);
+        transform: translateY(0);
+    }
+}
+
+/* 向上翻页动画 - 从下方出现，平稳过渡 */
+@keyframes pageTransitionUpward {
+    0% {
+        opacity: 1;
+        transform: translateY(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -111,6 +127,7 @@ img:hover {
 span {
     color: #ffffff;
     margin-top: 7px;
+    font-size: 14px;
 }
 
 .add-btn { 
@@ -127,7 +144,7 @@ span {
     cursor: pointer;
     /* 实现圆角 */
     border-radius: 20px;
-    margin-block-end: 21px;
+    margin-block-end: 32px;
     border: 1px solid rgba(204, 204, 204, 0.5);
     background-color: rgba(204, 204, 204, 0.3);
     /* 添加过渡效果 */
