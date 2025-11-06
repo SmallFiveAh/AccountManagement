@@ -1,0 +1,211 @@
+/* AccountToken.css - 适应SettingsPanel面板样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+/* 主容器 */
+.account-token-container {
+  background-color: #726e6e00;
+  color: #1c1f22de;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+}
+
+/* 左侧导航栏样式 - 适应面板尺寸 */
+.nav-menu {
+  width: 140px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.30);
+  padding: 10px 0;
+  overflow-y: auto;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 5px;
+  margin: 2px 5px;
+  font-size: 12px;
+}
+
+.nav-item:hover {
+  background-color: rgba(74, 122, 254, 0.212);
+}
+
+.nav-item.active {
+  background-color: rgba(74, 122, 254, 0.534);
+  border-left: 3px solid #4a7afe;
+  font-weight: 500;
+}
+
+.nav-icon {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.nav-text {
+  flex: 1;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  background-color: #4a7afe;
+  color: white;
+}
+
+.status-badge.free {
+  background-color: #4a7afe;
+  color: white;
+}
+
+/* 右侧内容区域样式 - 适应面板尺寸 */
+.content {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #4a7afe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  margin-right: 12px;
+}
+
+.profile-info h2 {
+  font-size: 16px;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.profile-info p {
+  color: #555;
+  font-size: 12px;
+}
+
+.info-section {
+  background-color: rgba(255, 255, 255, 0.363);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-label {
+  font-weight: 500;
+  margin-bottom: 2px;
+  font-size: 13px;
+}
+
+.info-value {
+  color: #666;
+  font-size: 12px;
+}
+
+/* 按钮样式 - 适应面板风格 */
+.btn {
+  background-color: #4a7afe;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background-color: #3a6aee;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid #4a7afe;
+  color: #4a7afe;
+}
+
+.btn-outline:hover {
+  background-color: rgba(74, 122, 254, 0.1);
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+/* 滚动条样式 */
+.nav-menu::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nav-menu::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.nav-menu::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.nav-menu::-webkit-scrollbar-thumb:hover,
+.content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}

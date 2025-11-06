@@ -40,12 +40,21 @@
 }
 
 .complete-btn {
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 3px;
+    right: 12px;
     background-color: transparent;
     border: none;
     cursor: pointer;
     font-size: 30px;
     color: #1c1f22de;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.complete-btn:hover {
+    color: #1c1f229a;
 }

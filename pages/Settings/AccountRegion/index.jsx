@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Addpanel from './Addpanel';
+import ContextMenu from './ContextMenu';
 import './index.css'
 
 function AccountRegion() {
@@ -13,6 +14,12 @@ function AccountRegion() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   // 节流定时器引用
   const throttleTimerRef = useRef(null)
+  
+  // 右键菜单相关状态
+  const [contextMenuVisible, setContextMenuVisible] = useState(false)
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 })
+  const [selectedAccount, setSelectedAccount] = useState(null)
+  const [selectedElementRect, setSelectedElementRect] = useState(null)
   
   // 每页最大账号数和最大页数
   const ACCOUNTS_PER_PAGE = 59
@@ -30,6 +37,49 @@ function AccountRegion() {
     if (account.url) {
       window.open(account.url, '_blank')
     }
+  }
+  
+  // 处理右键菜单事件
+  const handleContextMenu = (e, account) => {
+    e.preventDefault()
+    setSelectedAccount(account)
+    setContextMenuPosition({ x: e.clientX, y: e.clientY })
+    
+    // 获取元素的位置信息
+    const rect = e.currentTarget.getBoundingClientRect()
+    setSelectedElementRect(rect)
+    
+    setContextMenuVisible(true)
+  }
+  
+  // 关闭右键菜单
+  const closeContextMenu = () => {
+    setContextMenuVisible(false)
+    setSelectedAccount(null)
+    setSelectedElementRect(null)
+  }
+  
+  // 处理编辑账号
+  const handleEditAccount = (account) => {
+    console.log('编辑账号:', account)
+    // 这里可以实现编辑账号的逻辑
+  }
+  
+  // 处理删除账号
+  const handleDeleteAccount = (account) => {
+    console.log('删除账号:', account)
+    // 这里可以实现删除账号的逻辑
+    setPages(prevPages => {
+      const newPages = prevPages.map(page => 
+        page.filter(item => item.id !== account.id)
+      )
+      // 如果当前页为空且不是第一页，则删除该页并返回上一页
+      if (newPages[currentPage].length === 0 && currentPage > 0) {
+        newPages.splice(currentPage, 1)
+        setCurrentPage(currentPage - 1)
+      }
+      return newPages
+    })
   }
 
   const handleAddAccount = () => {
@@ -135,6 +185,23 @@ function AccountRegion() {
       }
     }
   }, [currentPage, totalPages, isTransitioning])
+  
+  // 点击其他区域关闭右键菜单
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (contextMenuVisible) {
+        closeContextMenu()
+      }
+    }
+    
+    if (contextMenuVisible) {
+      document.addEventListener('mousedown', handleClick)
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+    }
+  }, [contextMenuVisible])
 
   // 重置方向状态，避免动画重复触发
   useEffect(() => {
@@ -162,6 +229,7 @@ function AccountRegion() {
                   title={account.name} 
                   alt={account.id} 
                   onClick={() => handleAccountClick(account)}
+                  onContextMenu={(e) => handleContextMenu(e, account)}
                   style={{ cursor: 'pointer' }}
                 />
                 <span>{label}</span>
@@ -203,6 +271,16 @@ function AccountRegion() {
         </div>
         <Addpanel />
       </div>
+      <ContextMenu
+        isVisible={contextMenuVisible}
+        position={contextMenuPosition}
+        elementRect={selectedElementRect}
+        account={selectedAccount}
+        onClose={closeContextMenu}
+        onEdit={handleEditAccount}
+        onDelete={handleDeleteAccount}
+        onOpen={handleAccountClick}
+      />
     </div>
   )
 }

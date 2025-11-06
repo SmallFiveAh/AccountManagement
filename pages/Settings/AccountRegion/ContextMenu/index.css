@@ -1,23 +1,20 @@
-/* 添加功能选项面板样式 */
-.add-options-panel {
-    position: absolute;
-    top: 90%;
-    left: 50%;
-    transform: translateX(-50%);
+/* 右键菜单样式 - 基于Addpanel样式 */
+.context-menu {
+    position: fixed;
     background-color: rgba(30, 30, 30, 0.9);
     border-radius: 20px;
     padding: 10px;
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 10px;
     width: 140px;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 10;
-}
-
-.add-account-container:hover .add-options-panel {
-    display: flex;
+    z-index: 1000;
+    animation: slideIn 0.2s ease-out;
+    user-select: none;
+    overflow: hidden;
+    pointer-events: auto; /* 确保菜单可以接收点击事件 */
 }
 
 .option-item {
@@ -45,4 +42,23 @@
     font-weight: 500;
 }
 
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
+/* 确保在不同浏览器上的一致性 */
+.option-item::-moz-focus-inner {
+    border: 0;
+}
+
+.option-item:focus {
+    outline: 2px solid #4a9eff;
+    outline-offset: -2px;
+}
