@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Addpanel from './Addpanel';
+import ContextMenu from './ContextMenu';
 import './index.css'
 
 function AccountRegion() {
@@ -204,6 +205,7 @@ function AccountRegion() {
         </div>
         <Addpanel />
       </div>
+      <ContextMenu />
     </div>
   )
 }
