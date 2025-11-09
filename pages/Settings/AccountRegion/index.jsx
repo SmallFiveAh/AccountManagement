@@ -147,65 +147,67 @@ function AccountRegion() {
   }, [currentPage])
 
   return (
-    <div 
-      className="header-container"
-      data-page={currentPage}
-      data-direction={direction}
-    >
-      {currentAccounts.map(account => {
-        const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name
-        return (
-          <div className="account-container" key={account.id}>
-            <div className="icon-container">
-              <div className="icon-box">
-                <img 
-                  src={account.icon} 
-                  title={account.name} 
-                  alt={account.id} 
-                  onClick={() => handleAccountClick(account)}
-                  style={{ cursor: 'pointer' }}
-                />
-                <span>{label}</span>
+    <>
+      <div 
+        className="header-container"
+        data-page={currentPage}
+        data-direction={direction}
+      >
+        {currentAccounts.map(account => {
+          const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name
+          return (
+            <div className="account-container" key={account.id}>
+              <div className="icon-container">
+                <div className="icon-box">
+                  <img 
+                    src={account.icon} 
+                    title={account.name} 
+                    alt={account.id} 
+                    onClick={() => handleAccountClick(account)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <span>{label}</span>
+                </div>
               </div>
             </div>
+          )
+        })}
+        <div className="add-account-container">
+          <div className="add-btn" onClick={handleAddAccount}>
+            <div className="add-icon-btn">
+              <svg
+                width={32}
+                height={32}
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ color: "white", opacity: "0.5" }}
+              >
+                {/* 水平线 */}
+                <line
+                  x1={3}
+                  y1={8}
+                  x2={13}
+                  y2={8}
+                  stroke="currentColor"
+                  strokeWidth={1}
+                />
+                {/* 垂直线 */}
+                <line
+                  x1={8}
+                  y1={3}
+                  x2={8}
+                  y2={13}
+                  stroke="currentColor"
+                  strokeWidth={1}
+                />
+              </svg>
+            </div>
           </div>
-        )
-      })}
-      <div className="add-account-container">
-        <div className="add-btn" onClick={handleAddAccount}>
-          <div className="add-icon-btn">
-            <svg
-              width={32}
-              height={32}
-              viewBox="0 0 16 16"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ color: "white", opacity: "0.5" }}
-            >
-              {/* 水平线 */}
-              <line
-                x1={3}
-                y1={8}
-                x2={13}
-                y2={8}
-                stroke="currentColor"
-                strokeWidth={1}
-              />
-              {/* 垂直线 */}
-              <line
-                x1={8}
-                y1={3}
-                x2={8}
-                y2={13}
-                stroke="currentColor"
-                strokeWidth={1}
-              />
-            </svg>
-          </div>
+          <Addpanel />
         </div>
-        <Addpanel />
       </div>
       <ContextMenu />
-    </div>
+    </>
   )
 }
 
