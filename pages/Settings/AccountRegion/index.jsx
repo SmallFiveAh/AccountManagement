@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import Addaccount from './Addpanel/Addaccount';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
 import './index.css'
@@ -20,7 +21,15 @@ function AccountRegion() {
   const [contextMenuPosition, setContextMenuPosition] = useState({ left: 0, top: 0 })
   // 当前选中的账号
   const [selectedAccount, setSelectedAccount] = useState(null)
-  
+  // 显示添加账号面板状态
+  const [showAddAccount, setShowAddAccount] = useState(false);
+
+  // 处理关闭Addaccount组件
+  const handleCloseAddAccount = () => {
+      setShowAddAccount(false);
+  };
+
+
   // 每页最大账号数和最大页数
   const ACCOUNTS_PER_PAGE = 59
   const MAX_PAGES = 50
@@ -248,6 +257,7 @@ function AccountRegion() {
         onClose={handleCloseContextMenu}
         selectedAccount={selectedAccount}
       />
+      <Addaccount />
     </>
   )
 }
