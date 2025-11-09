@@ -67,7 +67,7 @@ function AddPanel() {
                         />
                     </svg>
                 </div>
-                <div className="option-text">添加账号</div>
+                <div className="option-text">添加分类</div>
             </div>
       </div>
     )

@@ -83,7 +83,7 @@ function ContextMenu({ show, position, onClose, selectedAccount }) {
                 </div>
                 <div className="option-text">编辑账号</div>
             </div>
-            <div className="option-item" onClick={onClose}>
+            <div className="option-item delete-option" onClick={onClose}>
                 <div className="option-icon">
                     <svg
                         width={24}

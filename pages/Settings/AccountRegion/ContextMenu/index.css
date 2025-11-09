@@ -26,6 +26,12 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* 删除选项的特殊悬停效果 */
+.delete-option:hover {
+    background-color: rgba(241, 98, 98, 0.253);
+}
+
+
 .option-icon {
     margin-right: 8px;
     color: #ccc;
