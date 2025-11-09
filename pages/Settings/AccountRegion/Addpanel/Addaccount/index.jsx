@@ -40,7 +40,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
   if (!isOpen) return null;
 
   return (
-    <div className={`modal-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose}>
+    <div className={`modal-overlay ${isOpen ? 'open' : ''}`}>
         <div className="Add-Account-Panel" onClick={(e) => e.stopPropagation()}>
             <div className="complete-btn" title="关闭" onClick={handleClose}>&times;</div>
             <h2 style={{ textAlign: 'center', color: '#1c1f22de', marginTop: '10px' }}>添加账号</h2>
@@ -58,13 +58,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
                         value={accountData.name}
                         onChange={handleChange}
                         required
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            backgroundColor: 'rgba(255, 255, 255, 0.7)'
-                        }}
+                        className="input-field"
                     />
                 </div>
                 <div>
@@ -75,13 +69,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
                         value={accountData.url}
                         onChange={handleChange}
                         placeholder="https://example.com"
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            backgroundColor: 'rgba(255, 255, 255, 0.7)'
-                        }}
+                        className="input-field"
                     />
                 </div>
                 <div>
@@ -91,13 +79,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
                         name="icon"
                         value={accountData.icon}
                         onChange={handleChange}
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            backgroundColor: 'rgba(255, 255, 255, 0.7)'
-                        }}
+                        className="input-field"
                     />
                 </div>
                 <div style={{ 

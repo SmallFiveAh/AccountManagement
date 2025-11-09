@@ -58,3 +58,33 @@
 .complete-btn:hover {
     color: #1c1f229a;
 }
+
+/* 优化输入框样式 */
+.input-field {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #4a7afe;
+    box-shadow: 0 0 0 2px rgba(74, 122, 254, 0.2);
+}
+
+.input-field:hover {
+    border-color: #999;
+}
+
+.input-field:required:valid {
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+}
+
+.input-field:required:invalid:not(:placeholder-shown) {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
