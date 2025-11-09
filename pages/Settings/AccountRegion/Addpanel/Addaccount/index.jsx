@@ -5,7 +5,8 @@ function Addaccount({ isOpen, onClose, onSave }) {
   const [accountData, setAccountData] = useState({
     name: '',
     url: '',
-    icon: '../resource/img/icon-48.png'
+    icon: '../resource/img/icon-48.png',
+    description: ''
   });
 
   const handleChange = (e) => {
@@ -23,7 +24,8 @@ function Addaccount({ isOpen, onClose, onSave }) {
       setAccountData({
         name: '',
         url: '',
-        icon: '../resource/img/icon-48.png'
+        icon: '../resource/img/icon-48.png',
+        description: ''
       });
     }
   };
@@ -32,7 +34,8 @@ function Addaccount({ isOpen, onClose, onSave }) {
     setAccountData({
       name: '',
       url: '',
-      icon: '../resource/img/icon-48.png'
+      icon: '../resource/img/icon-48.png',
+      description: ''
     });
     onClose();
   };
@@ -62,6 +65,28 @@ function Addaccount({ isOpen, onClose, onSave }) {
                     />
                 </div>
                 <div>
+                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>账号</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={accountData.name}
+                        onChange={handleChange}
+                        required
+                        className="input-field"
+                    />
+                </div>
+                <div>
+                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>密码</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={accountData.name}
+                        onChange={handleChange}
+                        required
+                        className="input-field"
+                    />
+                </div>
+                <div>
                     <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>网址</label>
                     <input
                         type="text"
@@ -81,6 +106,39 @@ function Addaccount({ isOpen, onClose, onSave }) {
                         onChange={handleChange}
                         className="input-field"
                     />
+                </div>
+                <div>
+                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>说明</label>
+                    <div style={{ position: 'relative' }}>
+                        <textarea
+                            name="description"
+                            value={accountData.description}
+                            onChange={handleChange}
+                            placeholder="请输入账号说明..."
+                            className="input-field"
+                            style={{
+                                width: '100%',
+                                height: '100px',
+                                padding: '8px',
+                                borderRadius: '6px',
+                                border: '1px solid #ccc',
+                                resize: 'vertical',
+                                fontFamily: 'inherit',
+                                fontSize: '14px',
+                                boxSizing: 'border-box'
+                            }}
+                        />
+                        <div style={{ 
+                            position: 'absolute', 
+                            bottom: '5px', 
+                            right: '8px', 
+                            fontSize: '12px', 
+                            color: '#666',
+                            pointerEvents: 'none'
+                        }}>
+                            {accountData.description.length} 字
+                        </div>
+                    </div>
                 </div>
                 <div style={{ 
                   display: 'flex', 

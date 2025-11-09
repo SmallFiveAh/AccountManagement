@@ -66,7 +66,17 @@
     border-radius: 5px;
     border: 1px solid #ccc;
     background-color: rgba(255, 255, 255, 0.7);
+    box-sizing: border-box;
+    font-size: 14px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea.input-field {
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    max-height: 200px;
+    line-height: 1.5;
 }
 
 .input-field:focus {
