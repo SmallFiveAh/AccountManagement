@@ -68,7 +68,6 @@ function AccountRegion() {
         }
         newPages[currentPage] = [...currentAccounts, newAccount]
       }
-      
       return newPages
     })
   }

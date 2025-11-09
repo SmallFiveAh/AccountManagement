@@ -1,9 +1,7 @@
 /* 添加功能选项面板样式 */
 .add-options-panel-sdwf {
+    top: 0px;
     position: absolute;
-    top: 90%;
-    left: 50%;
-    transform: translateX(-50%);
     background-color: rgba(30, 30, 30, 0.9);
     border-radius: 20px;
     padding: 10px;
