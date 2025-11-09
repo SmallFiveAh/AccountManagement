@@ -14,6 +14,12 @@ function AccountRegion() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   // 节流定时器引用
   const throttleTimerRef = useRef(null)
+  // 上下文菜单状态
+  const [showContextMenu, setShowContextMenu] = useState(false)
+  // 上下文菜单位置状态
+  const [contextMenuPosition, setContextMenuPosition] = useState({ left: 0, top: 0 })
+  // 当前选中的账号
+  const [selectedAccount, setSelectedAccount] = useState(null)
   
   // 每页最大账号数和最大页数
   const ACCOUNTS_PER_PAGE = 59
@@ -31,6 +37,25 @@ function AccountRegion() {
     if (account.url) {
       window.open(account.url, '_blank')
     }
+  }
+
+  // 处理右键菜单显示
+  const handleContextMenu = (e, account) => {
+    e.preventDefault()
+    // 获取鼠标右键点击的绝对坐标（相对于视口）
+    const { pageX, pageY } = e
+    // 显示上下文菜单
+    setShowContextMenu(true)
+    // 设置上下文菜单的位置
+    setContextMenuPosition({ left: pageX, top: pageY })
+    // 设置当前选中的账号
+    setSelectedAccount(account)
+  }
+
+  // 关闭上下文菜单
+  const handleCloseContextMenu = () => {
+    setShowContextMenu(false)
+    setSelectedAccount(null)
   }
   
   
@@ -126,16 +151,26 @@ function AccountRegion() {
     // 添加全局监听器，监听整个文档的滚轮事件
     window.addEventListener('wheel', handleWheel, { passive: false })
     
+    // 点击其他区域关闭上下文菜单
+    const handleClickOutside = () => {
+      if (showContextMenu) {
+        setShowContextMenu(false)
+      }
+    }
+    
+    document.addEventListener('click', handleClickOutside)
+    
     // 清理监听器
     return () => {
       window.removeEventListener('wheel', handleWheel)
+      document.removeEventListener('click', handleClickOutside)
       // 清理节流定时器
       if (throttleTimerRef.current) {
         clearTimeout(throttleTimerRef.current)
         throttleTimerRef.current = null
       }
     }
-  }, [currentPage, totalPages, isTransitioning])
+  }, [currentPage, totalPages, isTransitioning, showContextMenu])
   
   // 重置方向状态，避免动画重复触发
   useEffect(() => {
@@ -147,65 +182,73 @@ function AccountRegion() {
   }, [currentPage])
 
   return (
-    <div 
-      className="header-container"
-      data-page={currentPage}
-      data-direction={direction}
-    >
-      {currentAccounts.map(account => {
-        const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name
-        return (
-          <div className="account-container" key={account.id}>
-            <div className="icon-container">
-              <div className="icon-box">
-                <img 
-                  src={account.icon} 
-                  title={account.name} 
-                  alt={account.id} 
-                  onClick={() => handleAccountClick(account)}
-                  style={{ cursor: 'pointer' }}
-                />
-                <span>{label}</span>
+    <>
+      <div 
+        className="header-container"
+        data-page={currentPage}
+        data-direction={direction}
+      >
+        {currentAccounts.map(account => {
+          const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name
+          return (
+            <div className="account-container" key={account.id}>
+              <div className="icon-container">
+                <div className="icon-box">
+                  <img 
+                    src={account.icon} 
+                    title={account.name} 
+                    alt={account.id} 
+                    onClick={() => handleAccountClick(account)}
+                    onContextMenu={(e) => handleContextMenu(e, account)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <span>{label}</span>
+                </div>
               </div>
             </div>
+          )
+        })}
+        <div className="add-account-container">
+          <div className="add-btn" onClick={handleAddAccount}>
+            <div className="add-icon-btn">
+              <svg
+                width={32}
+                height={32}
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ color: "white", opacity: "0.5" }}
+              >
+                {/* 水平线 */}
+                <line
+                  x1={3}
+                  y1={8}
+                  x2={13}
+                  y2={8}
+                  stroke="currentColor"
+                  strokeWidth={1}
+                />
+                {/* 垂直线 */}
+                <line
+                  x1={8}
+                  y1={3}
+                  x2={8}
+                  y2={13}
+                  stroke="currentColor"
+                  strokeWidth={1}
+                />
+              </svg>
+            </div>
           </div>
-        )
-      })}
-      <div className="add-account-container">
-        <div className="add-btn" onClick={handleAddAccount}>
-          <div className="add-icon-btn">
-            <svg
-              width={32}
-              height={32}
-              viewBox="0 0 16 16"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ color: "white", opacity: "0.5" }}
-            >
-              {/* 水平线 */}
-              <line
-                x1={3}
-                y1={8}
-                x2={13}
-                y2={8}
-                stroke="currentColor"
-                strokeWidth={1}
-              />
-              {/* 垂直线 */}
-              <line
-                x1={8}
-                y1={3}
-                x2={8}
-                y2={13}
-                stroke="currentColor"
-                strokeWidth={1}
-              />
-            </svg>
-          </div>
+          <Addpanel />
         </div>
-        <Addpanel />
       </div>
-      <ContextMenu />
-    </div>
+      <ContextMenu 
+        show={showContextMenu} 
+        position={contextMenuPosition} 
+        onClose={handleCloseContextMenu}
+        selectedAccount={selectedAccount}
+      />
+    </>
   )
 }
 
