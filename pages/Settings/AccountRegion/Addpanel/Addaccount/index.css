@@ -1,0 +1,31 @@
+/* 弹出面板样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-content {
+    background-color: #d4d4d4de;
+    border-radius: 20px; 
+    width: 25%;
+    height: 45%;
+    /* 修改定位方式，相对于视口左下角定位 */
+    position: fixed;
+    bottom: 75px; /* 距离底部距离，可根据需要调整 */
+    left: 50px;
+    max-width: 90%;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
