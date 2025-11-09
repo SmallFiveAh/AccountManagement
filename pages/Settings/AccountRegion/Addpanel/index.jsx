@@ -1,16 +1,8 @@
 import { useState } from 'react';
-import Addaccount from './Addaccount';
 import './index.css';
 
 
 function AddPanel() {
-    const [showAddAccount, setShowAddAccount] = useState(false);
-    
-    // 处理关闭Addaccount组件
-    const handleCloseAddAccount = () => {
-        setShowAddAccount(false);
-    };
-    
     return (
         <>
             <div className="add-options-panel">
@@ -44,7 +36,7 @@ function AddPanel() {
                             />
                         </svg>
                     </div>
-                    <div className="option-text" onClick={() => setShowAddAccount(true)}>添加账号</div>
+                    <div className="option-text">添加账号</div>
                 </div>
                 <div className="option-item">
                     <div className="option-icon">
@@ -79,11 +71,7 @@ function AddPanel() {
                     <div className="option-text">添加账号</div>
                 </div>
             </div>
-            {/* 当showAddAccount为true时显示Addaccount组件 */}
-            {showAddAccount && (
-                <Addaccount onClose={handleCloseAddAccount} />
-            )}
-      </>
+        </>
     )
 }
 
