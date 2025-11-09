@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import './index.css';
 
-function Addaccount({ onClose }) {
+function Addaccount() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="modal-overlay">
         <div className="modal-content">
             <div className="complete-btn" title="关闭">&times;</div>
-
         </div>
     </div>
   );
