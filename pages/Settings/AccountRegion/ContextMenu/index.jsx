@@ -1,10 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import './index.css';
 
-function ContextMenu() {
+function ContextMenu({ show, position, onClose, selectedAccount }) {
+    // 阻止菜单内点击冒泡，避免触发外部点击关闭菜单
+    const handleMenuClick = (e) => {
+        e.stopPropagation();
+    };
+
     return (
-      <div className="add-options-panel-sdwf">
-            <div className="option-item">
+      <div 
+        className="add-options-panel-sdwf" 
+        style={{ 
+            display: show ? 'flex' : 'none',
+            position: 'fixed',
+            left: position?.left || 0,
+            top: position?.top || 0,
+            zIndex: 1000
+        }}
+        onClick={handleMenuClick}
+      >
+            <div className="option-item" onClick={onClose}>
                 <div className="option-icon">
                     <svg
                         width={24}
@@ -36,7 +51,7 @@ function ContextMenu() {
                 </div>
                 <div className="option-text">复制数据</div>
             </div>
-            <div className="option-item">
+            <div className="option-item" onClick={onClose}>
                 <div className="option-icon">
                     <svg
                         width={24}
@@ -68,7 +83,7 @@ function ContextMenu() {
                 </div>
                 <div className="option-text">编辑账号</div>
             </div>
-            <div className="option-item">
+            <div className="option-item" onClick={onClose}>
                 <div className="option-icon">
                     <svg
                         width={24}
