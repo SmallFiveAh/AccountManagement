@@ -29,6 +29,46 @@ function AccountRegion() {
       setShowAddAccount(false);
   };
 
+  // 处理保存账号
+  const handleSaveAccount = (accountData) => {
+    // 检查是否达到最大页数限制
+    if (pages.length >= 50 && pages[pages.length - 1].length >= 59) {
+      return; // 达到最大限制，无法添加更多账号
+    }
+    
+    setPages(prevPages => {
+      const newPages = [...prevPages];
+      const currentPageIndex = newPages.length - 1;
+      const currentPage = newPages[currentPageIndex] || [];
+      
+      // 如果当前页已满，则创建新页
+      if (currentPage.length >= 59) {
+        // 检查是否还能添加新页
+        if (newPages.length >= 50) {
+          return prevPages; // 已达最大页数限制
+        }
+        // 添加新的一页
+        newPages.push([{
+          id: Date.now(),
+          name: accountData.name,
+          icon: accountData.icon,
+          url: accountData.url || `https://example.com/account/${Date.now()}`
+        }]);
+      } else {
+        // 在当前页添加账号
+        const newAccount = {
+          id: Date.now(),
+          name: accountData.name,
+          icon: accountData.icon,
+          url: accountData.url || `https://example.com/account/${Date.now()}`
+        };
+        newPages[currentPageIndex] = [...currentPage, newAccount];
+      }
+      return newPages;
+    });
+    
+    setShowAddAccount(false);
+  };
 
   // 每页最大账号数和最大页数
   const ACCOUNTS_PER_PAGE = 59
@@ -105,6 +145,10 @@ function AccountRegion() {
       return newPages
     })
   }
+
+  const handleAddAccountClick = () => {
+    setShowAddAccount(true);
+  };
 
   // 处理页面切换
   const switchPage = (newPage) => {
@@ -218,7 +262,7 @@ function AccountRegion() {
           )
         })}
         <div className="add-account-container">
-          <div className="add-btn" onClick={handleAddAccount}>
+          <div className="add-btn">
             <div className="add-icon-btn">
               <svg
                 width={32}
@@ -248,7 +292,7 @@ function AccountRegion() {
               </svg>
             </div>
           </div>
-          <Addpanel />
+          <Addpanel onAddAccount={handleAddAccountClick} />
         </div>
       </div>
       <ContextMenu 
@@ -257,7 +301,11 @@ function AccountRegion() {
         onClose={handleCloseContextMenu}
         selectedAccount={selectedAccount}
       />
-      <Addaccount />
+      <Addaccount 
+        isOpen={showAddAccount}
+        onClose={handleCloseAddAccount}
+        onSave={handleSaveAccount}
+      />
     </>
   )
 }
