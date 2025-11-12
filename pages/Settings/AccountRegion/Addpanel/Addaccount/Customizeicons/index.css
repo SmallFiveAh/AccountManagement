@@ -1,0 +1,153 @@
+/* ... existing code ... */
+
+.source-selection {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+}
+
+.source-selection button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.source-selection button:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.source-selection button.selected {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.selected-icon {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    font-size: 24px;
+    color: white;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.color-selection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.color-selection div {
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+.color-selection div::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.color-selection div:hover {
+    transform: scale(1.1);
+}
+
+.color-selection div.selected {
+    transform: scale(1.1);
+}
+
+.color-selection div.selected::after {
+    opacity: 1;
+}
+
+.custom-color-picker {
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 中心到外缘顺序：紫 ... 红 => 显示为外到内红->...->紫 */
+    background-image: radial-gradient(circle,
+        violet 0%,
+        indigo 15%,
+        blue 30%,
+        green 45%,
+        yellow 60%,
+        orange 75%,
+        red 100%);
+}
+
+.custom-color-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+}
+
+.custom-color-label {
+    pointer-events: none;
+    font-size: 18px;
+    position: relative;
+}
+
+.text-input {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.text-input input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 10px;
+}
+
+.customize-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
