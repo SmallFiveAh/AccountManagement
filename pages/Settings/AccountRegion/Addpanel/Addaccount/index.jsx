@@ -55,68 +55,77 @@ function Addaccount({ isOpen, onClose, onSave }) {
             <h2 className="panel-title">添加账号</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>名称</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={accountData.name}
-                        onChange={handleChange}
-                        required
-                        className="input-field"
-                        placeholder="请输入账号名称"
-                    />
+                    <div className="input-with-icon">
+                        <i className="icon-name"></i>
+                        <input
+                            type="text"
+                            name="name"
+                            value={accountData.name}
+                            onChange={handleChange}
+                            required
+                            className="input-field"
+                            placeholder="请输入网址名称"
+                        />
+                    </div>
                 </div>
-                
+
                 <div className="form-group">
-                    <label>用户名</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={accountData.username}
-                        onChange={handleChange}
-                        className="input-field"
-                        placeholder="请输入用户名"
-                    />
+                    <div className="input-with-icon">
+                        <i className="icon-username"></i>
+                        <input
+                            type="text"
+                            name="username"
+                            value={accountData.username}
+                            onChange={handleChange}
+                            className="input-field"
+                            placeholder="请输入用户名"
+                        />
+                    </div>
                 </div>
-                
+
                 <div className="form-group">
-                    <label>密码</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={accountData.password}
-                        onChange={handleChange}
-                        className="input-field"
-                        placeholder="请输入密码"
-                    />
+                    <div className="input-with-icon">
+                        <i className="icon-password"></i>
+                        <input
+                            type="password"
+                            name="password"
+                            value={accountData.password}
+                            onChange={handleChange}
+                            className="input-field"
+                            placeholder="请输入密码"
+                        />
+                    </div>
                 </div>
-                
+
                 <div className="form-group">
-                    <label>网址</label>
-                    <input
-                        type="text"
-                        name="url"
-                        value={accountData.url}
-                        onChange={handleChange}
-                        placeholder="https://example.com"
-                        className="input-field"
-                    />
+                    <div className="input-with-icon">
+                        <i className="icon-url"></i>
+                        <input
+                            type="text"
+                            name="url"
+                            value={accountData.url}
+                            onChange={handleChange}
+                            placeholder="https://example.com"
+                            className="input-field"
+                        />
+                    </div>
                 </div>
-                
+
                 <div className="form-group">
-                    <label>图标路径</label>
-                    <input
-                        type="text"
-                        name="icon"
-                        value={accountData.icon}
-                        onChange={handleChange}
-                        className="input-field"
-                        placeholder="图标文件路径"
-                    />
+                    <div className="input-with-icon">
+                        <i className="icon-iconpath"></i>
+                        <input
+                            type="text"
+                            name="icon"
+                            value={accountData.icon}
+                            onChange={handleChange}
+                            className="input-field"
+                            placeholder="图标文件路径"
+                        />
+                    </div>
                 </div>
-                
+
                 <div className="form-group">
-                    <label>说明</label>
                     <div className="textarea-container">
                         <textarea
                             name="description"
