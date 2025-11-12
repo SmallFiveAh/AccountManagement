@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Customizeicons from './Customizeicons';
 import './index.css';
 
 function Addaccount({ isOpen, onClose, onSave }) {
@@ -54,9 +55,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
             <div className="complete-btn" title="关闭" onClick={handleClose}>&times;</div>
             <h2 className="panel-title">添加账号</h2>
             <form onSubmit={handleSubmit}>
+                <Customizeicons />
+                
                 <div className="form-group">
                     <div className="input-with-icon">
-                        <i className="icon-name"></i>
+                        <i className="icon-name">🌐</i>
                         <input
                             type="text"
                             name="name"
@@ -71,7 +74,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
 
                 <div className="form-group">
                     <div className="input-with-icon">
-                        <i className="icon-username"></i>
+                        <i className="icon-username">👤</i>
                         <input
                             type="text"
                             name="username"
@@ -85,7 +88,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
 
                 <div className="form-group">
                     <div className="input-with-icon">
-                        <i className="icon-password"></i>
+                        <i className="icon-password">🔒</i>
                         <input
                             type="password"
                             name="password"
@@ -99,7 +102,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
 
                 <div className="form-group">
                     <div className="input-with-icon">
-                        <i className="icon-url"></i>
+                        <i className="icon-url">🔗</i>
                         <input
                             type="text"
                             name="url"
@@ -107,20 +110,6 @@ function Addaccount({ isOpen, onClose, onSave }) {
                             onChange={handleChange}
                             placeholder="https://example.com"
                             className="input-field"
-                        />
-                    </div>
-                </div>
-
-                <div className="form-group">
-                    <div className="input-with-icon">
-                        <i className="icon-iconpath"></i>
-                        <input
-                            type="text"
-                            name="icon"
-                            value={accountData.icon}
-                            onChange={handleChange}
-                            className="input-field"
-                            placeholder="图标文件路径"
                         />
                     </div>
                 </div>

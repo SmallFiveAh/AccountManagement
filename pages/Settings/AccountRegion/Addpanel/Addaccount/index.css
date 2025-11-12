@@ -196,3 +196,27 @@ textarea.input-field {
     font-size: 14px;
     box-sizing: border-box;
 }
+
+/* 为输入框容器添加新样式 */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon .icon-name,
+.input-with-icon .icon-username,
+.input-with-icon .icon-password,
+.input-with-icon .icon-url,
+.input-with-icon .icon-iconpath {
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+    color: #666;
+    font-size: 16px;
+    font-style: normal; /* 添加此行以防止图标显示为斜体 */
+}
+
+.input-with-icon input {
+    padding-left: 35px;
+}
