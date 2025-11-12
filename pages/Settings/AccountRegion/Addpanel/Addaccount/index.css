@@ -25,14 +25,31 @@
     background-color: #d4d4d4de;
     border-radius: 20px; 
     width: 30%;
-    height: 55%;
     max-width: 90%;
+    max-height: 90%;
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50);
     transform: translateY(20px);
     transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow-y: auto;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    box-sizing: border-box;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+.Add-Account-Panel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+@media (max-width: 768px) {
+    .Add-Account-Panel {
+        width: 90%;
+        height: auto;
+    }
 }
 
 .modal-overlay.open .Add-Account-Panel {
@@ -53,6 +70,7 @@
     width: 30px;
     height: 30px;
     text-align: center;
+    z-index: 1001;
 }
 
 .complete-btn:hover {
@@ -97,4 +115,83 @@ textarea.input-field {
 .input-field:required:invalid:not(:placeholder-shown) {
     border-color: #dc3545;
     box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
+
+/* 新增表单组样式 */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1c1f22de;
+    font-weight: 500;
+}
+
+.form-actions {
+    display: flex; 
+    justify-content: center; 
+    gap: 100px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary {
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-primary {
+    border: none;
+    background-color: #4a7afe;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #3a6aec;
+}
+
+.textarea-container {
+    position: relative;
+}
+
+.char-count {
+    position: absolute; 
+    bottom: 5px; 
+    right: 8px; 
+    font-size: 12px; 
+    color: #666;
+    pointer-events: none;
+}
+
+/* 新增样式 */
+.panel-title {
+    text-align: center;
+    color: #1c1f22de;
+    margin-top: 10px;
+}
+
+.textarea-field {
+    width: 100%;
+    height: 100px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
 }

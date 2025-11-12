@@ -4,6 +4,8 @@ import './index.css';
 function Addaccount({ isOpen, onClose, onSave }) {
   const [accountData, setAccountData] = useState({
     name: '',
+    username: '',
+    password: '',
     url: '',
     icon: '../resource/img/icon-48.png',
     description: ''
@@ -23,6 +25,8 @@ function Addaccount({ isOpen, onClose, onSave }) {
       onSave(accountData);
       setAccountData({
         name: '',
+        username: '',
+        password: '',
         url: '',
         icon: '../resource/img/icon-48.png',
         description: ''
@@ -33,6 +37,8 @@ function Addaccount({ isOpen, onClose, onSave }) {
   const handleClose = () => {
     setAccountData({
       name: '',
+      username: '',
+      password: '',
       url: '',
       icon: '../resource/img/icon-48.png',
       description: ''
@@ -46,15 +52,10 @@ function Addaccount({ isOpen, onClose, onSave }) {
     <div className={`modal-overlay ${isOpen ? 'open' : ''}`}>
         <div className="Add-Account-Panel" onClick={(e) => e.stopPropagation()}>
             <div className="complete-btn" title="关闭" onClick={handleClose}>&times;</div>
-            <h2 style={{ textAlign: 'center', color: '#1c1f22de', marginTop: '10px' }}>添加账号</h2>
-            <form onSubmit={handleSubmit} style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              gap: '15px',
-              marginTop: '20px'
-            }}>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>账号名称 *</label>
+            <h2 className="panel-title">添加账号</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>名称</label>
                     <input
                         type="text"
                         name="name"
@@ -62,32 +63,36 @@ function Addaccount({ isOpen, onClose, onSave }) {
                         onChange={handleChange}
                         required
                         className="input-field"
+                        placeholder="请输入账号名称"
                     />
                 </div>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>账号</label>
+                
+                <div className="form-group">
+                    <label>用户名</label>
                     <input
                         type="text"
-                        name="name"
-                        value={accountData.name}
+                        name="username"
+                        value={accountData.username}
                         onChange={handleChange}
-                        required
                         className="input-field"
+                        placeholder="请输入用户名"
                     />
                 </div>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>密码</label>
+                
+                <div className="form-group">
+                    <label>密码</label>
                     <input
-                        type="text"
-                        name="name"
-                        value={accountData.name}
+                        type="password"
+                        name="password"
+                        value={accountData.password}
                         onChange={handleChange}
-                        required
                         className="input-field"
+                        placeholder="请输入密码"
                     />
                 </div>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>网址</label>
+                
+                <div className="form-group">
+                    <label>网址</label>
                     <input
                         type="text"
                         name="url"
@@ -97,78 +102,46 @@ function Addaccount({ isOpen, onClose, onSave }) {
                         className="input-field"
                     />
                 </div>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>图标路径</label>
+                
+                <div className="form-group">
+                    <label>图标路径</label>
                     <input
                         type="text"
                         name="icon"
                         value={accountData.icon}
                         onChange={handleChange}
                         className="input-field"
+                        placeholder="图标文件路径"
                     />
                 </div>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#1c1f22de' }}>说明</label>
-                    <div style={{ position: 'relative' }}>
+                
+                <div className="form-group">
+                    <label>说明</label>
+                    <div className="textarea-container">
                         <textarea
                             name="description"
                             value={accountData.description}
                             onChange={handleChange}
                             placeholder="请输入账号说明..."
-                            className="input-field"
-                            style={{
-                                width: '100%',
-                                height: '100px',
-                                padding: '8px',
-                                borderRadius: '6px',
-                                border: '1px solid #ccc',
-                                resize: 'vertical',
-                                fontFamily: 'inherit',
-                                fontSize: '14px',
-                                boxSizing: 'border-box'
-                            }}
+                            className="input-field textarea-field"
                         />
-                        <div style={{ 
-                            position: 'absolute', 
-                            bottom: '5px', 
-                            right: '8px', 
-                            fontSize: '12px', 
-                            color: '#666',
-                            pointerEvents: 'none'
-                        }}>
+                        <div className="char-count">
                             {accountData.description.length} 字
                         </div>
                     </div>
                 </div>
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  gap: '10px',
-                  marginTop: '10px'
-                }}>
+                
+                <div className="form-actions">
                     <button 
                         type="button" 
                         onClick={handleClose}
-                        style={{
-                            padding: '8px 16px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            backgroundColor: '#f0f0f0',
-                            cursor: 'pointer'
-                        }}
+                        className="btn btn-secondary"
                     >
                         取消
                     </button>
                     <button 
                         type="submit"
-                        style={{
-                            padding: '8px 16px',
-                            borderRadius: '5px',
-                            border: 'none',
-                            backgroundColor: '#4a7afe',
-                            color: 'white',
-                            cursor: 'pointer'
-                        }}
+                        className="btn btn-primary"
                     >
                         保存
                     </button>
