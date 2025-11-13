@@ -35,6 +35,11 @@ function AccountRegion() {
           id: account.id,
           name: account.name,
           icon: account.icon,
+          iconConfig: account.iconConfig || {
+            source: '在线图标',
+            color: '#339aff',
+            text: ''
+          },
           url: account.url || `https://example.com/account/${account.id}`
         }));
         loadedPages.push(pageAccounts);
@@ -71,6 +76,7 @@ function AccountRegion() {
           id: Date.now(),
           name: accountData.name,
           icon: accountData.icon,
+          iconConfig: accountData.iconConfig,
           url: accountData.url || `https://example.com/account/${Date.now()}`
         }]);
       } else {
@@ -79,10 +85,14 @@ function AccountRegion() {
           id: Date.now(),
           name: accountData.name,
           icon: accountData.icon,
+          iconConfig: accountData.iconConfig,
           url: accountData.url || `https://example.com/account/${Date.now()}`
         };
         newPages[currentPageIndex] = [...currentPage, newAccount];
       }
+      // 保存到本地存储
+      const allAccounts = newPages.flat();
+      localStorage.setItem('accounts', JSON.stringify(allAccounts));
       return newPages;
     });
     
@@ -147,6 +157,11 @@ function AccountRegion() {
           id: Date.now(), // 使用时间戳作为唯一ID
           name: `账号${newPages.flat().length + 1}`,
           icon: '../resource/img/icon-48.png',
+          iconConfig: {
+            source: '在线图标',
+            color: '#339aff',
+            text: ''
+          },
           url: `https://example.com/account/${Date.now()}` // 添加默认URL
         }])
         // 更新到新页
@@ -157,10 +172,18 @@ function AccountRegion() {
           id: Date.now(),
           name: `账号${newPages.flat().length + 1}`,
           icon: '../resource/img/icon-48.png',
+          iconConfig: {
+            source: '在线图标',
+            color: '#339aff',
+            text: ''
+          },
           url: `https://example.com/account/${Date.now()}` // 添加默认URL
         }
         newPages[currentPage] = [...currentAccounts, newAccount]
       }
+      // 保存到本地存储
+      const allAccounts = newPages.flat();
+      localStorage.setItem('accounts', JSON.stringify(allAccounts));
       return newPages
     })
   }

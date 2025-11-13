@@ -38,10 +38,25 @@ function Customizeicons({ onIconChange }) {
                 </svg>
             `;
             const base64Icon = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
-            onIconChange && onIconChange({...data, icon: base64Icon});
+            // 修改：传递原始数据而不是合并后的数据
+            onIconChange && onIconChange({
+                icon: base64Icon,
+                iconConfig: {
+                    source: data.source,
+                    color: data.color,
+                    text: data.text
+                }
+            });
         } else {
             // 其他情况使用默认图标
-            onIconChange && onIconChange({...data, icon: '../resource/img/icon-48.png'});
+            onIconChange && onIconChange({
+                icon: '../resource/img/icon-48.png',
+                iconConfig: {
+                    source: data.source,
+                    color: data.color,
+                    text: data.text
+                }
+            });
         }
     };
 

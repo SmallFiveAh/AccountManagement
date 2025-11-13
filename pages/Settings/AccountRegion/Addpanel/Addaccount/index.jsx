@@ -9,6 +9,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
     password: '',
     url: '',
     icon: '../resource/img/icon-48.png',
+    iconConfig: {
+      source: '在线图标',
+      color: '#339aff',
+      text: ''
+    },
     description: ''
   });
 
@@ -24,7 +29,8 @@ function Addaccount({ isOpen, onClose, onSave }) {
   const handleIconChange = (iconData) => {
     setAccountData(prev => ({
       ...prev,
-      icon: iconData.icon
+      icon: iconData.icon,
+      iconConfig: iconData.iconConfig
     }));
   };
 
@@ -48,6 +54,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
         password: '',
         url: '',
         icon: '../resource/img/icon-48.png',
+        iconConfig: {
+          source: '在线图标',
+          color: '#339aff',
+          text: ''
+        },
         description: ''
       });
     }
@@ -60,6 +71,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
       password: '',
       url: '',
       icon: '../resource/img/icon-48.png',
+      iconConfig: {
+        source: '在线图标',
+        color: '#339aff',
+        text: ''
+      },
       description: ''
     });
     onClose();
