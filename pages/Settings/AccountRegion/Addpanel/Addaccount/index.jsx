@@ -9,6 +9,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
     password: '',
     url: '',
     icon: '../resource/img/icon-48.png',
+    iconConfig: {
+      source: '在线图标',
+      color: '#339aff',
+      text: ''
+    },
     description: ''
   });
 
@@ -20,9 +25,28 @@ function Addaccount({ isOpen, onClose, onSave }) {
     }));
   };
 
+  // 处理图标更改
+  const handleIconChange = (iconData) => {
+    setAccountData(prev => ({
+      ...prev,
+      icon: iconData.icon,
+      iconConfig: iconData.iconConfig
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (accountData.name.trim()) {
+      // 保存到本地存储
+      const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+      const newAccount = {
+        ...accountData,
+        id: Date.now(), // 添加唯一标识符
+        createdAt: new Date().toISOString()
+      };
+      accounts.push(newAccount);
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+      
       onSave(accountData);
       setAccountData({
         name: '',
@@ -30,6 +54,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
         password: '',
         url: '',
         icon: '../resource/img/icon-48.png',
+        iconConfig: {
+          source: '在线图标',
+          color: '#339aff',
+          text: ''
+        },
         description: ''
       });
     }
@@ -42,6 +71,11 @@ function Addaccount({ isOpen, onClose, onSave }) {
       password: '',
       url: '',
       icon: '../resource/img/icon-48.png',
+      iconConfig: {
+        source: '在线图标',
+        color: '#339aff',
+        text: ''
+      },
       description: ''
     });
     onClose();
@@ -55,7 +89,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
             <div className="complete-btn" title="关闭" onClick={handleClose}>&times;</div>
             <h2 className="panel-title">添加账号</h2>
             <form onSubmit={handleSubmit}>
-                <Customizeicons />
+                <Customizeicons onIconChange={handleIconChange} />
                 
                 <div className="form-group">
                     <div className="input-with-icon">
