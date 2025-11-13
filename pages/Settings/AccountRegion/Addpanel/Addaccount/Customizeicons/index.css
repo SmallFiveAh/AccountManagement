@@ -90,6 +90,10 @@
     opacity: 1;
 }
 
+.color-selection div:last-child::after {
+    content: none;
+}
+
 .custom-color-picker {
     width: 25px;
     height: 25px;
@@ -99,15 +103,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* 中心到外缘顺序：紫 ... 红 => 显示为外到内红->...->紫 */
-    background-image: radial-gradient(circle,
-        violet 0%,
-        indigo 15%,
-        blue 30%,
-        green 45%,
-        yellow 60%,
-        orange 75%,
-        red 100%);
+    /* 使用四色扇形渐变背景 */
+    background: conic-gradient(from 0deg at 50% 50%,
+        #ff0000 0deg 90deg,   /* 红色 */
+        #ffff00 90deg 180deg, /* 黄色 */
+        #00ff00 180deg 270deg,/* 绿色 */
+        #0000ff 270deg 360deg); /* 蓝色 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid #ffffff;
+}
+
+.custom-color-picker:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.custom-color-picker.selected {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #4a90e2;
 }
 
 .custom-color-input {
@@ -120,13 +135,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    
-}
-
-.custom-color-label {
-    pointer-events: none;
-    font-size: 18px;
-    position: relative;
 }
 
 .text-input {
