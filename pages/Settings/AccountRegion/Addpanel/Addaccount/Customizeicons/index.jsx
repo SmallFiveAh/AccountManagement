@@ -4,7 +4,7 @@ import './index.css';
 function Customizeicons() {
     const [iconData, setIconData] = useState({
         source: '纯色图标',
-        color: '#ffcc00', // 默认颜色为黄色
+        color: '#339aff',
         text: ''
     });
 
@@ -22,15 +22,15 @@ function Customizeicons() {
 
     // 定义颜色选项数组
     const colorOptions = [
-        '#ffcc00', '#3ac47d', '#00bfa5', 
-        '#339aff', '#6c6cff', '#ec407a', 
-        '#ff5f57', '#ccc', '#8b6868ff',
-        '#f5f5f5', '#808080', '#ff00ddff',
+        '#339aff', '#3ac47d', '#00bfa5', 
+        '#9bdb07ff', '#6c6cff', '#ec407a', 
+        '#ff5f57', '#a19494ff', '#8b6868ff',
+        '#f5f5f5', '#808080', '#a01b8eff',
         '#000', '#096e96ff', '#d400ffff',
-        '#ff0000ff', '#ff0000ff', '#ff0000ff',
-        '#ff0000ff', '#ff0000ff', '#ff0000ff',
-        '#ff0000ff', '#ff0000ff', '#ff0000ff',
-        '#ff0000ff', '#ff0000ff', '#ff0000ff'
+        '#5c0d9cff', '#00ff4cff', '#554a92ff',
+        '#295242ff', '#ff2effff', '#6269ccff',
+        '#4da512ff', '#02596eff', '#3a066bff',
+        '#c49c2fff', '#69cf0aff', '#20dff8ff'
     ];
 
     // 处理自定义颜色选择
@@ -95,7 +95,7 @@ function Customizeicons() {
                     type="text" 
                     value={iconData.text} 
                     onChange={handleTextChange} 
-                    placeholder="图标文字，建议1-2个字符" 
+                    placeholder="显示图标文字，可选（建议1~2个字汉字）" 
                 />
             </div>
         </div>
