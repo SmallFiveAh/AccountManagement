@@ -24,6 +24,25 @@ function AccountRegion() {
   // 显示添加账号面板状态
   const [showAddAccount, setShowAddAccount] = useState(false);
 
+  // 初始化时从本地存储加载账号数据
+  useEffect(() => {
+    const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    if (savedAccounts.length > 0) {
+      // 将账号数据转换为页面结构
+      const loadedPages = [];
+      for (let i = 0; i < savedAccounts.length; i += 59) {
+        const pageAccounts = savedAccounts.slice(i, i + 59).map(account => ({
+          id: account.id,
+          name: account.name,
+          icon: account.icon,
+          url: account.url || `https://example.com/account/${account.id}`
+        }));
+        loadedPages.push(pageAccounts);
+      }
+      setPages(loadedPages);
+    }
+  }, []);
+
   // 处理关闭Addaccount组件
   const handleCloseAddAccount = () => {
       setShowAddAccount(false);
