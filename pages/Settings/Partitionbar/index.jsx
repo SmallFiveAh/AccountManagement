@@ -1,15 +1,15 @@
 import { useState } from "react";
 import './index.css';
 
-function Customizeicons() { 
+function Partitionbar() { 
     const [iconData, setIconData] = useState(null);
     return (
-        <div className="customize-icons">
-            <div className="source-selection">
+        <div className="Partitionbar">
+            <div className="classification">
                 
             </div>
         </div>
     )
 }
 
-export default Customizeicons;
+export default Partitionbar;
