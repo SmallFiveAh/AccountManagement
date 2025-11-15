@@ -6,6 +6,7 @@ function Monitor() {
         <div className="monitor">
             <div className="monitor-title">
                 
+
             </div>
         </div>
     )
