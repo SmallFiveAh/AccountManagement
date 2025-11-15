@@ -4,6 +4,7 @@ import Masklayer from './Masklayer'
 import AccountRegion from './AccountRegion';
 import Configuration from './Configuration';
 import Partitionbar from './Partitionbar';
+import Monitor from './monitor';
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')).render(
       <AccountRegion />
       <Configuration />
       <Partitionbar />
+      <Monitor />
     </div>
   </StrictMode>,
 )
