@@ -1,13 +1,3 @@
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* 使容器高度占满整个视口 */
-  }
-</style>
-
 <div class="container">
   <img src="public/resource/img/icon-128.png" alt="PAMP" />
   <h1 style="margin: 8px 0 0 0;">页面账号管理插件 (PAMP)</h1>
