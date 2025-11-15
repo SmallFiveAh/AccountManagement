@@ -74,6 +74,9 @@ function AccountRegion() {
         // 添加新的一页
         newPages.push([{
           id: Date.now(),
+          username: accountData.username,
+          password: accountData.password,
+          description: accountData.description,
           name: accountData.name,
           icon: accountData.icon,
           iconConfig: accountData.iconConfig,
@@ -83,6 +86,9 @@ function AccountRegion() {
         // 在当前页添加账号
         const newAccount = {
           id: Date.now(),
+          username: accountData.username,
+          password: accountData.password,
+          description: accountData.description,
           name: accountData.name,
           icon: accountData.icon,
           iconConfig: accountData.iconConfig,
