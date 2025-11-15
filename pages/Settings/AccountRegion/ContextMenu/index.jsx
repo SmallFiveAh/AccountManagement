@@ -19,9 +19,6 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
     };
 
     const handleDeleteConfirm = () => {
-        // 使用保存的账户信息而不是依赖selectedAccount prop
-        console.log(accountToDelete);
-        
         if (accountToDelete && onDeleteAccount) {
             onDeleteAccount(accountToDelete);
         }

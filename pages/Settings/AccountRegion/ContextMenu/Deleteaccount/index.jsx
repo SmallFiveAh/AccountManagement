@@ -5,8 +5,8 @@ function Deleteaccount({ show, onClose, onConfirm }) {
     if (!show) return null;
 
     return (
-        <div className="delete-confirm-overlay" onClick={onClose}>
-            <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="delete-confirm-overlay">
+            <div className="delete-confirm-modal">
                 <div className="delete-confirm-message">
                     您是否想清楚要删除该账号？
                 </div>

@@ -27,8 +27,8 @@
 }
 
 .delete-confirm-message {
-    margin-bottom: 20px;
-    font-size: 16px;
+    margin-bottom: 28px;
+    font-size: 18px;
     color: #333;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .delete-confirm-btn {
-    padding: 8px 16px;
+    padding: 6px 16px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
