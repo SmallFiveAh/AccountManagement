@@ -89,8 +89,29 @@ function Addaccount({ isOpen, onClose, onSave }) {
             <div className="complete-btn" title="关闭" onClick={handleClose}>&times;</div>
             <h2 className="panel-title">添加账号</h2>
             <form onSubmit={handleSubmit}>
-                <Customizeicons onIconChange={handleIconChange} />
-                
+                <Customizeicons 
+                  onIconChange={handleIconChange} 
+                  initialText={accountData.iconConfig.text}
+                />
+                {/* 将文本输入框移到这里 */}
+                <div className="form-group">
+                    <div className="input-with-icon">
+                        <i className="icon-iconpath">🔤</i>
+                        <input 
+                            type="text" 
+                            value={accountData.iconConfig.text}
+                            onChange={(e) => {
+                                const updatedIconConfig = { ...accountData.iconConfig, text: e.target.value };
+                                setAccountData(prev => ({
+                                    ...prev,
+                                    iconConfig: updatedIconConfig
+                                }));
+                            }}
+                            placeholder="显示图标文字，可选（建议1~2个字汉字）"
+                            className="input-field"
+                        />
+                    </div>
+                </div>
                 <div className="form-group">
                     <div className="input-with-icon">
                         <i className="icon-name">🌐</i>
