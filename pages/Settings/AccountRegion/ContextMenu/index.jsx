@@ -20,7 +20,17 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
             if (account) {
                 // 使用 JSON.stringify 的第三个参数来格式化输出，使其具有美化效果
                 const formattedAccountData = JSON.stringify(account, null, 2);
-                navigator.clipboard.writeText(formattedAccountData);
+                navigator.clipboard.writeText(formattedAccountData).then(() => {
+                    // 复制成功后调用Monitor组件显示通知
+                    if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                        window.Monitor.showMessage('账号数据已复制到剪贴板');
+                    }
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                        window.Monitor.showMessage('复制失败，请手动复制');
+                    }
+                });
             }
             
         }

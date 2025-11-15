@@ -1,0 +1,30 @@
+.monitor {
+    position: fixed;
+    height: 40px;
+    width: 170px;
+    overflow: hidden;
+    top: 20px;
+    left: 0;
+    z-index: 1000;
+}
+.monitor-title {
+    position: absolute;
+    top: 0;
+    /* 初始位置在屏幕外，用户看不到的位置 */
+    left: -150px;
+    height: 40px;
+    width: 150px;
+    border-radius: 13px;
+    background-color: rgba(49, 66, 104, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: left 0.5s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.monitor.show .monitor-title {
+    /* 显示时滑入到可见位置 */
+    left: 20px;
+}
