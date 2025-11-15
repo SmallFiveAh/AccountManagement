@@ -74,6 +74,9 @@ function AccountRegion() {
         // 添加新的一页
         newPages.push([{
           id: Date.now(),
+          username: accountData.username,
+          password: accountData.password,
+          description: accountData.description,
           name: accountData.name,
           icon: accountData.icon,
           iconConfig: accountData.iconConfig,
@@ -83,6 +86,9 @@ function AccountRegion() {
         // 在当前页添加账号
         const newAccount = {
           id: Date.now(),
+          username: accountData.username,
+          password: accountData.password,
+          description: accountData.description,
           name: accountData.name,
           icon: accountData.icon,
           iconConfig: accountData.iconConfig,
@@ -136,6 +142,52 @@ function AccountRegion() {
     setSelectedAccount(null)
   }
   
+  // 删除账号
+  const handleDeleteAccount = (accountToDelete) => {
+    // 检查 accountToDelete 是否存在
+    if (!accountToDelete || !accountToDelete.id) {
+      console.error('Invalid account to delete:', accountToDelete);
+      return;
+    }
+    
+    // 直接从localStorage中删除账号
+    const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    const updatedAccounts = savedAccounts.filter(account => account.id !== accountToDelete.id);
+    localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+    
+    // 重新加载页面数据
+    if (updatedAccounts.length > 0) {
+      // 将账号数据转换为页面结构
+      const loadedPages = [];
+      for (let i = 0; i < updatedAccounts.length; i += 59) {
+        const pageAccounts = updatedAccounts.slice(i, i + 59).map(account => ({
+          id: account.id,
+          name: account.name,
+          icon: account.icon,
+          iconConfig: account.iconConfig || {
+            source: '在线图标',
+            color: '#339aff',
+            text: ''
+          },
+          url: account.url || `https://example.com/account/${account.id}`
+        }));
+        loadedPages.push(pageAccounts);
+      }
+      setPages(loadedPages);
+      
+      // 如果当前页变空且不是第一页，调整当前页索引
+      if (loadedPages[currentPage] && loadedPages[currentPage].length === 0 && loadedPages.length > 1) {
+        setCurrentPage(loadedPages.length - 1);
+      }
+    } else {
+      // 如果没有账号了，重置为初始状态
+      setPages([[]]);
+      setCurrentPage(0);
+    }
+    
+    // 关闭上下文菜单
+    handleCloseContextMenu();
+  };
   
   const handleAddAccount = () => {
     // 检查是否达到最大页数限制
@@ -342,6 +394,7 @@ function AccountRegion() {
         position={contextMenuPosition} 
         onClose={handleCloseContextMenu}
         selectedAccount={selectedAccount}
+        onDeleteAccount={handleDeleteAccount}
       />
       <Addaccount 
         isOpen={showAddAccount}

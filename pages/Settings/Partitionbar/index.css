@@ -1,4 +1,4 @@
-.customize-icons {
+.Partitionbar {
     height: 600px;
     width: 75px;
     position: fixed;
@@ -8,7 +8,7 @@
     overflow: hidden;
 }
 
-.source-selection {
+.classification {
     display: flex;
     position: absolute;
     /* 修改为相对于父元素的宽度定位，使其完全隐藏 */
@@ -22,7 +22,7 @@
     transition: left 0.3s ease-in-out 0.5s; /* 添加0.5秒延迟 */
 }
 
-.customize-icons:hover .source-selection {
+.Partitionbar:hover .classification {
     /* 完全展示在容器内，并且左侧留出10px空间 */
     left: 15px;
     transition-delay: 0s; /* 悬停时立即显示，无延迟 */

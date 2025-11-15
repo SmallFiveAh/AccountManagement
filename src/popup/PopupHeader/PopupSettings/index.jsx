@@ -8,7 +8,6 @@ function PopupSettings() {
         window.open('https://github.com/SmallFiveAh/AccountManagement');
     };
     const popupSettings = () => {
-        console.log('点击了设置按钮');
         const optionsUrl = chrome.runtime.getURL('pages/index.html');
         // 使用新标签页打开设置页面
         chrome.tabs.create({ url: optionsUrl });

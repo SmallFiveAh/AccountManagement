@@ -1,5 +1,24 @@
 /* ... existing code ... */
 
+.selected-icon {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    font-size: 45px;
+    color: white;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* 添加带透明度的文字边框 */
+    text-shadow: 
+        -1px -1px 0 rgba(0,0,0,0.3),
+        1px -1px 0 rgba(0,0,0,0.3),
+        -1px 1px 0 rgba(0,0,0,0.3),
+        1px 1px 0 rgba(0,0,0,0.3);
+}
+
 .source-selection {
     display: flex;
     justify-content: space-around;
@@ -30,19 +49,6 @@
 .source-selection button.selected {
     background-color: #4a90e2;
     color: white;
-}
-
-.selected-icon {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px auto;
-    font-size: 45px;
-    color: white;
-    border-radius: 33px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .color-selection {
@@ -134,21 +140,6 @@
     position: absolute;
     top: 0;
     left: 0;
-}
-
-.text-input {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.text-input input {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-width: 300px;
-    margin-top: 10px;
 }
 
 .customize-icons {

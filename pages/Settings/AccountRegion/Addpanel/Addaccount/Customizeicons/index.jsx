@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react';
 import './index.css';
 
-function Customizeicons({ onIconChange }) {
+function Customizeicons({ onIconChange, initialText = '' }) {
     const [iconData, setIconData] = useState({
         source: '纯色图标',
         color: '#339aff',
-        text: ''
+        text: initialText
     });
 
     // 创建一个useEffect来处理图标数据生成
     useEffect(() => {
         generateIconData(iconData);
     }, [iconData]);
+
+    // 添加一个新的useEffect来监听initialText的变化
+    useEffect(() => {
+        if (initialText !== iconData.text) {
+            const newData = { ...iconData, text: initialText };
+            setIconData(newData);
+        }
+    }, [initialText]);
 
     // 添加一个函数来转义HTML/XML特殊字符
     const escapeHtml = (unsafe) => {
@@ -144,15 +152,6 @@ function Customizeicons({ onIconChange }) {
                         className="custom-color-input"
                     />
                 </div>
-            </div>
-
-            <div className="text-input">
-                <input 
-                    type="text" 
-                    value={iconData.text} 
-                    onChange={handleTextChange} 
-                    placeholder="显示图标文字，可选（建议1~2个字汉字）" 
-                />
             </div>
         </div>
     );
