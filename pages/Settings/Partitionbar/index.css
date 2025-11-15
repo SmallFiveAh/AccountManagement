@@ -1,0 +1,29 @@
+.customize-icons {
+    height: 600px;
+    width: 75px;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    overflow: hidden;
+}
+
+.source-selection {
+    display: flex;
+    position: absolute;
+    /* 修改为相对于父元素的宽度定位，使其完全隐藏 */
+    left: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 600px;
+    width: 55px;
+    border-radius: 18px;
+    background-color: rgba(46, 46, 46, 0.78);
+    transition: left 0.3s ease-in-out 0.5s; /* 添加0.5秒延迟 */
+}
+
+.customize-icons:hover .source-selection {
+    /* 完全展示在容器内，并且左侧留出10px空间 */
+    left: 15px;
+    transition-delay: 0s; /* 悬停时立即显示，无延迟 */
+}
