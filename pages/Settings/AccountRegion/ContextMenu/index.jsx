@@ -4,28 +4,44 @@ import './index.css';
 
 function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount }) {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    
+    // 保存选中的账户信息，确保在确认删除时可以访问到
+    const [accountToDelete, setAccountToDelete] = useState(null);
     // 阻止菜单内点击冒泡，避免触发外部点击关闭菜单
     const handleMenuClick = (e) => {
         e.stopPropagation();
     };
 
     const handleDeleteClick = () => {
+        // 在打开确认对话框前保存要删除的账户信息
+        setAccountToDelete(selectedAccount);
         setShowDeleteConfirm(true);
         onClose(); // 关闭上下文菜单
     };
 
     const handleDeleteConfirm = () => {
-        // 添加检查确保 selectedAccount 存在
-        if (selectedAccount && onDeleteAccount) {
-            onDeleteAccount(selectedAccount);
+        // 使用保存的账户信息而不是依赖selectedAccount prop
+        console.log(accountToDelete);
+        
+        if (accountToDelete && onDeleteAccount) {
+            onDeleteAccount(accountToDelete);
         }
         setShowDeleteConfirm(false);
+        // 清除保存的账户信息
+        setAccountToDelete(null);
     };
 
     const handleDeleteCancel = () => {
         setShowDeleteConfirm(false);
+        // 清除保存的账户信息
+        setAccountToDelete(null);
     };
+
+    // 当selectedAccount变化时更新内部状态
+    useEffect(() => {
+        if (selectedAccount) {
+            setAccountToDelete(selectedAccount);
+        }
+    }, [selectedAccount]);
 
     return (
       <>
@@ -141,8 +157,7 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
         <Deleteaccount 
             show={showDeleteConfirm}
             onClose={handleDeleteCancel}
-            onConfirm={() => handleDeleteConfirm()} // 确保传递正确的回调函数
-            accountName={selectedAccount?.name}
+            onConfirm={handleDeleteConfirm}
         />
       </>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 
-function Deleteaccount({ show, onClose, onConfirm, accountName }) {
+function Deleteaccount({ show, onClose, onConfirm }) {
     if (!show) return null;
 
     return (
