@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import Deleteaccount from './Deleteaccount';
-
 import './index.css';
 
 function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount }) {
@@ -167,7 +166,6 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
                 <div className="option-text">删除账号</div>
             </div>
         </div>
-        
         <Deleteaccount 
             show={showDeleteConfirm}
             onClose={handleDeleteCancel}
