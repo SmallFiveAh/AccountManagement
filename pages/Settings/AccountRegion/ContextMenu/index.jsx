@@ -11,6 +11,22 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
         e.stopPropagation();
     };
 
+    const handleCopyData = () => {
+        if (selectedAccount) {
+            let accounts = localStorage.getItem('accounts')
+            ? JSON.parse(localStorage.getItem('accounts'))
+            : [];
+            const account = accounts.find(acc => acc.id === selectedAccount.id);
+            if (account) {
+                // 使用 JSON.stringify 的第三个参数来格式化输出，使其具有美化效果
+                const formattedAccountData = JSON.stringify(account, null, 2);
+                navigator.clipboard.writeText(formattedAccountData);
+            }
+            
+        }
+        onClose(); // 关闭上下文菜单
+    };
+
     const handleDeleteClick = () => {
         // 在打开确认对话框前保存要删除的账户信息
         setAccountToDelete(selectedAccount);
@@ -53,7 +69,7 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
             }}
             onClick={handleMenuClick}
         >
-            <div className="option-item" onClick={onClose}>
+            <div className="option-item" onClick={handleCopyData}>
                 <div className="option-icon">
                     <svg
                         width={24}
