@@ -150,10 +150,6 @@ function AccountRegion() {
       ...account,
       usageCount: (account.usageCount || 0) + 1
     };
-
-    console.log((account.usageCount || 0) + 1);
-    
-    
     // 更新本地存储中的账号数据
     const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
     const accountIndex = savedAccounts.findIndex(acc => acc.id === account.id);
