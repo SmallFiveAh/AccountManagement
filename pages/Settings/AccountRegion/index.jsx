@@ -36,6 +36,9 @@ function AccountRegion() {
         const pageAccounts = savedAccounts.slice(i, i + 59).map(account => ({
           id: account.id,
           name: account.name,
+          description: account.description,
+          username: account.username,
+          password: account.password,
           icon: account.icon,
           iconConfig: account.iconConfig || {
             source: '在线图标',
@@ -187,6 +190,9 @@ function AccountRegion() {
           id: account.id,
           name: account.name,
           icon: account.icon,
+          description: account.description,
+          username: account.username,
+          password: account.password,
           iconConfig: account.iconConfig || {
             source: '在线图标',
             color: '#339aff',
@@ -232,6 +238,9 @@ function AccountRegion() {
           id: Date.now(), // 使用时间戳作为唯一ID
           name: `账号${newPages.flat().length + 1}`,
           icon: '../resource/img/icon-48.png',
+          description: '',
+          username: '',
+          password: '',
           iconConfig: {
             source: '在线图标',
             color: '#339aff',
@@ -247,6 +256,9 @@ function AccountRegion() {
           id: Date.now(),
           name: `账号${newPages.flat().length + 1}`,
           icon: '../resource/img/icon-48.png',
+          description: '',
+          username: '',
+          password: '',
           iconConfig: {
             source: '在线图标',
             color: '#339aff',
