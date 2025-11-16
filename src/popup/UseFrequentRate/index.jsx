@@ -5,52 +5,67 @@ function UseFrequentRate() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    const defaultData = [
-      { username: "斗鱼", usageCount: 9 },
-      { username: "抖音", usageCount: 8 },
-      { username: "优酷", usageCount: 7 },
-      { username: "爱奇艺", usageCount: 6 },
-      { username: "知乎", usageCount: 5 },
-      { username: "Github", usageCount: 4 },
-      { username: "华为", usageCount: 3 },
-      { username: "小米", usageCount: 2 },
-      { username: "云服务器", usageCount: 10 }
-    ];
+    // 获取本地存储的数据
+    const accountsData = localStorage.getItem('accounts');
+    let accounts = [];
+    
+    if (accountsData) {
+      try {
+        accounts = JSON.parse(accountsData);
+      } catch (e) {
+        console.error("解析accounts数据失败", e);
+      }
+    }
 
-    // 按使用次数降序排序
-    defaultData.sort((a, b) => b.usageCount - a.usageCount);
+    // 如果没有本地数据，则不显示任何内容
+    if (!accounts || accounts.length === 0) {
+      return;
+    }
+
+    // 按使用次数降序排序，最多只取前11个
+    accounts.sort((a, b) => b.usageCount - a.usageCount);
+    const topAccounts = accounts.slice(0, 11);
 
     // 计算字体大小和透明度的范围
-    const maxCount = defaultData[0].usageCount;
-    const minCount = defaultData[defaultData.length - 1].usageCount;
+    const maxCount = topAccounts[0]?.usageCount || 1;
+    const minCount = topAccounts[topAccounts.length - 1]?.usageCount || 1;
     
     // 字体大小范围（单位：px）
-    const minFontSize = 5;
-    const maxFontSize = 10;
+    const minFontSize = 7;
+    const maxFontSize = 12;
     
     // 透明度范围（用于颜色）
     const minOpacity = 0.6;
     const maxOpacity = 1;
 
     // 处理数据，为每个用户计算样式
-    const processedTags = defaultData.map((user, index) => {
+    const processedTags = topAccounts.map((user, index) => {
       const rank = index + 1;
       
       // 根据使用次数计算字体大小（线性插值）
       const fontSize = minFontSize + (maxFontSize - minFontSize) * 
-                      ((user.usageCount - minCount) / (maxCount - minCount));
+                      ((user.usageCount - minCount) / Math.max(1, maxCount - minCount));
       
       // 根据排名计算透明度
       const opacity = minOpacity + (maxOpacity - minOpacity) * 
-                    (1 - index / defaultData.length);
+                    (1 - index / topAccounts.length);
       
       // 使用HSL颜色模式，根据排名调整色相
       const hue = (rank * 30) % 360; // 色相值在0-360之间变化
       const backgroundColor = `hsla(${hue}, 70%, 55%, ${opacity})`;
       const color = opacity > 0.7 ? '#fff' : '#333'; // 根据背景色深度调整文字颜色
       
+      console.log(user);
+
+
+      // 使用更稳定的唯一标识符
+      const uniqueId = user.email || user.username ? 
+        `${user.username || ''}-${user.email || ''}-${index}` : 
+        `${index}-${user.usageCount}`;
+      
       return {
         ...user,
+        id: uniqueId,
         rank,
         fontSize,
         opacity,
@@ -62,8 +77,13 @@ function UseFrequentRate() {
     setTags(processedTags);
   }, []);
 
+  // 如果没有标签数据，则不渲染任何内容
+  if (tags.length === 0) {
+    return null;
+  }
+
   const handleTagClick = (user) => {
-    alert(`${user.username}\n使用次数: ${user.usageCount}\n排名: #${user.rank}`);
+    alert(`${user.name}\n使用次数: ${user.usageCount}\n排名: #${user.rank}`);
   };
 
   return (
@@ -71,7 +91,7 @@ function UseFrequentRate() {
       <div className="tag-cloud" id="tagCloud">
         {tags.map((tag) => (
           <div 
-            key={tag.username}
+            key={tag.id}
             className="tag"
             data-rank={tag.rank}
             data-count={tag.usageCount}
@@ -82,7 +102,7 @@ function UseFrequentRate() {
             }}
             onClick={() => handleTagClick(tag)}
           >
-            {tag.username}
+            {tag.name}
           </div>
         ))}
       </div>
