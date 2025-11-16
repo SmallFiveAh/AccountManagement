@@ -6,18 +6,15 @@ function UseFrequentRate() {
 
   useEffect(() => {
     const defaultData = [
-      { username: "斗鱼", usageCount: 985 },
-      { username: "抖音", usageCount: 876 },
-      { username: "梦想家", usageCount: 765 },
-      { username: "代码侠", usageCount: 654 },
-      { username: "创意无限", usageCount: 543 },
-      { username: "永不放弃", usageCount: 432 },
-      { username: "勇往直前", usageCount: 321 },
-      { username: "创新先锋", usageCount: 287 },
-      { username: "技术达人", usageCount: 256 },
-      { username: "设计大师", usageCount: 234 },
-      { username: "高效执行", usageCount: 198 },
-      { username: "问题终结者", usageCount: 176 }
+      { username: "斗鱼", usageCount: 9 },
+      { username: "抖音", usageCount: 8 },
+      { username: "优酷", usageCount: 7 },
+      { username: "爱奇艺", usageCount: 6 },
+      { username: "知乎", usageCount: 5 },
+      { username: "Github", usageCount: 4 },
+      { username: "华为", usageCount: 3 },
+      { username: "小米", usageCount: 2 },
+      { username: "云服务器", usageCount: 10 }
     ];
 
     // 按使用次数降序排序
@@ -28,8 +25,8 @@ function UseFrequentRate() {
     const minCount = defaultData[defaultData.length - 1].usageCount;
     
     // 字体大小范围（单位：px）
-    const minFontSize = 16;
-    const maxFontSize = 42;
+    const minFontSize = 5;
+    const maxFontSize = 10;
     
     // 透明度范围（用于颜色）
     const minOpacity = 0.6;
