@@ -80,7 +80,7 @@ function AccountToken () {
                             <input 
                                 type="password"
                                 className="input-field"
-                                placeholder="请输入Token"
+                                placeholder="请输入Github-Token"
                                 value={tokenInfo.token}
                                 onChange={(e) => handleTokenInfoChange('token', e.target.value)}
                             />
@@ -89,11 +89,11 @@ function AccountToken () {
                     
                     <div className="info-item">
                         <div className="info-content">
-                            <div className="info-label">Gist ID</div>
+                            <div className="info-label">GistID</div>
                             <input 
                                 type="text"
                                 className="input-field"
-                                placeholder="请输入Gist ID"
+                                placeholder="请输入Gist-ID"
                                 value={tokenInfo.gistId}
                                 onChange={(e) => handleTokenInfoChange('gistId', e.target.value)}
                             />
