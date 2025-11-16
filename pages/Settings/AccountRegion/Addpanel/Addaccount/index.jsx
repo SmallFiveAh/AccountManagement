@@ -20,6 +20,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
   // 添加编辑模式的状态
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingAccountId, setEditingAccountId] = useState(null);
+  // 添加密码可见性状态
+  const [showPassword, setShowPassword] = useState(false);
 
   // 当editAccount改变时，初始化编辑模式
   useEffect(() => {
@@ -202,13 +204,31 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                     <div className="input-with-icon">
                         <i className="icon-password">🔒</i>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             name="password"
                             value={accountData.password}
                             onChange={handleChange}
                             className="input-field"
                             placeholder="请输入密码"
                         />
+                        <div 
+                            className={`password-toggle ${showPassword ? 'visible' : ''}`}
+                            onClick={() => setShowPassword(!showPassword)}
+                            title={showPassword ? "隐藏密码" : "显示密码"}
+                        >
+                            {showPassword ? (
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            ) : (
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M17 7L7 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            )}
+                        </div>
                     </div>
                 </div>
 
