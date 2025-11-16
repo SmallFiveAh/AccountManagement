@@ -22,7 +22,6 @@
     justify-content: center;
     font-size: 14px;
     transition: left 0.5s ease-in-out;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .monitor.show .monitor-title {
     /* 显示时滑入到可见位置 */
