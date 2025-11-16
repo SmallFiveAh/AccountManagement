@@ -67,7 +67,7 @@ function AccountToken () {
                     <div className="avatar">👤</div>
                     <div className="profile-info">
                         <h2>个人信息</h2>
-                        <p>qip3890@163.com</p>
+                        <p>{tokenInfo.gistFilename || 'AccountManagement'}</p>
                     </div>
                 </div>
             
