@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css'
 
 function AccountToken () {
@@ -25,6 +25,18 @@ function AccountToken () {
         // 这里可以根据不同的导航项显示不同的内容
     };
 
+    // 组件加载时从localStorage读取保存的信息
+    useEffect(() => {
+        const savedTokenInfo = localStorage.getItem('accountTokenInfo');
+        if (savedTokenInfo) {
+            try {
+                setTokenInfo(JSON.parse(savedTokenInfo));
+            } catch (e) {
+                console.error('Failed to parse token info from localStorage', e);
+            }
+        }
+    }, []);
+
     const handleLogout = () => {
         if (window.confirm('确定要退出登录吗？')) {
             alert('已退出登录');
@@ -40,10 +52,22 @@ function AccountToken () {
         }));
     };
     
-    // 保存Token信息
+    // 保存Token信息到localStorage
     const handleSaveTokenInfo = () => {
-        alert('Token信息已保存');
-        // 这里可以添加实际保存逻辑
+        try {
+            localStorage.setItem('accountTokenInfo', JSON.stringify(tokenInfo));
+            // 调用Monitor组件显示保存成功的消息
+            if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                window.Monitor.showMessage('配置成功');
+            }
+            // 这里可以添加实际保存逻辑
+        } catch (e) {
+            console.error('Failed to save token info to localStorage', e);
+            // 调用Monitor组件显示保存失败的消息
+            if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                window.Monitor.showMessage('配置失败');
+            }
+        }
     };
     
     return (
