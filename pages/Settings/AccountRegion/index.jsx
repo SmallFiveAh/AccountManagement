@@ -150,6 +150,9 @@ function AccountRegion() {
       ...account,
       usageCount: (account.usageCount || 0) + 1
     };
+
+    console.log((account.usageCount || 0) + 1);
+    
     
     // 更新本地存储中的账号数据
     const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
@@ -157,6 +160,17 @@ function AccountRegion() {
     if (accountIndex !== -1) {
       savedAccounts[accountIndex] = updatedAccount;
       localStorage.setItem('accounts', JSON.stringify(savedAccounts));
+      
+      // 更新当前页面状态以反映最新的使用次数
+      setPages(prevPages => {
+        const newPages = [...prevPages];
+        const currentPageIndex = currentPage;
+        const updatedAccountsInPage = newPages[currentPageIndex].map(acc => 
+          acc.id === account.id ? updatedAccount : acc
+        );
+        newPages[currentPageIndex] = updatedAccountsInPage;
+        return newPages;
+      });
     }
     
     // 如果账号有URL属性，则在新标签页中打开
@@ -263,7 +277,8 @@ function AccountRegion() {
             color: '#339aff',
             text: ''
           },
-          url: `https://example.com/account/${Date.now()}` // 添加默认URL
+          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
+          usageCount: 0 // 初始化使用次数为0
         }])
         // 更新到新页
         setCurrentPage(newPages.length - 1)
@@ -281,7 +296,8 @@ function AccountRegion() {
             color: '#339aff',
             text: ''
           },
-          url: `https://example.com/account/${Date.now()}` // 添加默认URL
+          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
+          usageCount: 0 // 初始化使用次数为0
         }
         newPages[currentPage] = [...currentAccounts, newAccount]
       }
