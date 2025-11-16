@@ -22,15 +22,16 @@ function UseFrequentRate() {
       return;
     }
 
-    // 按使用次数降序排序，最多只取前11个
-    accounts.sort((a, b) => b.usageCount - a.usageCount);
-    const topAccounts = accounts.slice(0, 11);
+    // 过滤掉使用次数为0的账号，并按使用次数降序排序，最多只取前11个
+    const accountsWithUsage = accounts.filter(account => account.usageCount > 0);
+    accountsWithUsage.sort((a, b) => b.usageCount - a.usageCount);
+    const topAccounts = accountsWithUsage.slice(0, 11);
 
-    // 计算字体大小和透明度的范围
-    const maxCount = topAccounts[0]?.usageCount || 1;
-    const minCount = topAccounts[topAccounts.length - 1]?.usageCount || 1;
-    
-    // 字体大小范围（单位：px）
+    // 如果没有使用过的账号，则不显示任何内容
+    if (topAccounts.length === 0) {
+      return;
+    }
+    // 字大小范围（单位：px）根据排名而不是使用次数
     const minFontSize = 7;
     const maxFontSize = 12;
     
@@ -42,9 +43,8 @@ function UseFrequentRate() {
     const processedTags = topAccounts.map((user, index) => {
       const rank = index + 1;
       
-      // 根据使用次数计算字体大小（线性插值）
-      const fontSize = minFontSize + (maxFontSize - minFontSize) * 
-                      ((user.usageCount - minCount) / Math.max(1, maxCount - minCount));
+      // 根据排名计算字体大小（第一名最大，后续递减）
+      const fontSize = maxFontSize - (index * (maxFontSize - minFontSize) / Math.max(1, topAccounts.length - 1));
       
       // 根据排名计算透明度
       const opacity = minOpacity + (maxOpacity - minOpacity) * 
@@ -54,7 +54,7 @@ function UseFrequentRate() {
       const hue = (rank * 30) % 360; // 色相值在0-360之间变化
       const backgroundColor = `hsla(${hue}, 70%, 55%, ${opacity})`;
       const color = opacity > 0.7 ? '#fff' : '#333'; // 根据背景色深度调整文字颜色
-      
+
       // 使用更稳定的唯一标识符
       const uniqueId = user.email || user.username ? 
         `${user.username || ''}-${user.email || ''}-${index}` : 

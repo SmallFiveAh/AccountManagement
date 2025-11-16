@@ -145,6 +145,20 @@ function AccountRegion() {
 
   // 处理账号点击事件，在新标签页中打开URL
   const handleAccountClick = (account) => {
+    // 增加使用次数
+    const updatedAccount = {
+      ...account,
+      usageCount: (account.usageCount || 0) + 1
+    };
+    
+    // 更新本地存储中的账号数据
+    const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    const accountIndex = savedAccounts.findIndex(acc => acc.id === account.id);
+    if (accountIndex !== -1) {
+      savedAccounts[accountIndex] = updatedAccount;
+      localStorage.setItem('accounts', JSON.stringify(savedAccounts));
+    }
+    
     // 如果账号有URL属性，则在新标签页中打开
     if (account.url) {
       window.open(account.url, '_blank')
