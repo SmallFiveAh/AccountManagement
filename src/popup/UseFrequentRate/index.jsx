@@ -55,9 +55,6 @@ function UseFrequentRate() {
       const backgroundColor = `hsla(${hue}, 70%, 55%, ${opacity})`;
       const color = opacity > 0.7 ? '#fff' : '#333'; // 根据背景色深度调整文字颜色
       
-      console.log(user);
-
-
       // 使用更稳定的唯一标识符
       const uniqueId = user.email || user.username ? 
         `${user.username || ''}-${user.email || ''}-${index}` : 
