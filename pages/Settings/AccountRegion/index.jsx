@@ -96,26 +96,28 @@ function AccountRegion() {
           }
           // 添加新的一页
           newPages.push([{
-            id: Date.now(),
+            id: accountData.id, // 使用传入的id
             username: accountData.username,
             password: accountData.password,
             description: accountData.description,
             name: accountData.name,
             icon: accountData.icon,
             iconConfig: accountData.iconConfig,
-            url: accountData.url || `https://example.com/account/${Date.now()}`
+            url: accountData.url || `https://example.com/account/${accountData.id}`
           }]);
+          // 切换到新页面
+          setCurrentPage(newPages.length - 1);
         } else {
           // 在当前页添加账号
           const newAccount = {
-            id: Date.now(),
+            id: accountData.id,
             username: accountData.username,
             password: accountData.password,
             description: accountData.description,
             name: accountData.name,
             icon: accountData.icon,
             iconConfig: accountData.iconConfig,
-            url: accountData.url || `https://example.com/account/${Date.now()}`
+            url: accountData.url || `https://example.com/account/${accountData.id}`
           };
           newPages[currentPageIndex] = [...currentPage, newAccount];
         }
@@ -205,8 +207,9 @@ function AccountRegion() {
       setPages(loadedPages);
       
       // 如果当前页变空且不是第一页，调整当前页索引
-      if (loadedPages[currentPage] && loadedPages[currentPage].length === 0 && loadedPages.length > 1) {
-        setCurrentPage(loadedPages.length - 1);
+      if (loadedPages.length > 0 && (loadedPages[currentPage] === undefined || loadedPages[currentPage].length === 0)) {
+        const newCurrentPage = Math.min(currentPage, loadedPages.length - 1);
+        setCurrentPage(newCurrentPage);
       }
     } else {
       // 如果没有账号了，重置为初始状态

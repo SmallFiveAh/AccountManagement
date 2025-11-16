@@ -97,7 +97,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         };
         accounts.push(newAccount);
         localStorage.setItem('accounts', JSON.stringify(accounts));
-        onSave(accountData, false); // 第二个参数表示是添加操作
+        onSave(newAccount, false); // 第二个参数表示是添加操作
       }
       
       // 重置表单
