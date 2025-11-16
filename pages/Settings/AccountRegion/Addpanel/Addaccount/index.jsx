@@ -175,7 +175,7 @@ function Addaccount({ isOpen, onClose, onSave }) {
                             name="description"
                             value={accountData.description}
                             onChange={handleChange}
-                            placeholder="请输入账号说明..."
+                            placeholder="请输入该账号使用的说明..."
                             className="input-field textarea-field"
                         />
                         <div className="char-count">
