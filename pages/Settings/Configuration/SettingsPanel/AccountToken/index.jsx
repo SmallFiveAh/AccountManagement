@@ -11,6 +11,9 @@ function AccountToken () {
         gistFilename: ''
     });
     
+    // 添加是否有token信息的状态
+    const [hasTokenInfo, setHasTokenInfo] = useState(false);
+    
     // 简化导航项，适应面板尺寸
     const navItems = [
         { id: '个人信息', icon: '👤' },
@@ -31,6 +34,7 @@ function AccountToken () {
         if (savedTokenInfo) {
             try {
                 setTokenInfo(JSON.parse(savedTokenInfo));
+                setHasTokenInfo(true);
             } catch (e) {
                 console.error('Failed to parse token info from localStorage', e);
             }
@@ -39,8 +43,15 @@ function AccountToken () {
 
     const handleLogout = () => {
         if (window.confirm('确定要退出登录吗？')) {
-            alert('已退出登录');
-            // 这里可以添加实际退出登录的逻辑
+            // 删除与账户令牌相关的本地存储数据
+            localStorage.removeItem('accountTokenInfo');
+            // 重置状态
+            setTokenInfo({
+                token: '',
+                gistId: '',
+                gistFilename: ''
+            });
+            setHasTokenInfo(false);
         }
     };
     
@@ -56,6 +67,7 @@ function AccountToken () {
     const handleSaveTokenInfo = () => {
         try {
             localStorage.setItem('accountTokenInfo', JSON.stringify(tokenInfo));
+            setHasTokenInfo(true);
             // 调用Monitor组件显示保存成功的消息
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
                 window.Monitor.showMessage('配置成功');
@@ -146,7 +158,9 @@ function AccountToken () {
                     </button>
                 </div>
                 
-                <button className="btn logout-btn" onClick={handleLogout}>退出登录</button>
+                {hasTokenInfo && (
+                    <button className="btn logout-btn" onClick={handleLogout}>退出登录</button>
+                )}
             </div>
         </div>
     )
