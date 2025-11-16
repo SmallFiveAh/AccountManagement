@@ -147,6 +147,47 @@
   font-size: 12px;
 }
 
+/* 新增输入框样式 */
+.input-field {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #4a7afe;
+  box-shadow: 0 0 0 2px rgba(74, 122, 254, 0.2);
+}
+
+/* 新增保存按钮样式 */
+.save-btn {
+  background-color: #4a7afe;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.save-btn:hover {
+  background-color: #3a6aee;
+}
+
+.save-btn:disabled {
+  background-color: #b0b0b0;
+  cursor: not-allowed;
+}
+
 /* 按钮样式 - 适应面板风格 */
 .btn {
   background-color: #4a7afe;
