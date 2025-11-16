@@ -23,6 +23,8 @@ function AccountRegion() {
   const [selectedAccount, setSelectedAccount] = useState(null)
   // 显示添加账号面板状态
   const [showAddAccount, setShowAddAccount] = useState(false);
+  // 编辑中的账号数据
+  const [editAccount, setEditAccount] = useState(null);
 
   // 初始化时从本地存储加载账号数据
   useEffect(() => {
@@ -34,6 +36,9 @@ function AccountRegion() {
         const pageAccounts = savedAccounts.slice(i, i + 59).map(account => ({
           id: account.id,
           name: account.name,
+          description: account.description,
+          username: account.username,
+          password: account.password,
           icon: account.icon,
           iconConfig: account.iconConfig || {
             source: '在线图标',
@@ -51,12 +56,13 @@ function AccountRegion() {
   // 处理关闭Addaccount组件
   const handleCloseAddAccount = () => {
       setShowAddAccount(false);
+      setEditAccount(null); // 关闭时清除编辑状态
   };
 
   // 处理保存账号
-  const handleSaveAccount = (accountData) => {
+  const handleSaveAccount = (accountData, isEdit = false) => {
     // 检查是否达到最大页数限制
-    if (pages.length >= 50 && pages[pages.length - 1].length >= 59) {
+    if (pages.length >= 50 && pages[pages.length - 1].length >= 59 && !isEdit) {
       return; // 达到最大限制，无法添加更多账号
     }
     
@@ -65,44 +71,65 @@ function AccountRegion() {
       const currentPageIndex = newPages.length - 1;
       const currentPage = newPages[currentPageIndex] || [];
       
-      // 如果当前页已满，则创建新页
-      if (currentPage.length >= 59) {
-        // 检查是否还能添加新页
-        if (newPages.length >= 50) {
-          return prevPages; // 已达最大页数限制
+      if (isEdit) {
+        // 编辑模式：更新现有账号
+        const allAccounts = newPages.flat();
+        const updatedAccounts = allAccounts.map(account => 
+          account.id === accountData.id ? accountData : account
+        );
+        
+        // 重新组织为页面结构
+        const updatedPages = [];
+        for (let i = 0; i < updatedAccounts.length; i += 59) {
+          updatedPages.push(updatedAccounts.slice(i, i + 59));
         }
-        // 添加新的一页
-        newPages.push([{
-          id: Date.now(),
-          username: accountData.username,
-          password: accountData.password,
-          description: accountData.description,
-          name: accountData.name,
-          icon: accountData.icon,
-          iconConfig: accountData.iconConfig,
-          url: accountData.url || `https://example.com/account/${Date.now()}`
-        }]);
+        
+        localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+        return updatedPages;
       } else {
-        // 在当前页添加账号
-        const newAccount = {
-          id: Date.now(),
-          username: accountData.username,
-          password: accountData.password,
-          description: accountData.description,
-          name: accountData.name,
-          icon: accountData.icon,
-          iconConfig: accountData.iconConfig,
-          url: accountData.url || `https://example.com/account/${Date.now()}`
-        };
-        newPages[currentPageIndex] = [...currentPage, newAccount];
+        // 添加模式：添加新账号
+        // 如果当前页已满，则创建新页
+        if (currentPage.length >= 59) {
+          // 检查是否还能添加新页
+          if (newPages.length >= 50) {
+            return prevPages; // 已达最大页数限制
+          }
+          // 添加新的一页
+          newPages.push([{
+            id: accountData.id, // 使用传入的id
+            username: accountData.username,
+            password: accountData.password,
+            description: accountData.description,
+            name: accountData.name,
+            icon: accountData.icon,
+            iconConfig: accountData.iconConfig,
+            url: accountData.url || `https://example.com/account/${accountData.id}`
+          }]);
+          // 切换到新页面
+          setCurrentPage(newPages.length - 1);
+        } else {
+          // 在当前页添加账号
+          const newAccount = {
+            id: accountData.id,
+            username: accountData.username,
+            password: accountData.password,
+            description: accountData.description,
+            name: accountData.name,
+            icon: accountData.icon,
+            iconConfig: accountData.iconConfig,
+            url: accountData.url || `https://example.com/account/${accountData.id}`
+          };
+          newPages[currentPageIndex] = [...currentPage, newAccount];
+        }
+        // 保存到本地存储
+        const allAccounts = newPages.flat();
+        localStorage.setItem('accounts', JSON.stringify(allAccounts));
+        return newPages;
       }
-      // 保存到本地存储
-      const allAccounts = newPages.flat();
-      localStorage.setItem('accounts', JSON.stringify(allAccounts));
-      return newPages;
     });
     
     setShowAddAccount(false);
+    setEditAccount(null); // 保存后清除编辑状态
   };
 
   // 每页最大账号数和最大页数
@@ -110,13 +137,38 @@ function AccountRegion() {
   const MAX_PAGES = 50
   
   // 获取当前页的账号列表
-  const currentAccounts = pages[currentPage] || []
+  // 修复：确保即使pages[currentPage]不存在也返回空数组
+  const currentAccounts = (pages && pages[currentPage]) ? pages[currentPage] : []
   
   // 计算总页数
   const totalPages = pages.length
 
   // 处理账号点击事件，在新标签页中打开URL
   const handleAccountClick = (account) => {
+    // 增加使用次数
+    const updatedAccount = {
+      ...account,
+      usageCount: (account.usageCount || 0) + 1
+    };
+    // 更新本地存储中的账号数据
+    const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    const accountIndex = savedAccounts.findIndex(acc => acc.id === account.id);
+    if (accountIndex !== -1) {
+      savedAccounts[accountIndex] = updatedAccount;
+      localStorage.setItem('accounts', JSON.stringify(savedAccounts));
+      
+      // 更新当前页面状态以反映最新的使用次数
+      setPages(prevPages => {
+        const newPages = [...prevPages];
+        const currentPageIndex = currentPage;
+        const updatedAccountsInPage = newPages[currentPageIndex].map(acc => 
+          acc.id === account.id ? updatedAccount : acc
+        );
+        newPages[currentPageIndex] = updatedAccountsInPage;
+        return newPages;
+      });
+    }
+    
     // 如果账号有URL属性，则在新标签页中打开
     if (account.url) {
       window.open(account.url, '_blank')
@@ -164,6 +216,9 @@ function AccountRegion() {
           id: account.id,
           name: account.name,
           icon: account.icon,
+          description: account.description,
+          username: account.username,
+          password: account.password,
           iconConfig: account.iconConfig || {
             source: '在线图标',
             color: '#339aff',
@@ -176,8 +231,9 @@ function AccountRegion() {
       setPages(loadedPages);
       
       // 如果当前页变空且不是第一页，调整当前页索引
-      if (loadedPages[currentPage] && loadedPages[currentPage].length === 0 && loadedPages.length > 1) {
-        setCurrentPage(loadedPages.length - 1);
+      if (loadedPages.length > 0 && (loadedPages[currentPage] === undefined || loadedPages[currentPage].length === 0)) {
+        const newCurrentPage = Math.min(currentPage, loadedPages.length - 1);
+        setCurrentPage(newCurrentPage);
       }
     } else {
       // 如果没有账号了，重置为初始状态
@@ -209,12 +265,16 @@ function AccountRegion() {
           id: Date.now(), // 使用时间戳作为唯一ID
           name: `账号${newPages.flat().length + 1}`,
           icon: '../resource/img/icon-48.png',
+          description: '',
+          username: '',
+          password: '',
           iconConfig: {
             source: '在线图标',
             color: '#339aff',
             text: ''
           },
-          url: `https://example.com/account/${Date.now()}` // 添加默认URL
+          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
+          usageCount: 0 // 初始化使用次数为0
         }])
         // 更新到新页
         setCurrentPage(newPages.length - 1)
@@ -224,12 +284,16 @@ function AccountRegion() {
           id: Date.now(),
           name: `账号${newPages.flat().length + 1}`,
           icon: '../resource/img/icon-48.png',
+          description: '',
+          username: '',
+          password: '',
           iconConfig: {
             source: '在线图标',
             color: '#339aff',
             text: ''
           },
-          url: `https://example.com/account/${Date.now()}` // 添加默认URL
+          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
+          usageCount: 0 // 初始化使用次数为0
         }
         newPages[currentPage] = [...currentAccounts, newAccount]
       }
@@ -328,6 +392,14 @@ function AccountRegion() {
     return () => clearTimeout(timer)
   }, [currentPage])
 
+  // 处理编辑账号
+  const handleEditAccount = (e) => {
+    if (e.target.name === 'edit-account') {
+      setEditAccount(e.target.value);
+      setShowAddAccount(true);
+    }
+  };
+
   return (
     <>
       <div 
@@ -395,11 +467,13 @@ function AccountRegion() {
         onClose={handleCloseContextMenu}
         selectedAccount={selectedAccount}
         onDeleteAccount={handleDeleteAccount}
+        onEditAccount={handleEditAccount}
       />
       <Addaccount 
         isOpen={showAddAccount}
         onClose={handleCloseAddAccount}
         onSave={handleSaveAccount}
+        editAccount={editAccount}
       />
     </>
   )

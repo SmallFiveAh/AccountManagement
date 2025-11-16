@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css'
 
 function AccountToken () {
     const [activeNav, setActiveNav] = useState('个人信息');
-    const [userInfo, setUserInfo] = useState({
-        nickname: 'qip3890@163.com',
-        password: '********',
-        phone: '19534125776',
-        wechat: '未绑定',
-        email: 'qip3890@163.com'
+    
+    // 新增Token和Gist相关信息状态
+    const [tokenInfo, setTokenInfo] = useState({
+        token: '',
+        gistId: '',
+        gistFilename: ''
     });
+    
+    // 添加是否有token信息的状态
+    const [hasTokenInfo, setHasTokenInfo] = useState(false);
     
     // 简化导航项，适应面板尺寸
     const navItems = [
@@ -24,21 +27,58 @@ function AccountToken () {
         setActiveNav(navId);
         // 这里可以根据不同的导航项显示不同的内容
     };
-    
-    const handleEdit = (field) => {
-        // 编辑功能的实现
-        alert(`编辑${field}`);
-    };
-    
-    const handleBind = (field) => {
-        // 绑定功能的实现
-        alert(`绑定${field}`);
-    };
+
+    // 组件加载时从localStorage读取保存的信息
+    useEffect(() => {
+        const savedTokenInfo = localStorage.getItem('accountTokenInfo');
+        if (savedTokenInfo) {
+            try {
+                setTokenInfo(JSON.parse(savedTokenInfo));
+                setHasTokenInfo(true);
+            } catch (e) {
+                console.error('Failed to parse token info from localStorage', e);
+            }
+        }
+    }, []);
 
     const handleLogout = () => {
         if (window.confirm('确定要退出登录吗？')) {
-            alert('已退出登录');
-            // 这里可以添加实际退出登录的逻辑
+            // 删除与账户令牌相关的本地存储数据
+            localStorage.removeItem('accountTokenInfo');
+            // 重置状态
+            setTokenInfo({
+                token: '',
+                gistId: '',
+                gistFilename: ''
+            });
+            setHasTokenInfo(false);
+        }
+    };
+    
+    // 处理Token信息输入变化
+    const handleTokenInfoChange = (field, value) => {
+        setTokenInfo(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+    
+    // 保存Token信息到localStorage
+    const handleSaveTokenInfo = () => {
+        try {
+            localStorage.setItem('accountTokenInfo', JSON.stringify(tokenInfo));
+            setHasTokenInfo(true);
+            // 调用Monitor组件显示保存成功的消息
+            if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                window.Monitor.showMessage('配置成功');
+            }
+            // 这里可以添加实际保存逻辑
+        } catch (e) {
+            console.error('Failed to save token info to localStorage', e);
+            // 调用Monitor组件显示保存失败的消息
+            if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                window.Monitor.showMessage('配置失败');
+            }
         }
     };
     
@@ -63,50 +103,64 @@ function AccountToken () {
                     <div className="avatar">👤</div>
                     <div className="profile-info">
                         <h2>个人信息</h2>
-                        <p>{userInfo.email}</p>
+                        <p>{tokenInfo.gistFilename || 'AccountManagement'}</p>
                     </div>
                 </div>
+            
                 
+                {/* 新增Token信息配置区域 */}
                 <div className="info-section">
                     <div className="info-item">
                         <div className="info-content">
-                            <div className="info-label">昵称</div>
-                            <div className="info-value">{userInfo.nickname}</div>
+                            <div className="info-label">Token</div>
+                            <input 
+                                type="password"
+                                className="input-field"
+                                placeholder="请输入Github-Token"
+                                value={tokenInfo.token}
+                                onChange={(e) => handleTokenInfoChange('token', e.target.value)}
+                            />
                         </div>
-                        <button className="btn" onClick={() => handleEdit('nickname')}>编辑</button>
                     </div>
                     
                     <div className="info-item">
                         <div className="info-content">
-                            <div className="info-label">密码</div>
-                            <div className="info-value">{userInfo.password}</div>
+                            <div className="info-label">GistID</div>
+                            <input 
+                                type="text"
+                                className="input-field"
+                                placeholder="请输入Gist-ID"
+                                value={tokenInfo.gistId}
+                                onChange={(e) => handleTokenInfoChange('gistId', e.target.value)}
+                            />
                         </div>
-                        <button className="btn" onClick={() => handleEdit('password')}>修改</button>
                     </div>
                     
                     <div className="info-item">
                         <div className="info-content">
-                            <div className="info-label">手机</div>
-                            <div className="info-value">{userInfo.phone}</div>
+                            <div className="info-label">Gist文件名</div>
+                            <input 
+                                type="text"
+                                className="input-field"
+                                placeholder="请输入Gist文件名"
+                                value={tokenInfo.gistFilename}
+                                onChange={(e) => handleTokenInfoChange('gistFilename', e.target.value)}
+                            />
                         </div>
-                        <button className="btn" onClick={() => handleEdit('phone')}>修改</button>
                     </div>
                     
-                    <div className="info-item">
-                        <div className="info-content">
-                            <div className="info-label">微信</div>
-                            <div className="info-value">{userInfo.wechat}</div>
-                        </div>
-                        <button 
-                            className={`btn ${userInfo.wechat === '未绑定' ? 'btn-outline' : ''}`}
-                            onClick={() => userInfo.wechat === '未绑定' ? handleBind('wechat') : handleEdit('wechat')}
-                        >
-                            {userInfo.wechat === '未绑定' ? '绑定' : '修改'}
-                        </button>
-                    </div>
+                    <button 
+                        className="save-btn"
+                        onClick={handleSaveTokenInfo}
+                        disabled={!tokenInfo.token && !tokenInfo.gistId && !tokenInfo.gistFilename}
+                    >
+                        保存配置
+                    </button>
                 </div>
                 
-                <button className="btn logout-btn" onClick={handleLogout}>退出登录</button>
+                {hasTokenInfo && (
+                    <button className="btn logout-btn" onClick={handleLogout}>退出登录</button>
+                )}
             </div>
         </div>
     )

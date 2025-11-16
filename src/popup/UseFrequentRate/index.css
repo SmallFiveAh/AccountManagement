@@ -1,25 +1,39 @@
-/* 底部按钮容器 */
-.use-frequent-rate {
-    height: 100px;
-    gap: 5px;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
 }
 
-/* 标签云容器 - 使用Flex布局实现响应式[7](@ref) */
+h1 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.description {
+    margin-bottom: 40px;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 保留必要的标签云样式 */
 .tag-cloud {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 20px; /* 控制标签间距 */
-    padding: 30px;
+    gap: 20px;
     margin: 0 auto;
 }
 
-/* 单个标签的基础样式 - 圆角矩形，内边距，过渡效果[3,5](@ref) */
 .tag {
     display: inline-block;
     padding: 12px 25px;
-    border-radius: 50px; /* 胶囊形状 */
+    border-radius: 50px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -29,46 +43,41 @@
     overflow: hidden;
 }
 
-/* 交互反馈：悬停效果[3](@ref) */
 .tag:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* 动态权重样式：通过内联样式设置字体大小和颜色透明度 */
-
-/* 排名第一的标签特殊样式 - 最突出[4](@ref) */
+/* 排名前三的标签特殊样式 */
 .tag[data-rank="1"] {
-    background: linear-gradient(135deg, #FFD700, #eeff00); /* 金色渐变 */
+    background: linear-gradient(135deg, #FFD700, #FFA500);
     color: #000;
     z-index: 100;
     animation: pulse 2s infinite;
 }
 
-/* 排名第二的标签样式 */
 .tag[data-rank="2"] {
-    background: linear-gradient(135deg, #C0C0C0, #A9A9A9); /* 银色渐变 */
+    background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
     color: #000;
     z-index: 90;
 }
 
-/* 排名第三的标签样式 */
 .tag[data-rank="3"] {
-    background: linear-gradient(135deg, #CD7F32, #8C6B46); /* 铜色渐变 */
+    background: linear-gradient(135deg, #CD7F32, #8C6B46);
     color: #fff;
     z-index: 80;
 }
 
-/* 脉冲动画效果 */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
 
-/* 响应式设计：针对不同屏幕尺寸调整[7](@ref) */
+/* 简化响应式设计 */
 @media (max-width: 768px) {
     .tag-cloud {
+        gap: 15px;
         padding: 20px;
     }
     
@@ -79,6 +88,7 @@
 
 @media (max-width: 480px) {
     .tag-cloud {
+        gap: 10px;
         padding: 15px;
     }
     
@@ -86,4 +96,11 @@
         padding: 8px 16px;
         border-radius: 40px;
     }
+}
+
+/* 底部说明 */
+.footer-note {
+    margin-top: 40px;
+    color: #95a5a6;
+    font-size: 0.9rem;
 }
