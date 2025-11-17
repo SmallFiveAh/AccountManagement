@@ -45,7 +45,9 @@ function AccountRegion() {
             color: '#339aff',
             text: ''
           },
-          url: account.url || `https://example.com/account/${account.id}`
+          url: account.url || `https://example.com/account/${account.id}`,
+          // 添加这一行以确保 usageCount 被正确加载
+          usageCount: account.usageCount || 0
         }));
         loadedPages.push(pageAccounts);
       }
@@ -224,7 +226,9 @@ function AccountRegion() {
             color: '#339aff',
             text: ''
           },
-          url: account.url || `https://example.com/account/${account.id}`
+          url: account.url || `https://example.com/account/${account.id}`,
+          // 添加这一行以确保 usageCount 被正确加载
+          usageCount: account.usageCount || 0
         }));
         loadedPages.push(pageAccounts);
       }
@@ -274,6 +278,7 @@ function AccountRegion() {
             text: ''
           },
           url: `https://example.com/account/${Date.now()}`, // 添加默认URL
+          // 添加这一行以初始化 usageCount
           usageCount: 0 // 初始化使用次数为0
         }])
         // 更新到新页
@@ -293,6 +298,7 @@ function AccountRegion() {
             text: ''
           },
           url: `https://example.com/account/${Date.now()}`, // 添加默认URL
+          // 添加这一行以初始化 usageCount
           usageCount: 0 // 初始化使用次数为0
         }
         newPages[currentPage] = [...currentAccounts, newAccount]

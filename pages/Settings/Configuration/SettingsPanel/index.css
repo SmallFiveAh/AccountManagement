@@ -22,13 +22,13 @@
 .modal-content {
     background-color: #d4d4d4de;
     border-radius: 20px; 
-    width: 25%;
-    height: 45%;
+    width: 650px; /* 改为固定宽度 */
+    height: 550px; /* 改为固定高度 */
     /* 修改定位方式，相对于视口左下角定位 */
     position: fixed;
     bottom: 75px; /* 距离底部距离，可根据需要调整 */
     left: 50px;
-    max-width: 90%;
+    max-width: 90%; /* 保留最大宽度限制，确保在小屏幕上正常显示 */
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50);
     transform: translateY(20px);
