@@ -14,6 +14,9 @@ function AccountToken () {
     // 添加是否有token信息的状态
     const [hasTokenInfo, setHasTokenInfo] = useState(false);
     
+    // 添加确认对话框状态
+    const [showConfirm, setShowConfirm] = useState(false);
+    
     // 简化导航项，适应面板尺寸
     const navItems = [
         { id: '个人信息', icon: '👤' },
@@ -42,17 +45,24 @@ function AccountToken () {
     }, []);
 
     const handleLogout = () => {
-        if (window.confirm('确定要退出登录吗？')) {
-            // 删除与账户令牌相关的本地存储数据
-            localStorage.removeItem('accountTokenInfo');
-            // 重置状态
-            setTokenInfo({
-                token: '',
-                gistId: '',
-                gistFilename: ''
-            });
-            setHasTokenInfo(false);
-        }
+        setShowConfirm(true);
+    };
+    
+    const confirmLogout = () => {
+        // 删除与账户令牌相关的本地存储数据
+        localStorage.removeItem('accountTokenInfo');
+        // 重置状态
+        setTokenInfo({
+            token: '',
+            gistId: '',
+            gistFilename: ''
+        });
+        setHasTokenInfo(false);
+        setShowConfirm(false);
+    };
+    
+    const cancelLogout = () => {
+        setShowConfirm(false);
     };
     
     // 处理Token信息输入变化
@@ -164,6 +174,20 @@ function AccountToken () {
                     <button className="btn logout-btn" onClick={handleLogout}>退出登录</button>
                 )}
             </div>
+            
+            {showConfirm && (
+                <div className="confirm-overlay">
+                    <div className="confirm-dialog">
+                        <div className="confirm-content">
+                            <p>确定要退出登录吗？</p>
+                        </div>
+                        <div className="confirm-actions">
+                            <button className="btn cancel-btn" onClick={cancelLogout}>取消</button>
+                            <button className="btn confirm-btn" onClick={confirmLogout}>确定</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
