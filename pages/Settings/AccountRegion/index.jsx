@@ -3,6 +3,7 @@ import Addaccount from './Addpanel/Addaccount';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
 import './index.css'
+import { syncToGist } from '../../GistAPI';
 
 function AccountRegion() {
   // 当前页码状态
@@ -25,6 +26,8 @@ function AccountRegion() {
   const [showAddAccount, setShowAddAccount] = useState(false);
   // 编辑中的账号数据
   const [editAccount, setEditAccount] = useState(null);
+  // 防抖定时器引用
+  const syncDebounceRef = useRef(null);
 
   // 初始化时从本地存储加载账号数据
   useEffect(() => {
@@ -54,6 +57,21 @@ function AccountRegion() {
       setPages(loadedPages);
     }
   }, []);
+
+  // 防抖同步函数
+  const debounceSyncToGist = (accounts) => {
+    // 清除之前的定时器
+    if (syncDebounceRef.current) {
+      clearTimeout(syncDebounceRef.current);
+    }
+    
+    // 设置新的定时器，延迟500ms执行同步
+    syncDebounceRef.current = setTimeout(() => {
+      syncToGist(accounts).catch(error => {
+        console.error('同步到 Gist 失败:', error);
+      });
+    }, 500);
+  };
 
   // 处理关闭Addaccount组件
   const handleCloseAddAccount = () => {
@@ -87,6 +105,8 @@ function AccountRegion() {
         }
         
         localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+        // 使用防抖同步
+        debounceSyncToGist(updatedAccounts);
         return updatedPages;
       } else {
         // 添加模式：添加新账号
@@ -126,6 +146,8 @@ function AccountRegion() {
         // 保存到本地存储
         const allAccounts = newPages.flat();
         localStorage.setItem('accounts', JSON.stringify(allAccounts));
+        // 使用防抖同步
+        debounceSyncToGist(allAccounts);
         return newPages;
       }
     });
@@ -208,6 +230,9 @@ function AccountRegion() {
     const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
     const updatedAccounts = savedAccounts.filter(account => account.id !== accountToDelete.id);
     localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+    
+    // 使用防抖同步
+    debounceSyncToGist(updatedAccounts);
     
     // 重新加载页面数据
     if (updatedAccounts.length > 0) {
@@ -385,6 +410,11 @@ function AccountRegion() {
       if (throttleTimerRef.current) {
         clearTimeout(throttleTimerRef.current)
         throttleTimerRef.current = null
+      }
+      // 清理同步防抖定时器
+      if (syncDebounceRef.current) {
+        clearTimeout(syncDebounceRef.current);
+        syncDebounceRef.current = null;
       }
     }
   }, [currentPage, totalPages, isTransitioning, showContextMenu])
