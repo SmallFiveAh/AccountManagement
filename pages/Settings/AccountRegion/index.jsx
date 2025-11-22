@@ -181,6 +181,9 @@ function AccountRegion() {
       savedAccounts[accountIndex] = updatedAccount;
       localStorage.setItem('accounts', JSON.stringify(savedAccounts));
       
+      // 使用防抖同步
+      debounceSyncToGist(savedAccounts);
+      
       // 更新当前页面状态以反映最新的使用次数
       setPages(prevPages => {
         const newPages = [...prevPages];
