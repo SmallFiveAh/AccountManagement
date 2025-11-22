@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import Addaccount from './Addpanel/Addaccount';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
-import './index.css'
 import { syncToGist } from '../../GistAPI';
+import './index.css'
+
 
 function AccountRegion() {
   // 当前页码状态
@@ -60,6 +61,17 @@ function AccountRegion() {
 
   // 防抖同步函数
   const debounceSyncToGist = (accounts) => {
+    // 检查是否存在accountTokenInfo，如果不存在则不执行同步
+    const accountTokenInfo = localStorage.getItem('accountTokenInfo');
+    if (!accountTokenInfo) {
+      return; // 没有token信息，不执行同步
+    }
+    
+    // 检查accounts是否存在且不为空
+    if (!accounts || accounts.length === 0) {
+      return; // 没有账户数据，不执行同步
+    }
+    
     // 清除之前的定时器
     if (syncDebounceRef.current) {
       clearTimeout(syncDebounceRef.current);
