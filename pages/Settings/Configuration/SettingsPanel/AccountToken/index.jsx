@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { syncFromGist, syncToGist } from '../../../../GistAPI';
 import './index.css'
 
 function AccountToken () {
@@ -73,6 +74,22 @@ function AccountToken () {
         }));
     };
     
+    // 实现是否需要显示合并覆盖的逻辑
+    const showMergeCoverage = () => async () => { 
+        // 获取本地存储的账户数据
+        const localAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+        // 获取远程Gist数据 syncToGist
+        const gistAccounts = await syncFromGist();
+        // 比较本地和远程数据是否存在差异
+        const isDifferent = JSON.stringify(localAccounts) !== JSON.stringify(gistAccounts);
+        if (isDifferent) {
+            // 延迟5秒后触发自定义事件通知AccountRegion显示Mergecoverage
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('showMergeCoverage'));
+            }, 5000);
+        }
+    }
+
     // 保存Token信息到localStorage
     const handleSaveTokenInfo = () => {
         try {
@@ -82,8 +99,7 @@ function AccountToken () {
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
                 window.Monitor.showMessage('配置成功');
             }
-            // 触发自定义事件通知AccountRegion显示Mergecoverage
-            window.dispatchEvent(new CustomEvent('showMergeCoverage'));
+            showMergeCoverage();
             // 这里可以添加实际保存逻辑
         } catch (e) {
             console.error('Failed to save token info to localStorage', e);

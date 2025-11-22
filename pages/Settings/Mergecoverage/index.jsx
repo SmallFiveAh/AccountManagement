@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,  useEffect } from 'react';
 import { syncFromGist, syncToGist } from '../../GistAPI';
 import './index.css';
 
@@ -20,6 +20,8 @@ function Mergecoverage() {
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
                 window.Monitor.showMessage('合并成功');
             }
+            // 刷新页面以更新数据
+            window.location.reload();
         } catch (error) {
             // 调用Monitor显示合并失败消息
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
@@ -29,30 +31,23 @@ function Mergecoverage() {
         }
     };
 
+
     // 处理覆盖逻辑
     const handleOverride = async () => {
         // 将Gist数据覆盖到本地中
         try {
             // 从 Gist 同步数据
             const gistAccounts = await syncFromGist();
-            // 从本地存储获取现有账户数据
-            const localAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-            // 合并逻辑：将 Gist 数据与本地数据合并（去重）
-            const mergedAccounts = [...localAccounts];
-            const existingIds = new Set(localAccounts.map(acc => acc.id));
-            gistAccounts.forEach(account => {
-                if (!existingIds.has(account.id)) {
-                    mergedAccounts.push(account);
-                }
-            });
-            // // 保存合并后的数据到本地存储
-            localStorage.setItem('accounts', JSON.stringify(mergedAccounts));
+            // 直接用 Gist 数据覆盖本地数据（这才是真正的覆盖）
+            localStorage.setItem('accounts', JSON.stringify(gistAccounts));
             // 关闭组件
             setIsVisible(false);
             // 调用Monitor显示覆盖成功消息
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
                 window.Monitor.showMessage('覆盖成功');
             }
+            // 刷新页面以更新数据
+            window.location.reload();
         } catch (error) {
             // 调用Monitor显示覆盖失败消息
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
@@ -62,12 +57,9 @@ function Mergecoverage() {
         }
 
     };
-
-    // 如果不可见则不渲染组件
     if (!isVisible) {
         return null;
     }
-
     return (
         <div className="container-Mergecoverage">
             <div className="main-Mergecoverage">
