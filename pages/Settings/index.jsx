@@ -1,10 +1,10 @@
+import Monitor from './monitor';
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
 import Masklayer from './Masklayer'
+import { createRoot } from 'react-dom/client'
 import AccountRegion from './AccountRegion';
 import Configuration from './Configuration';
 import Partitionbar from './Partitionbar';
-import Monitor from './monitor';
 import './index.css'
 
 createRoot(document.getElementById('root')).render(

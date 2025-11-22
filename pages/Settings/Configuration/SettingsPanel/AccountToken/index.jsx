@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { syncFromGist, syncToGist } from '../../../../GistAPI';
 import './index.css'
 
 function AccountToken () {
@@ -13,6 +14,9 @@ function AccountToken () {
     
     // 添加是否有token信息的状态
     const [hasTokenInfo, setHasTokenInfo] = useState(false);
+    
+    // 添加确认对话框状态
+    const [showConfirm, setShowConfirm] = useState(false);
     
     // 简化导航项，适应面板尺寸
     const navItems = [
@@ -42,17 +46,24 @@ function AccountToken () {
     }, []);
 
     const handleLogout = () => {
-        if (window.confirm('确定要退出登录吗？')) {
-            // 删除与账户令牌相关的本地存储数据
-            localStorage.removeItem('accountTokenInfo');
-            // 重置状态
-            setTokenInfo({
-                token: '',
-                gistId: '',
-                gistFilename: ''
-            });
-            setHasTokenInfo(false);
-        }
+        setShowConfirm(true);
+    };
+    
+    const confirmLogout = () => {
+        // 删除与账户令牌相关的本地存储数据
+        localStorage.removeItem('accountTokenInfo');
+        // 重置状态
+        setTokenInfo({
+            token: '',
+            gistId: '',
+            gistFilename: ''
+        });
+        setHasTokenInfo(false);
+        setShowConfirm(false);
+    };
+    
+    const cancelLogout = () => {
+        setShowConfirm(false);
     };
     
     // 处理Token信息输入变化
@@ -63,6 +74,26 @@ function AccountToken () {
         }));
     };
     
+    // 实现是否需要显示合并覆盖的逻辑
+    const showMergeCoverage = async () => { 
+        // 获取本地存储的账户数据
+        const localAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+        console.log(localAccounts);
+        
+        // 获取远程Gist数据 syncToGist
+        const gistAccounts = await syncFromGist();
+        console.log(gistAccounts);
+        
+        // 比较本地和远程数据是否存在差异
+        const isDifferent = JSON.stringify(localAccounts) !== JSON.stringify(gistAccounts);
+        if (isDifferent) {
+            // 延迟5秒后触发自定义事件通知AccountRegion显示Mergecoverage
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('showMergeCoverage'));
+            }, 5000);
+        }
+    }
+
     // 保存Token信息到localStorage
     const handleSaveTokenInfo = () => {
         try {
@@ -72,6 +103,7 @@ function AccountToken () {
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
                 window.Monitor.showMessage('配置成功');
             }
+            showMergeCoverage();
             // 这里可以添加实际保存逻辑
         } catch (e) {
             console.error('Failed to save token info to localStorage', e);
@@ -162,6 +194,20 @@ function AccountToken () {
                     <button className="btn logout-btn" onClick={handleLogout}>退出登录</button>
                 )}
             </div>
+            
+            {showConfirm && (
+                <div className="confirm-overlay">
+                    <div className="confirm-dialog">
+                        <div className="confirm-content">
+                            <p>确定要退出登录吗？</p>
+                        </div>
+                        <div className="confirm-actions">
+                            <button className="btn cancel-btn" onClick={cancelLogout}>取消</button>
+                            <button className="btn confirm-btn" onClick={confirmLogout}>确定</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

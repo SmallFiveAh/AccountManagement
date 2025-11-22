@@ -13,8 +13,8 @@
 }
 
 .delete-confirm-modal {
-    background-color: #fff;
-    border-radius: 10px;
+    background-color: hsla(0, 0%, 100%, 0.72);
+    border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     width: 350px;
