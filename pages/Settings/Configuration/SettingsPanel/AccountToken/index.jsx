@@ -72,6 +72,8 @@ function AccountToken () {
             if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
                 window.Monitor.showMessage('配置成功');
             }
+            // 触发自定义事件通知AccountRegion显示Mergecoverage
+            window.dispatchEvent(new CustomEvent('showMergeCoverage'));
             // 这里可以添加实际保存逻辑
         } catch (e) {
             console.error('Failed to save token info to localStorage', e);

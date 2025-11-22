@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Addaccount from './Addpanel/Addaccount';
+import Mergecoverage from '../Mergecoverage';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
 import { syncToGist } from '../../GistAPI';
@@ -29,6 +30,21 @@ function AccountRegion() {
   const [editAccount, setEditAccount] = useState(null);
   // 防抖定时器引用
   const syncDebounceRef = useRef(null);
+  // 控制Mergecoverage显示状态
+  const [showMergeCoverage, setShowMergeCoverage] = useState(false);
+
+  // 监听showMergeCoverage事件
+  useEffect(() => {
+    const handleShowMergeCoverage = () => {
+      setShowMergeCoverage(true);
+    };
+
+    window.addEventListener('showMergeCoverage', handleShowMergeCoverage);
+    
+    return () => {
+      window.removeEventListener('showMergeCoverage', handleShowMergeCoverage);
+    };
+  }, []);
 
   // 初始化时从本地存储加载账号数据
   useEffect(() => {
@@ -526,6 +542,7 @@ function AccountRegion() {
         onSave={handleSaveAccount}
         editAccount={editAccount}
       />
+      {showMergeCoverage && <Mergecoverage />}
     </>
   )
 }
