@@ -75,11 +75,15 @@ function AccountToken () {
     };
     
     // 实现是否需要显示合并覆盖的逻辑
-    const showMergeCoverage = () => async () => { 
+    const showMergeCoverage = async () => { 
         // 获取本地存储的账户数据
         const localAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+        console.log(localAccounts);
+        
         // 获取远程Gist数据 syncToGist
         const gistAccounts = await syncFromGist();
+        console.log(gistAccounts);
+        
         // 比较本地和远程数据是否存在差异
         const isDifferent = JSON.stringify(localAccounts) !== JSON.stringify(gistAccounts);
         if (isDifferent) {
