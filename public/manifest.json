@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "页面账号管理插件",
+    "name": "账号管理",
     "version": "1.0.0",
     "description": "存储页面账号信息,可本地存储,可github存储(个人账号),可导入导出数据",
     "icons": {
