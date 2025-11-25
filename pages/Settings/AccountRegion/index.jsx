@@ -4,6 +4,7 @@ import Mergecoverage from '../Mergecoverage';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
 import { syncToGist } from '../../GistAPI';
+import Addcategory from './Addpanel/Addcategory';
 import './index.css'
 
 
@@ -32,6 +33,8 @@ function AccountRegion() {
   const syncDebounceRef = useRef(null);
   // 控制Mergecoverage显示状态
   const [showMergeCoverage, setShowMergeCoverage] = useState(false);
+  // 控制添加分类面板显示状态
+  const [showAddCategory, setShowAddCategory] = useState(false);
 
   // 监听showMergeCoverage事件
   useEffect(() => {
@@ -370,6 +373,16 @@ function AccountRegion() {
     setShowAddAccount(true);
   };
 
+  // 处理添加分类点击事件
+  const handleAddCategoryClick = () => {
+    setShowAddCategory(true);
+  };
+
+  // 处理关闭添加分类面板
+  const handleCloseAddCategory = () => {
+    setShowAddCategory(false);
+  };
+
   // 处理页面切换
   const switchPage = (newPage) => {
     // 如果正在切换中，则忽略新的切换请求
@@ -525,7 +538,7 @@ function AccountRegion() {
               </svg>
             </div>
           </div>
-          <Addpanel onAddAccount={handleAddAccountClick} />
+          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} />
         </div>
       </div>
       <ContextMenu 
@@ -542,6 +555,7 @@ function AccountRegion() {
         onSave={handleSaveAccount}
         editAccount={editAccount}
       />
+      {showAddCategory && <Addcategory onClose={handleCloseAddCategory} />}
       {showMergeCoverage && <Mergecoverage />}
     </>
   )

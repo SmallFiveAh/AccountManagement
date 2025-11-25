@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './index.css';
 
 
-function AddPanel({ onAddAccount }) {
+function AddPanel({ onAddAccount, onAddCategory }) {
     return (
         <>
             <div className="add-options-panel">
@@ -38,7 +38,7 @@ function AddPanel({ onAddAccount }) {
                     </div>
                     <div className="option-text">添加账号</div>
                 </div>
-                <div className="option-item">
+                <div className="option-item" onClick={onAddCategory}>
                     <div className="option-icon">
                         <svg
                             width={24}
