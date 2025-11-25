@@ -12,7 +12,7 @@ const iconOptions = [
   { id: 6, name: '生活', icon: '🏠' },
   { id: 7, name: '旅行', icon: '✈️' },
   { id: 8, name: '健康', icon: '❤️' },
-  { id: 9, name: '运动', icon: '⚽' },
+  { id: 9, name: '运动', icon: '🏓' },
   { id: 10, name: '美食', icon: '🍽️' },
   { id: 11, name: '音乐', icon: '🎵' },
   { id: 12, name: '电影', icon: '🎬' },
