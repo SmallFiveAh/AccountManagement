@@ -1,15 +1,39 @@
-.Addcategory {
+.Addcategory-overlay {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #d4d4d4de;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.Addcategory-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.Addcategory {
+    background-color: #a8a8a8;
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50);
-    z-index: 1000;
-    width: 30%;
+    z-index: 1001;
+    width: 380px;
     max-width: 90%;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    color: white;
+}
+
+.Addcategory-overlay.open .Addcategory {
+    transform: translateY(0);
 }
 
 .category-name, .category-icon {
@@ -19,67 +43,96 @@
 .category-name span, .category-icon span {
     display: block;
     margin-bottom: 8px;
-    color: #1c1f22de;
+    color: #ffffff;
     font-weight: 500;
 }
 
-.category-name input, .icon-upload {
+.category-name input {
     width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: rgba(255, 255, 255, 0.7);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #2d2d2d;
     box-sizing: border-box;
     font-size: 14px;
+    color: white;
+    text-align: center;
 }
 
-.icon-upload {
-    height: 100px;
+.category-name input::placeholder {
+    color: #aaa;
+}
+
+.category-name input:focus {
+    outline: none;
+    border-color: #4a7afe;
+}
+
+.Addcategory-body .category-icon .icon-selection {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.Addcategory-body .category-icon .icon-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 0;
+  padding-bottom: 100%; /* 创建正方形 */
+  position: relative;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  transition: all 0.2s ease;
+}
+
+.Addcategory-body .category-icon .icon-option:hover {
+  background-color: #e0e0e0;
+}
+
+.Addcategory-body .category-icon .icon-option.selected {
+  background-color: #1890ff;
+  color: white;
+}
+
+.Addcategory-body .category-icon .icon-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.Addcategory-footer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-}
-
-.icon-upload input {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.form-actions {
-    display: flex; 
-    justify-content: center; 
-    gap: 100px;
+    gap: 12px;
     margin-top: 20px;
 }
 
 .btn {
-    padding: 8px 16px;
-    border-radius: 5px;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
+    border: none;
 }
 
 .btn-secondary {
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: #333;
+    color: #fff;
 }
 
 .btn-secondary:hover {
-    background-color: #e0e0e0;
+    background-color: #444;
 }
 
 .btn-primary {
-    border: none;
     background-color: #4a7afe;
     color: white;
 }
