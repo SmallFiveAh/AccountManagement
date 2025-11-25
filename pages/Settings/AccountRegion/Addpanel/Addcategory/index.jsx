@@ -77,8 +77,9 @@ function Addcategory({ onClose }) {
         </div>
 
         <div className="Addcategory-footer">
-            <button className="Addcategory-btn-btn-primary" onClick={handleSave}>添加分类</button>
-            <button className="Addcategory-btn-btn-secondary" onClick={onClose}>关闭面板</button>
+            {/* 统一按钮类名引用 */}
+            <button className="Addcategory-btn-primary" onClick={handleSave}>添加分类</button>
+            <button className="Addcategory-btn-secondary" onClick={onClose}>关闭面板</button>
         </div>
       </div>
     </div>

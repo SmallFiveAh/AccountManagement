@@ -50,12 +50,12 @@
 .category-name input {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background-color: #2d2d2d;
+    border-radius: 11px;
+    border: 1px solid #b4b4b4;
+    background-color: #d4d4d4;
     box-sizing: border-box;
     font-size: 14px;
-    color: white;
+    color: rgb(95, 95, 95);
     text-align: center;
 }
 
@@ -83,7 +83,7 @@
   height: 0;
   padding-bottom: 100%; /* 创建正方形 */
   position: relative;
-  border-radius: 8px;
+  border-radius: 15px;
   cursor: pointer;
   background-color: #f5f5f5;
   transition: all 0.2s ease;
@@ -113,30 +113,35 @@
     margin-top: 20px;
 }
 
-.btn {
+/* 修改按钮相关的类名，使其与JSX中一致 */
+.Addcategory-btn-primary {
     width: 100%;
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
     border: none;
-}
-
-.btn-secondary {
-    background-color: #333;
-    color: #fff;
-}
-
-.btn-secondary:hover {
-    background-color: #444;
-}
-
-.btn-primary {
     background-color: #4a7afe;
     color: white;
 }
 
-.btn-primary:hover {
+.Addcategory-btn-primary:hover {
     background-color: #3a6aec;
+}
+
+.Addcategory-btn-secondary {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: none;
+    background-color: #bebebe;
+    color: #fff;
+}
+
+.Addcategory-btn-secondary:hover {
+    background-color: #444;
 }
