@@ -45,14 +45,20 @@ function Partitionbar() {
         };
     }, []);
 
+    // 使用点击图标切换分类的逻辑
+    const handleIconClick = (iconName) => {
+        // 在这里处理点击图标的逻辑
+        console.log(`点击了图标：${iconName}`);
+    };
     return (
         <div className="Partitionbar">
             <div className="classification">
                 {/* 添加新的滚动容器 */}
                 <div className="classification-scroll-container" ref={classificationRef}>
                     {classificationicon.map((item) => (
-                        <div className="classification-icon" key={item.id}>
+                        <div className="classification-icon" key={item.id} onClick={() => handleIconClick(item.name)}>
                             <i className={item.icon}></i>
+                            <span>{item.name}</span>
                         </div>
                     ))}
                 </div>

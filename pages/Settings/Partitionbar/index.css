@@ -54,10 +54,26 @@
     border-radius: 11px;
     flex-shrink: 0; /* 防止图标在容器缩小时变形 */
     background-color: rgba(255, 255, 255, 0.1);
-    transition: background-color 0.3s ease;
 }
 
 .classification-icon:hover {
     cursor: pointer;
     background-color: #cccccc86;
+}
+
+/* 修改：默认情况下隐藏图标名称 */
+.classification-icon span {
+    font-size: 12px;
+    color: white;
+    margin-top: 5px;
+    white-space: nowrap;
+    transition: none;
+    opacity: 0; /* 默认隐藏 */
+}
+
+/* 修改：当鼠标悬停在滚动容器上时，只显示图标名称并向右移动 */
+.classification-scroll-container:hover .classification-icon span {
+    opacity: 1; /* 显示图标名称 */
+    transform: translateX(60px);
+    transition: none;
 }
