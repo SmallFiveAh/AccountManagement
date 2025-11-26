@@ -47,12 +47,15 @@ function Partitionbar() {
 
     return (
         <div className="Partitionbar">
-            <div className="classification" ref={classificationRef}>
-                {classificationicon.map((item) => (
-                    <div className="classification-icon" key={item.id}>
-                        <i className={item.icon}></i>
-                    </div>
-                ))}
+            <div className="classification">
+                {/* 添加新的滚动容器 */}
+                <div className="classification-scroll-container" ref={classificationRef}>
+                    {classificationicon.map((item) => (
+                        <div className="classification-icon" key={item.id}>
+                            <i className={item.icon}></i>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )
