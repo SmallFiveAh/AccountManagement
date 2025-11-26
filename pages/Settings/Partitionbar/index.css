@@ -74,6 +74,6 @@
 /* 修改：当鼠标悬停在滚动容器上时，只显示图标名称并向右移动 */
 .classification-scroll-container:hover .classification-icon span {
     opacity: 1; /* 显示图标名称 */
-    transform: translateX(60px);
+    transform: translateX(25px);
     transition: none;
 }
