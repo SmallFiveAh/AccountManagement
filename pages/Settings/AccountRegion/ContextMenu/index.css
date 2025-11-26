@@ -42,4 +42,15 @@
     font-weight: 500;
 }
 
+.add-options-panel-sdwf.show {
+    display: flex;
+}
 
+.add-options-panel-sdwf.hidden {
+    display: none;
+}
+
+.positioned-menu {
+    position: fixed;
+    z-index: 1000;
+}

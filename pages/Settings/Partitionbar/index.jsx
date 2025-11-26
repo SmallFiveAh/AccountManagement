@@ -3,8 +3,6 @@ import './index.css';
 
 function Partitionbar() { 
     const [iconData, setIconData] = useState(null);
-    const classificationRef = useRef(null);
-    const scrollThumbRef = useRef(null);
     
     const classificationicon = [
         { id: 1, icon: 'fa-solid fa-house', name: '首页' },
@@ -24,60 +22,14 @@ function Partitionbar() {
         { id: 15, icon: 'fa-solid fa-circle-xmark', name: '错误' },
     ]
 
-    // 处理鼠标滚轮事件
-    const handleWheel = (e) => {
-        e.preventDefault();
-        if (classificationRef.current) {
-            classificationRef.current.scrollTop += e.deltaY;
-            updateScrollThumb();
-        }
-    };
-
-    // 更新滚动条拇指位置
-    const updateScrollThumb = () => {
-        if (classificationRef.current && scrollThumbRef.current) {
-            const { scrollTop, scrollHeight, clientHeight } = classificationRef.current;
-            const thumbPosition = (scrollTop / (scrollHeight - clientHeight)) * 100;
-            scrollThumbRef.current.style.top = `${thumbPosition}%`;
-        }
-    };
-
-    // 添加事件监听器
-    useEffect(() => {
-        const container = classificationRef.current;
-        if (container) {
-            container.addEventListener('wheel', handleWheel, { passive: false });
-            container.addEventListener('scroll', updateScrollThumb);
-            return () => {
-                container.removeEventListener('wheel', handleWheel);
-                container.removeEventListener('scroll', updateScrollThumb);
-            };
-        }
-    }, []);
-
     return (
         <div className="Partitionbar">
             <div className="classification">
-                {/** 这里实现滚动的区域，显示出来的图标 */}
-                <div 
-                    className="classification-icon-display" 
-                    ref={classificationRef}
-                >
-                    {/** 这里实现分类区域 */}
-                    {classificationicon.map((item) => (
-                        <div className="classification-icon" key={item.id}>
-                            <i className={item.icon}></i>
-                            {/* 删除: <span>{item.name}</span> */}
-                        </div>
-                    ))}
-                </div>
-                {/** 添加滚动指示器 */}
-                <div className="scroll-indicator">
-                    <div 
-                        className="scroll-indicator-thumb" 
-                        ref={scrollThumbRef}
-                    ></div>
-                </div>
+                {classificationicon.map((item) => (
+                    <div className="classification-icon" key={item.id}>
+                        <i className={item.icon}></i>
+                    </div>
+                ))}
             </div>
         </div>
     )
