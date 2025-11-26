@@ -21,6 +21,15 @@
     background-color: rgba(46, 46, 46, 0.78);
     transition: left 0.3s ease-in-out 0.5s;
     padding: 20px 0;
+    /* 添加滚动相关属性 */
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+/* 隐藏滚动条 (Chrome, Safari, Edge) */
+.classification::-webkit-scrollbar {
+    display: none;
 }
 
 .Partitionbar:hover .classification {
@@ -36,9 +45,11 @@
     text-align: center;
     width: 38px;
     height: 38px;
-    margin: 15px auto;
+    margin: 10px auto;
     border-radius: 11px;
     flex-shrink: 0; /* 防止图标在容器缩小时变形 */
+    background-color: rgba(212, 212, 212, 0.05);
+    transition: background-color 0.3s ease;
 }
 
 .classification-icon:hover {

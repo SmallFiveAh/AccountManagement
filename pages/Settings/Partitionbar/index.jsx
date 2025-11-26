@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import './index.css';
 
 function Partitionbar() { 
-    const [iconData, setIconData] = useState(null);
+    const classificationRef = useRef(null);
     
     const classificationicon = [
         { id: 1, icon: 'fa-solid fa-house', name: '首页' },
@@ -20,11 +20,34 @@ function Partitionbar() {
         { id: 13, icon: 'fa-solid fa-circle-info', name: '信息' },
         { id: 14, icon: 'fa-solid fa-circle-exclamation', name: '警告' },
         { id: 15, icon: 'fa-solid fa-circle-xmark', name: '错误' },
-    ]
+    ];
+
+    useEffect(() => {
+        const handleWheel = (e) => {
+            e.preventDefault();
+            if (classificationRef.current) {
+                classificationRef.current.scrollBy({
+                    top: e.deltaY,
+                    behavior: 'smooth'
+                });
+            }
+        };
+
+        const container = classificationRef.current;
+        if (container) {
+            container.addEventListener('wheel', handleWheel, { passive: false });
+        }
+
+        return () => {
+            if (container) {
+                container.removeEventListener('wheel', handleWheel);
+            }
+        };
+    }, []);
 
     return (
         <div className="Partitionbar">
-            <div className="classification">
+            <div className="classification" ref={classificationRef}>
                 {classificationicon.map((item) => (
                     <div className="classification-icon" key={item.id}>
                         <i className={item.icon}></i>
@@ -36,4 +59,3 @@ function Partitionbar() {
 }
 
 export default Partitionbar;
-
