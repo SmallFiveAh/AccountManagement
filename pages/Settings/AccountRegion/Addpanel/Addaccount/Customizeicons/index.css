@@ -18,6 +18,57 @@
         1px 1px 0 rgba(0,0,0,0.3);
 }
 
+.online-icons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    max-width: 300px;
+    margin: 20px auto;
+    justify-items: center;
+}
+
+/* 添加这个新类来处理单个图标的情况 */
+.online-icons-container.single-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.online-icon-option {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 33px;
+    transition: all 0.2s ease;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.online-icon-option:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background-color: #e9ecef;
+}
+
+.online-icon-option img {
+    max-width: 70%;
+    max-height: 70%;
+    object-fit: contain;
+}
+
+.online-icon-option.selected {
+    background-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: scale(1.05);
+}
+
+.online-icon-option.selected img {
+    filter: brightness(0) invert(1);
+}
 
 .selected-icon {
     width: 100px;
@@ -40,15 +91,15 @@
 
 .source-selection {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between; /* 修改为space-between以均匀分布 */
     align-items: center;
     width: 100%;
-    max-width: 400px;
+
     margin-bottom: 10px;
 }
 
 .source-selection button {
-    margin: 10px;
+
     padding: 10px 20px;
     border: none;
     border-radius: 10px;

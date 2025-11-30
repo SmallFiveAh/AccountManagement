@@ -158,18 +158,16 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
 
             {/* 显示在线图标选项 */}
             {iconData.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0 && (
-                <div className="online-icons-selection">
-                    <div className="color-selection">
-                        {retrievedIcons.map((icon, index) => (
-                            <div 
-                                key={index}
-                                onClick={() => handleOnlineIconSelect(icon.url)}
-                                className="online-icon-option"
-                            >
-                                <img src={icon.url} alt={`Icon ${index}`} />
-                            </div>
-                        ))}
-                    </div>
+                <div className={`online-icons-container ${retrievedIcons.length === 1 ? 'single-icon' : ''}`}>
+                    {retrievedIcons.map((icon, index) => (
+                        <div 
+                            key={index}
+                            onClick={() => handleOnlineIconSelect(icon.url)}
+                            className="online-icon-option"
+                        >
+                            <img src={icon.url} alt={`Icon ${index}`} />
+                        </div>
+                    ))}
                 </div>
             )}
 
