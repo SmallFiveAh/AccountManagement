@@ -95,19 +95,14 @@ export async function syncToGist(accounts) {
   try {
     // 从 localStorage 获取 Gist 配置
     const gistConfig = JSON.parse(localStorage.getItem('accountTokenInfo') || '{}');
-    console.log(gistConfig);
-    
     const { token, gistFilename, gistId } = gistConfig;
-    
     // 检查必要配置是否存在
     if (!token || !gistFilename || !gistId) {
       console.warn('Gist 配置不完整，跳过同步');
       return;
     }
-    
     // 更新 Gist
     await updateGist(token, gistId, gistFilename, accounts);
-    console.log('账号数据已成功同步到 Gist');
   } catch (error) {
     console.error('同步到 Gist 失败:', error);
     throw error;

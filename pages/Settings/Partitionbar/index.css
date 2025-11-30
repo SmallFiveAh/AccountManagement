@@ -10,20 +10,70 @@
 
 .classification {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: absolute;
-    /* 修改为相对于父元素的宽度定位，使其完全隐藏 */
     left: -60px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 600px;
+    top: 0;
+    height: 100%;
     width: 55px;
     border-radius: 18px;
     background-color: rgba(46, 46, 46, 0.78);
-    transition: left 0.3s ease-in-out 0.5s; /* 添加0.5秒延迟 */
+    transition: left 0.3s ease-in-out 0.5s;
+    padding: 20px 0;
+}
+
+/* 新增的滚动容器样式 */
+.classification-scroll-container {
+    /* 添加滚动相关属性 */
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    height: 100%;
+}
+
+/* 隐藏滚动条 (Chrome, Safari, Edge) */
+.classification-scroll-container::-webkit-scrollbar {
+    display: none;
 }
 
 .Partitionbar:hover .classification {
-    /* 完全展示在容器内，并且左侧留出10px空间 */
     left: 15px;
-    transition-delay: 0s; /* 悬停时立即显示，无延迟 */
+    transition-delay: 0s;
+}
+
+.classification-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 38px;
+    height: 38px;
+    margin: 20px auto;
+    border-radius: 11px;
+    flex-shrink: 0; /* 防止图标在容器缩小时变形 */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.classification-icon:hover {
+    cursor: pointer;
+    background-color: #cccccc86;
+}
+
+/* 修改：默认情况下隐藏图标名称 */
+.classification-icon span {
+    font-size: 12px;
+    color: white;
+    margin-top: 5px;
+    white-space: nowrap;
+    transition: none;
+    opacity: 0; /* 默认隐藏 */
+}
+
+/* 修改：当鼠标悬停在滚动容器上时，只显示图标名称并向右移动 */
+.classification-scroll-container:hover .classification-icon span {
+    opacity: 1; /* 显示图标名称 */
+    transform: translateX(25px);
+    transition: none;
 }

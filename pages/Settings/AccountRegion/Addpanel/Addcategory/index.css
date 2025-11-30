@@ -1,0 +1,146 @@
+.Addcategory-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.Addcategory-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.Addcategory {
+    background-color: #b6b6b6ee;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50);
+    z-index: 1001;
+    width: 380px;
+    max-width: 90%;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    color: rgb(211, 211, 211);
+}
+
+.Addcategory-overlay.open .Addcategory {
+    transform: translateY(0);
+}
+
+.category-name, .category-icon {
+    margin-bottom: 20px;
+}
+
+.category-name span, .category-icon span {
+    display: block;
+    margin-bottom: 8px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.category-name input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 11px;
+    border: 1px solid #b4b4b4;
+    background-color: #d4d4d4;
+    box-sizing: border-box;
+    font-size: 15px;
+    color: rgb(95, 95, 95);
+    text-align: center;
+}
+
+.category-name input::placeholder {
+    color: #aaa;
+}
+
+.category-name input:focus {
+    outline: none;
+    border-color: #4a7afe;
+}
+
+.Addcategory-body .category-icon .icon-selection {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.Addcategory-body .category-icon .icon-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 0;
+  padding-bottom: 100%; /* 创建正方形 */
+  position: relative;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #dadada;
+  transition: all 0.2s ease;
+}
+
+.Addcategory-body .category-icon .icon-option:hover {
+  background-color: #bdbdbd;
+}
+
+.Addcategory-body .category-icon .icon-option.selected {
+  background-color: #439ff5d5;
+  color: white;
+}
+
+.Addcategory-body .category-icon .icon-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.Addcategory-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* 修改按钮相关的类名，使其与JSX中一致 */
+.Addcategory-btn-primary {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: none;
+    background-color: #5e89ff;
+    color: white;
+}
+
+.Addcategory-btn-primary:hover {
+    background-color: #658eff;
+}
+
+.Addcategory-btn-secondary {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: none;
+    background-color: #bebebe;
+    color: #fff;
+}
+
+.Addcategory-btn-secondary:hover {
+    background-color: #444;
+}

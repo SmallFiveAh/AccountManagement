@@ -22,7 +22,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
   const [editingAccountId, setEditingAccountId] = useState(null);
   // 添加密码可见性状态
   const [showPassword, setShowPassword] = useState(false);
-
+  // 添加图标检索结果状态
+  const [retrievedIcons, setRetrievedIcons] = useState([]);
   // 当editAccount改变时，初始化编辑模式
   useEffect(() => {
     if (editAccount) {
@@ -48,13 +49,14 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         url: '',
         icon: '../resource/img/icon-48.png',
         iconConfig: {
-          source: '在线图标',
+          source: '在线图标', // 确保默认值一致
           color: '#339aff',
           text: ''
         },
         description: ''  // 确保description字段初始化
       });
       setIsEditMode(false);
+      setRetrievedIcons([]);
       setEditingAccountId(null);
     }
   }, [editAccount]);
@@ -65,6 +67,20 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       ...prev,
       [name]: value
     }));
+
+    // 如果是URL字段变化，则尝试获取图标
+    if (name === 'url' && value.trim() !== '') {
+      // 延迟执行图标检索，避免频繁请求
+      clearTimeout(window.iconRetrievalTimeout);
+      window.iconRetrievalTimeout = setTimeout(async () => {
+        try {
+          const icons = await Iconretrieval(value);
+          setRetrievedIcons(icons);
+        } catch (error) {
+          console.error('图标检索失败:', error);
+        }
+      }, 500);
+    }
   };
 
   // 处理图标更改
@@ -117,6 +133,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         description: ''
       });
       setIsEditMode(false);
+      setRetrievedIcons([]);
       setEditingAccountId(null);
     }
   };
@@ -137,7 +154,111 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
     });
     setIsEditMode(false);
     setEditingAccountId(null);
+    setRetrievedIcons([]);
     onClose();
+  };
+
+  const Iconretrieval = async (url) => {
+    // 图标检索逻辑
+    const icons = [];
+    
+    // 检查图片是否存在的辅助函数
+    const checkImageExists = (imageUrl) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = imageUrl;
+      });
+    };
+    
+    try {
+      // 验证URL格式
+      new URL(url);
+    } catch (error) {
+      console.warn('无效的URL格式:', url);
+      return icons;
+    }
+    
+    // 尝试获取标准favicon.ico
+    try {
+      const faviconUrl = new URL('/favicon.ico', url).href;
+      if (await checkImageExists(faviconUrl)) {
+        icons.push({
+          url: faviconUrl,
+          type: 'ico',
+          rel: 'icon',
+          sizes: '16x16',
+          source: 'standard'
+        });
+      }
+    } catch (error) {
+      console.warn('获取标准favicon.ico时出错:', error);
+    }
+    
+    // 尝试获取png格式图标
+    try {
+      const pngIconUrl = new URL('/favicon.png', url).href;
+      if (await checkImageExists(pngIconUrl)) {
+        icons.push({
+          url: pngIconUrl,
+          type: 'png',
+          rel: 'icon',
+          sizes: '32x32',
+          source: 'standard'
+        });
+      }
+    } catch (error) {
+      console.warn('获取PNG图标时出错:', error);
+    }
+    
+    // 尝试通过页面head标签获取图标
+    try {
+      const response = await fetch(url);
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      
+      // 查找所有link标签中的图标
+      const iconLinks = doc.querySelectorAll('link[rel*="icon"]');
+      for (let i = 0; i < iconLinks.length; i++) {
+        const link = iconLinks[i];
+        let iconHref = link.getAttribute('href');
+        
+        // 处理相对路径
+        if (iconHref) {
+          try {
+            const fullUrl = new URL(iconHref, url).href;
+            if (await checkImageExists(fullUrl)) {
+              icons.push({
+                url: fullUrl,
+                type: link.getAttribute('type') || 'image/x-icon',
+                rel: link.getAttribute('rel'),
+                sizes: link.getAttribute('sizes') || 'any',
+                source: 'page'
+              });
+            }
+          } catch (e) {
+            console.warn('处理图标链接时出错:', iconHref, e);
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('通过页面head获取图标时出错:', error);
+    }
+    
+    // 添加去重逻辑，过滤掉URL相同的图标，保留第一个出现的
+    const uniqueIcons = [];
+    const seenUrls = new Set();
+    
+    for (const icon of icons) {
+      if (!seenUrls.has(icon.url)) {
+        seenUrls.add(icon.url);
+        uniqueIcons.push(icon);
+      }
+    }
+    
+    return uniqueIcons;
   };
 
   if (!isOpen) return null;
@@ -151,26 +272,29 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                 <Customizeicons 
                   onIconChange={handleIconChange} 
                   initialText={accountData.iconConfig.text}
+                  retrievedIcons={retrievedIcons} // 将检索到的图标数据传递给组件
                 />
-                {/* 将文本输入框移到这里 */}
-                <div className="form-group">
-                    <div className="input-with-icon">
-                        <i className="icon-iconpath">🔤</i>
-                        <input 
-                            type="text" 
-                            value={accountData.iconConfig.text}
-                            onChange={(e) => {
-                                const updatedIconConfig = { ...accountData.iconConfig, text: e.target.value };
-                                setAccountData(prev => ({
-                                    ...prev,
-                                    iconConfig: updatedIconConfig
-                                }));
-                            }}
-                            placeholder="显示图标文字，可选（建议1~2个字汉字）"
-                            className="input-field"
-                        />
+                {/* 只有当图标来源不是"在线图标"时才显示文本输入框 */}
+                {accountData.iconConfig.source !== '在线图标' && accountData.iconConfig.source !== '本地上传' && (
+                    <div className="form-group">
+                        <div className="input-with-icon">
+                            <i className="icon-iconpath">🔤</i>
+                            <input 
+                                type="text" 
+                                value={accountData.iconConfig.text}
+                                onChange={(e) => {
+                                    const updatedIconConfig = { ...accountData.iconConfig, text: e.target.value };
+                                    setAccountData(prev => ({
+                                        ...prev,
+                                        iconConfig: updatedIconConfig
+                                    }));
+                                }}
+                                placeholder="显示图标文字，可选（建议1~2个字汉字）"
+                                className="input-field"
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
                 <div className="form-group">
                     <div className="input-with-icon">
                         <i className="icon-name">🌐</i>
@@ -240,7 +364,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                             name="url"
                             value={accountData.url}
                             onChange={handleChange}
-                            placeholder="https://example.com"
+                            placeholder="https://github.com/SmallFiveAh/AccountManagement"
                             className="input-field"
                         />
                     </div>

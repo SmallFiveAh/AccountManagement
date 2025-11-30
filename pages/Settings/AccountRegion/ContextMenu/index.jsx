@@ -48,10 +48,7 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
     };
 
     const handleEditClick = () => {
-        console.log(selectedAccount);
-        
         if (selectedAccount && onEditAccount) {
-
             // 创建包含账户数据的事件对象
             const editEvent = createEditEvent(selectedAccount);
             onEditAccount(editEvent);
@@ -88,17 +85,20 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
         }
     }, [selectedAccount]);
 
+    // 计算菜单的CSS类名
+    const menuClassName = `add-options-panel-sdwf ${show ? 'show' : 'hidden'}`;
+    
+    // 计算位置样式
+    const menuStyle = {
+        left: position?.left || 0,
+        top: position?.top || 0,
+    };
+
     return (
       <>
         <div 
-            className="add-options-panel-sdwf" 
-            style={{ 
-                display: show ? 'flex' : 'none',
-                position: 'fixed',
-                left: position?.left || 0,
-                top: position?.top || 0,
-                zIndex: 1000
-            }}
+            className={menuClassName}
+            style={menuStyle}
             onClick={handleMenuClick}
         >
             <div className="option-item" onClick={handleCopyData}>

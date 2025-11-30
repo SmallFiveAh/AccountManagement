@@ -99,17 +99,18 @@
 }
 
 
-img { 
+.icon-box img { 
     cursor: pointer;
     width: 64px;
     height: 64px;
+    background-color: rgba(231, 231, 231, 0.80);
     border-radius: 20px;
     /* 添加缓动效果 */
     transition: all 0.3s ease;
     transform: scale(1);
 }
 
-img:hover { 
+.icon-box img:hover { 
     transform: scale(1.05);
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

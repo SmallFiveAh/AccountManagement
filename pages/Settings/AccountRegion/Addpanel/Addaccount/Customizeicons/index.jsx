@@ -1,13 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './index.css';
 
-function Customizeicons({ onIconChange, initialText = '' }) {
+function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
     const [iconData, setIconData] = useState({
-        source: '纯色图标',
+        source: '在线图标',
         color: '#339aff',
         text: initialText
     });
-
+    // 添加选中的在线图标状态
+    const [selectedOnlineIcon, setSelectedOnlineIcon] = useState(null);
+    // 添加本地上传图标状态
+    const [localIcon, setLocalIcon] = useState(null);
+    const fileInputRef = useRef(null);
+    
     // 创建一个useEffect来处理图标数据生成
     useEffect(() => {
         generateIconData(iconData);
@@ -55,6 +60,26 @@ function Customizeicons({ onIconChange, initialText = '' }) {
                     text: data.text
                 }
             });
+        } else if (data.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0) {
+            // 使用检索到的第一个图标作为默认图标
+            onIconChange && onIconChange({
+                icon: selectedOnlineIcon || retrievedIcons[0].url,
+                iconConfig: {
+                    source: data.source,
+                    color: data.color,
+                    text: data.text
+                }
+            });
+        } else if (data.source === '本地上传' && localIcon) {
+            // 使用本地上传的图标
+            onIconChange && onIconChange({
+                icon: localIcon,
+                iconConfig: {
+                    source: data.source,
+                    color: data.color,
+                    text: data.text
+                }
+            });
         } else {
             // 其他情况使用默认图标
             onIconChange && onIconChange({
@@ -71,15 +96,19 @@ function Customizeicons({ onIconChange, initialText = '' }) {
     const handleSourceChange = (value) => {
         const newData = { ...iconData, source: value };
         setIconData(newData);
+        // 切换源时清除选中的在线图标
+        if (value !== '在线图标') {
+            setSelectedOnlineIcon(null);
+        }
+        // 切换到本地上传时重置文件输入
+        if (value === '本地上传' && fileInputRef.current) {
+            fileInputRef.current.value = '';
+            setLocalIcon(null);
+        }
     };
 
     const handleColorChange = (color) => {
         const newData = { ...iconData, color };
-        setIconData(newData);
-    };
-
-    const handleTextChange = (event) => {
-        const newData = { ...iconData, text: event.target.value };
         setIconData(newData);
     };
 
@@ -100,6 +129,40 @@ function Customizeicons({ onIconChange, initialText = '' }) {
     const handleCustomColorChange = (event) => {
         const newData = { ...iconData, color: event.target.value };
         setIconData(newData);
+    };
+
+    // 处理在线图标选择
+    const handleOnlineIconSelect = (iconUrl) => {
+        // 设置选中的在线图标
+        setSelectedOnlineIcon(iconUrl);
+        onIconChange && onIconChange({
+            icon: iconUrl,
+            iconConfig: {
+                source: '在线图标',
+                color: iconData.color,
+                text: iconData.text
+            }
+        });
+    };
+
+    // 处理本地文件上传
+    const handleLocalFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setLocalIcon(e.target.result);
+                onIconChange && onIconChange({
+                    icon: e.target.result,
+                    iconConfig: {
+                        source: '本地上传',
+                        color: iconData.color,
+                        text: iconData.text
+                    }
+                });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     return (
@@ -125,34 +188,75 @@ function Customizeicons({ onIconChange, initialText = '' }) {
                 </button>
             </div>
 
-            <div className="selected-icon" style={{ backgroundColor: iconData.color }}>
-                {/* 根据不同的source显示不同的内容 */}
-                {iconData.source === '纯色图标' && <span>{iconData.text.substring(0, 2)}</span>}
-            </div>
+            {/* 只有当不是在线图标时才显示selected-icon区域 */}
+            {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
+                <div className="selected-icon" style={{ backgroundColor: iconData.color }}>
+                    {/* 根据不同的source显示不同的内容 */}
+                    {iconData.source === '纯色图标' && <span>{iconData.text.substring(0, 2)}</span>}
+                </div>
+            )}
 
-            <div className="color-selection">
-                {/* 颜色选择器 */}
-                {colorOptions.map((color, index) => (
-                    <div 
-                        key={index}
-                        onClick={() => handleColorChange(color)} 
-                        style={{ backgroundColor: color }}
-                        className={iconData.color === color ? 'selected' : ''}
-                    ></div>
-                ))}
-                {/* 自定义颜色选择器 */}
-                <div 
-                    className={`custom-color-picker ${iconData.color === 'custom' ? 'selected' : ''}`}
-                    title="自定义颜色"
-                >
-                    <input 
-                        type="color" 
-                        value={iconData.color} 
-                        onChange={handleCustomColorChange}
-                        className="custom-color-input"
+            {/* 显示在线图标选项 */}
+            {iconData.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0 && (
+                <div className={`online-icons-container ${retrievedIcons.length === 1 ? 'single-icon' : ''}`}>
+                    {retrievedIcons.map((icon, index) => (
+                        <div 
+                            key={index}
+                            onClick={() => handleOnlineIconSelect(icon.url)}
+                            className={`online-icon-option ${selectedOnlineIcon === icon.url ? 'selected' : ''}`}
+                        >
+                            <img src={icon.url} alt={`Icon ${index}`} />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* 本地上传功能 */}
+            {iconData.source === '本地上传' && (
+                <div className="local-upload-container">
+                    {localIcon ? (
+                        <img src={localIcon} alt="Uploaded icon" className="local-preview" />
+                    ) : (
+                        <label className="local-upload-label" htmlFor="local-icon-upload">
+                            <span>点击上传图标</span>
+                        </label>
+                    )}
+                    <input
+                        ref={fileInputRef}
+                        id="local-icon-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLocalFileUpload}
+                        className="local-upload-input"
                     />
                 </div>
-            </div>
+            )}
+
+            {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
+                <div className="color-selection">
+                    {/* 颜色选择器 */}
+                    {colorOptions.map((color, index) => (
+                        <div 
+                            key={index}
+                            onClick={() => handleColorChange(color)} 
+                            style={{ backgroundColor: color }}
+                            className={iconData.color === color ? 'selected' : ''}
+                        ></div>
+                    ))}
+                    {/* 自定义颜色选择器 */}
+                    <div 
+                        className={`custom-color-picker ${iconData.color === 'custom' ? 'selected' : ''}`}
+                        title="自定义颜色"
+                    >
+                        <input 
+                            type="color" 
+                            value={iconData.color} 
+                            onChange={handleCustomColorChange}
+                            className="custom-color-input"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
