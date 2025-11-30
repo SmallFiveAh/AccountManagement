@@ -16,7 +16,8 @@
         "tabs"
     ],
     "host_permissions": [
-        "https://api.github.com/*"
+        "https://api.github.com/*",
+        "<all_urls>"
     ],
     "options_ui": "pages/index.html",
     "background": {

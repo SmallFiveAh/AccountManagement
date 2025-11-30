@@ -103,6 +103,7 @@
     cursor: pointer;
     width: 64px;
     height: 64px;
+    background-color: rgba(231, 231, 231, 0.80);
     border-radius: 20px;
     /* 添加缓动效果 */
     transition: all 0.3s ease;

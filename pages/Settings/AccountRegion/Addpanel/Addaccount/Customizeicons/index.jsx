@@ -9,9 +9,6 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
     });
     // 添加选中的在线图标状态
     const [selectedOnlineIcon, setSelectedOnlineIcon] = useState(null);
-    
-    console.log(retrievedIcons);
-    
     // 创建一个useEffect来处理图标数据生成
     useEffect(() => {
         generateIconData(iconData);
