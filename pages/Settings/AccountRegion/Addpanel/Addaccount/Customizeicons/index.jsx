@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './index.css';
 
 function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
@@ -9,6 +9,10 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
     });
     // 添加选中的在线图标状态
     const [selectedOnlineIcon, setSelectedOnlineIcon] = useState(null);
+    // 添加本地上传图标状态
+    const [localIcon, setLocalIcon] = useState(null);
+    const fileInputRef = useRef(null);
+    
     // 创建一个useEffect来处理图标数据生成
     useEffect(() => {
         generateIconData(iconData);
@@ -66,6 +70,16 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
                     text: data.text
                 }
             });
+        } else if (data.source === '本地上传' && localIcon) {
+            // 使用本地上传的图标
+            onIconChange && onIconChange({
+                icon: localIcon,
+                iconConfig: {
+                    source: data.source,
+                    color: data.color,
+                    text: data.text
+                }
+            });
         } else {
             // 其他情况使用默认图标
             onIconChange && onIconChange({
@@ -85,6 +99,11 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
         // 切换源时清除选中的在线图标
         if (value !== '在线图标') {
             setSelectedOnlineIcon(null);
+        }
+        // 切换到本地上传时重置文件输入
+        if (value === '本地上传' && fileInputRef.current) {
+            fileInputRef.current.value = '';
+            setLocalIcon(null);
         }
     };
 
@@ -126,6 +145,26 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
         });
     };
 
+    // 处理本地文件上传
+    const handleLocalFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setLocalIcon(e.target.result);
+                onIconChange && onIconChange({
+                    icon: e.target.result,
+                    iconConfig: {
+                        source: '本地上传',
+                        color: iconData.color,
+                        text: iconData.text
+                    }
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <div className="customize-icons">
             <div className="source-selection">
@@ -150,7 +189,7 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
             </div>
 
             {/* 只有当不是在线图标时才显示selected-icon区域 */}
-            {iconData.source !== '在线图标' && (
+            {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
                 <div className="selected-icon" style={{ backgroundColor: iconData.color }}>
                     {/* 根据不同的source显示不同的内容 */}
                     {iconData.source === '纯色图标' && <span>{iconData.text.substring(0, 2)}</span>}
@@ -172,7 +211,28 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
                 </div>
             )}
 
-            {iconData.source !== '在线图标' && (
+            {/* 本地上传功能 */}
+            {iconData.source === '本地上传' && (
+                <div className="local-upload-container">
+                    {localIcon ? (
+                        <img src={localIcon} alt="Uploaded icon" className="local-preview" />
+                    ) : (
+                        <label className="local-upload-label" htmlFor="local-icon-upload">
+                            <span>点击上传图标</span>
+                        </label>
+                    )}
+                    <input
+                        ref={fileInputRef}
+                        id="local-icon-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLocalFileUpload}
+                        className="local-upload-input"
+                    />
+                </div>
+            )}
+
+            {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
                 <div className="color-selection">
                     {/* 颜色选择器 */}
                     {colorOptions.map((color, index) => (
