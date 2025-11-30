@@ -261,25 +261,27 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                   initialText={accountData.iconConfig.text}
                   retrievedIcons={retrievedIcons} // 将检索到的图标数据传递给组件
                 />
-                {/* 将文本输入框移到这里 */}
-                <div className="form-group">
-                    <div className="input-with-icon">
-                        <i className="icon-iconpath">🔤</i>
-                        <input 
-                            type="text" 
-                            value={accountData.iconConfig.text}
-                            onChange={(e) => {
-                                const updatedIconConfig = { ...accountData.iconConfig, text: e.target.value };
-                                setAccountData(prev => ({
-                                    ...prev,
-                                    iconConfig: updatedIconConfig
-                                }));
-                            }}
-                            placeholder="显示图标文字，可选（建议1~2个字汉字）"
-                            className="input-field"
-                        />
+                {/* 只有当图标来源不是"在线图标"时才显示文本输入框 */}
+                {accountData.iconConfig.source !== '在线图标' && (
+                    <div className="form-group">
+                        <div className="input-with-icon">
+                            <i className="icon-iconpath">🔤</i>
+                            <input 
+                                type="text" 
+                                value={accountData.iconConfig.text}
+                                onChange={(e) => {
+                                    const updatedIconConfig = { ...accountData.iconConfig, text: e.target.value };
+                                    setAccountData(prev => ({
+                                        ...prev,
+                                        iconConfig: updatedIconConfig
+                                    }));
+                                }}
+                                placeholder="显示图标文字，可选（建议1~2个字汉字）"
+                                className="input-field"
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
                 <div className="form-group">
                     <div className="input-with-icon">
                         <i className="icon-name">🌐</i>

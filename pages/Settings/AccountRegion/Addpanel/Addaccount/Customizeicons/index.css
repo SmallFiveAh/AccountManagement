@@ -60,13 +60,9 @@
 }
 
 .online-icon-option.selected {
-    background-color: #4a90e2;
+    border: 3px solid #4a90e2;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transform: scale(1.05);
-}
-
-.online-icon-option.selected img {
-    filter: brightness(0) invert(1);
 }
 
 .selected-icon {

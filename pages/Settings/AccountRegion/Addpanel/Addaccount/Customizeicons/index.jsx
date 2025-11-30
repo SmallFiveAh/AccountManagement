@@ -7,6 +7,9 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
         color: '#339aff',
         text: initialText
     });
+    // 添加选中的在线图标状态
+    const [selectedOnlineIcon, setSelectedOnlineIcon] = useState(null);
+    
     console.log(retrievedIcons);
     
     // 创建一个useEffect来处理图标数据生成
@@ -59,7 +62,7 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
         } else if (data.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0) {
             // 使用检索到的第一个图标作为默认图标
             onIconChange && onIconChange({
-                icon: retrievedIcons[0].url,
+                icon: selectedOnlineIcon || retrievedIcons[0].url,
                 iconConfig: {
                     source: data.source,
                     color: data.color,
@@ -82,6 +85,10 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
     const handleSourceChange = (value) => {
         const newData = { ...iconData, source: value };
         setIconData(newData);
+        // 切换源时清除选中的在线图标
+        if (value !== '在线图标') {
+            setSelectedOnlineIcon(null);
+        }
     };
 
     const handleColorChange = (color) => {
@@ -115,6 +122,8 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
 
     // 处理在线图标选择
     const handleOnlineIconSelect = (iconUrl) => {
+        // 设置选中的在线图标
+        setSelectedOnlineIcon(iconUrl);
         onIconChange && onIconChange({
             icon: iconUrl,
             iconConfig: {
@@ -163,7 +172,7 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
                         <div 
                             key={index}
                             onClick={() => handleOnlineIconSelect(icon.url)}
-                            className="online-icon-option"
+                            className={`online-icon-option ${selectedOnlineIcon === icon.url ? 'selected' : ''}`}
                         >
                             <img src={icon.url} alt={`Icon ${index}`} />
                         </div>
