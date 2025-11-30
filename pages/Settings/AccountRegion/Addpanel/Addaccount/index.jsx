@@ -249,7 +249,18 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       console.warn('通过页面head获取图标时出错:', error);
     }
     
-    return icons;
+    // 添加去重逻辑，过滤掉URL相同的图标，保留第一个出现的
+    const uniqueIcons = [];
+    const seenUrls = new Set();
+    
+    for (const icon of icons) {
+      if (!seenUrls.has(icon.url)) {
+        seenUrls.add(icon.url);
+        uniqueIcons.push(icon);
+      }
+    }
+    
+    return uniqueIcons;
   };
 
   if (!isOpen) return null;
