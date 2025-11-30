@@ -488,7 +488,7 @@ function AccountRegion() {
         data-direction={direction}
       >
         {currentAccounts.map(account => {
-          const label = account.name.length > 5 ? account.name.slice(0, 5) + '...' : account.name
+          const label = account.name.length > 7 ? account.name.slice(0, 7) + '...' : account.name
           return (
             <div className="account-container" key={account.id}>
               <div className="icon-container">
