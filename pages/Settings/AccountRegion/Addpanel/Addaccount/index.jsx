@@ -75,8 +75,6 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       window.iconRetrievalTimeout = setTimeout(async () => {
         try {
           const icons = await Iconretrieval(value);
-          console.log(icons);
-          
           setRetrievedIcons(icons);
         } catch (error) {
           console.error('图标检索失败:', error);
@@ -277,7 +275,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                   retrievedIcons={retrievedIcons} // 将检索到的图标数据传递给组件
                 />
                 {/* 只有当图标来源不是"在线图标"时才显示文本输入框 */}
-                {accountData.iconConfig.source !== '在线图标' && (
+                {accountData.iconConfig.source !== '在线图标' && accountData.iconConfig.source !== '本地上传' && (
                     <div className="form-group">
                         <div className="input-with-icon">
                             <i className="icon-iconpath">🔤</i>
