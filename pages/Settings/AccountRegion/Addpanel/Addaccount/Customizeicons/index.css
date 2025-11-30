@@ -1,4 +1,23 @@
-/* ... existing code ... */
+
+.online-icons-selection {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    font-size: 45px;
+    color: white;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* 添加带透明度的文字边框 */
+    text-shadow: 
+        -1px -1px 0 rgba(0,0,0,0.3),
+        1px -1px 0 rgba(0,0,0,0.3),
+        -1px 1px 0 rgba(0,0,0,0.3),
+        1px 1px 0 rgba(0,0,0,0.3);
+}
+
 
 .selected-icon {
     width: 100px;

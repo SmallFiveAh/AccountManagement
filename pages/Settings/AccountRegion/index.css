@@ -99,7 +99,7 @@
 }
 
 
-img { 
+.icon-box img { 
     cursor: pointer;
     width: 64px;
     height: 64px;
@@ -109,7 +109,7 @@ img {
     transform: scale(1);
 }
 
-img:hover { 
+.icon-box img:hover { 
     transform: scale(1.05);
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

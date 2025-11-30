@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import './index.css';
 
-function Customizeicons({ onIconChange, initialText = '' }) {
+function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
     const [iconData, setIconData] = useState({
-        source: '纯色图标',
+        source: '在线图标',
         color: '#339aff',
         text: initialText
     });
-
+    console.log(retrievedIcons);
+    
     // 创建一个useEffect来处理图标数据生成
     useEffect(() => {
         generateIconData(iconData);
@@ -49,6 +50,16 @@ function Customizeicons({ onIconChange, initialText = '' }) {
             // 修改：传递原始数据而不是合并后的数据
             onIconChange && onIconChange({
                 icon: base64Icon,
+                iconConfig: {
+                    source: data.source,
+                    color: data.color,
+                    text: data.text
+                }
+            });
+        } else if (data.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0) {
+            // 使用检索到的第一个图标作为默认图标
+            onIconChange && onIconChange({
+                icon: retrievedIcons[0].url,
                 iconConfig: {
                     source: data.source,
                     color: data.color,
@@ -102,6 +113,18 @@ function Customizeicons({ onIconChange, initialText = '' }) {
         setIconData(newData);
     };
 
+    // 处理在线图标选择
+    const handleOnlineIconSelect = (iconUrl) => {
+        onIconChange && onIconChange({
+            icon: iconUrl,
+            iconConfig: {
+                source: '在线图标',
+                color: iconData.color,
+                text: iconData.text
+            }
+        });
+    };
+
     return (
         <div className="customize-icons">
             <div className="source-selection">
@@ -125,34 +148,56 @@ function Customizeicons({ onIconChange, initialText = '' }) {
                 </button>
             </div>
 
-            <div className="selected-icon" style={{ backgroundColor: iconData.color }}>
-                {/* 根据不同的source显示不同的内容 */}
-                {iconData.source === '纯色图标' && <span>{iconData.text.substring(0, 2)}</span>}
-            </div>
-
-            <div className="color-selection">
-                {/* 颜色选择器 */}
-                {colorOptions.map((color, index) => (
-                    <div 
-                        key={index}
-                        onClick={() => handleColorChange(color)} 
-                        style={{ backgroundColor: color }}
-                        className={iconData.color === color ? 'selected' : ''}
-                    ></div>
-                ))}
-                {/* 自定义颜色选择器 */}
-                <div 
-                    className={`custom-color-picker ${iconData.color === 'custom' ? 'selected' : ''}`}
-                    title="自定义颜色"
-                >
-                    <input 
-                        type="color" 
-                        value={iconData.color} 
-                        onChange={handleCustomColorChange}
-                        className="custom-color-input"
-                    />
+            {/* 只有当不是在线图标时才显示selected-icon区域 */}
+            {iconData.source !== '在线图标' && (
+                <div className="selected-icon" style={{ backgroundColor: iconData.color }}>
+                    {/* 根据不同的source显示不同的内容 */}
+                    {iconData.source === '纯色图标' && <span>{iconData.text.substring(0, 2)}</span>}
                 </div>
-            </div>
+            )}
+
+            {/* 显示在线图标选项 */}
+            {iconData.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0 && (
+                <div className="online-icons-selection">
+                    <div className="color-selection">
+                        {retrievedIcons.map((icon, index) => (
+                            <div 
+                                key={index}
+                                onClick={() => handleOnlineIconSelect(icon.url)}
+                                className="online-icon-option"
+                            >
+                                <img src={icon.url} alt={`Icon ${index}`} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {iconData.source !== '在线图标' && (
+                <div className="color-selection">
+                    {/* 颜色选择器 */}
+                    {colorOptions.map((color, index) => (
+                        <div 
+                            key={index}
+                            onClick={() => handleColorChange(color)} 
+                            style={{ backgroundColor: color }}
+                            className={iconData.color === color ? 'selected' : ''}
+                        ></div>
+                    ))}
+                    {/* 自定义颜色选择器 */}
+                    <div 
+                        className={`custom-color-picker ${iconData.color === 'custom' ? 'selected' : ''}`}
+                        title="自定义颜色"
+                    >
+                        <input 
+                            type="color" 
+                            value={iconData.color} 
+                            onChange={handleCustomColorChange}
+                            className="custom-color-input"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
