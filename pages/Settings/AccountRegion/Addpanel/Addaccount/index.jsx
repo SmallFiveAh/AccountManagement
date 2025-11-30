@@ -75,6 +75,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       window.iconRetrievalTimeout = setTimeout(async () => {
         try {
           const icons = await Iconretrieval(value);
+          console.log(icons);
+          
           setRetrievedIcons(icons);
         } catch (error) {
           console.error('图标检索失败:', error);
