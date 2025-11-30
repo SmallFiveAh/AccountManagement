@@ -56,6 +56,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         description: ''  // 确保description字段初始化
       });
       setIsEditMode(false);
+      setRetrievedIcons([]);
       setEditingAccountId(null);
     }
   }, [editAccount]);
@@ -132,6 +133,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         description: ''
       });
       setIsEditMode(false);
+      setRetrievedIcons([]);
       setEditingAccountId(null);
     }
   };

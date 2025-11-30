@@ -96,11 +96,6 @@ function Customizeicons({ onIconChange, initialText = '', retrievedIcons }) {
         setIconData(newData);
     };
 
-    const handleTextChange = (event) => {
-        const newData = { ...iconData, text: event.target.value };
-        setIconData(newData);
-    };
-
     // 定义颜色选项数组
     const colorOptions = [
         '#339aff', '#3ac47d', '#00bfa5', 

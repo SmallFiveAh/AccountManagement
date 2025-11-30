@@ -48,10 +48,7 @@ function ContextMenu({ show, position, onClose, selectedAccount, onDeleteAccount
     };
 
     const handleEditClick = () => {
-        console.log(selectedAccount);
-        
         if (selectedAccount && onEditAccount) {
-
             // 创建包含账户数据的事件对象
             const editEvent = createEditEvent(selectedAccount);
             onEditAccount(editEvent);
