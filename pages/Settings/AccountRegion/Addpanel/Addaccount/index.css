@@ -281,7 +281,7 @@ textarea.input-field {
 
 .online-icons-section-container {
     width: 100%;
-    height: 240px;
+    height: 260px;
     border-radius: 20px;
     background-color: #e9e9e9c2;
     margin-top: 10px;
@@ -299,8 +299,6 @@ textarea.input-field {
 }
 
 .online-icons-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 20px;
     max-width: 600px;
     justify-items: center;
