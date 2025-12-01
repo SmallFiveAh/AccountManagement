@@ -33,6 +33,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
   const [selectedOnlineIcon, setSelectedOnlineIcon] = useState(null);
   const [localIcon, setLocalIcon] = useState(null);
   const fileInputRef = useRef(null);
+  // 添加对图标容器的引用
+  const onlineIconsContainerRef = useRef(null);
   
   // 定义颜色选项数组
   const colorOptions = [
@@ -107,6 +109,28 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
   useEffect(() => {
     generateIconData(iconData);
   }, [iconData]);
+
+  // 添加useEffect来添加滚轮事件监听器
+  useEffect(() => {
+    // 添加处理鼠标滚轮事件的函数
+    const handleWheel = (e) => {
+      e.preventDefault();
+      const container = onlineIconsContainerRef.current;
+      if (container) {
+        container.scrollBy({
+          left: e.deltaY,
+          behavior: 'smooth'
+        });
+      }
+    };
+    const container = onlineIconsContainerRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false });
+    }
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
 
   // 添加一个函数来转义HTML/XML特殊字符
   const escapeHtml = (unsafe) => {
@@ -480,7 +504,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
 
                     {/* 显示在线图标选项 */}
                     {iconData.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0 && (
-                        <div className={`online-icons-container ${retrievedIcons.length === 1 ? 'single-icon' : ''}`}>
+                      <div className="online-icons-section-container">
+                        <div className={`online-icons-container ${retrievedIcons.length === 1 ? 'single-icon' : ''}`} ref={onlineIconsContainerRef}>
                             {retrievedIcons.map((icon, index) => (
                                 <div 
                                     key={index}
@@ -491,6 +516,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                                 </div>
                             ))}
                         </div>
+                      </div>
                     )}
 
                     {/* 本地上传功能 */}
