@@ -290,27 +290,22 @@ textarea.input-field {
     position: relative;
     box-sizing: border-box;
     padding: 10px;
+}
+
+.online-icons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 20px;
+    padding: 10px;
+    justify-items: center;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
 
-.online-icons-section-container::-webkit-scrollbar {
+.online-icons-container::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
 }
 
-.online-icons-container {
-    gap: 20px;
-    max-width: 600px;
-    justify-items: center;
-}
-
-/* 添加这个新类来处理单个图标的情况 */
-.online-icons-container.single-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-}
 
 .online-icon-option {
     width: 100px;
@@ -323,6 +318,7 @@ textarea.input-field {
     transition: all 0.2s ease;
     background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex-shrink: 0;
 }
 
 .online-icon-option:hover {
