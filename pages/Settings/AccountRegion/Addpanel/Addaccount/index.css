@@ -258,3 +258,264 @@ textarea.input-field {
     width: 20px;
     height: 20px;
 }
+
+/* 图标定制相关样式 */
+.online-icons-selection {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    font-size: 45px;
+    color: white;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* 添加带透明度的文字边框 */
+    text-shadow: 
+        -1px -1px 0 rgba(0,0,0,0.3),
+        1px -1px 0 rgba(0,0,0,0.3),
+        -1px 1px 0 rgba(0,0,0,0.3),
+        1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.online-icons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 20px;
+    max-width: 300px;
+    margin: 20px auto;
+    justify-items: center;
+}
+
+/* 添加这个新类来处理单个图标的情况 */
+.online-icons-container.single-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.online-icon-option {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 33px;
+    transition: all 0.2s ease;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.online-icon-option:hover {
+    transform: scale(1.07);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background-color: #e9ecef;
+}
+
+.online-icon-option img {
+    width: 100%;
+    height: 100%;
+    border-radius: 33px;
+}
+
+.online-icon-option.selected {
+    border: 2px solid #4a90e2;
+}
+
+.selected-icon {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    font-size: 45px;
+    color: white;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* 添加带透明度的文字边框 */
+    text-shadow: 
+        -1px -1px 0 rgba(0,0,0,0.3),
+        1px -1px 0 rgba(0,0,0,0.3),
+        -1px 1px 0 rgba(0,0,0,0.3),
+        1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.source-selection {
+    display: flex;
+    justify-content: space-between; /* 修改为space-between以均匀分布 */
+    align-items: center;
+    width: 100%;
+
+    margin-bottom: 10px;
+}
+
+.source-selection button {
+
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.source-selection button:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.source-selection button.selected {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.color-selection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.color-selection div {
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+.color-selection div::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.color-selection div:hover {
+    transform: scale(1.1);
+}
+
+.color-selection div.selected {
+    transform: scale(1.1);
+}
+
+.color-selection div.selected::after {
+    opacity: 1;
+}
+
+.color-selection div:last-child::after {
+    content: none;
+}
+
+.custom-color-picker {
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: conic-gradient(
+        #002fff,      /* 红色在0°（顶部）开始 */
+        #c0ff12 34%,  /* 在90°（右侧）位置，蓝绿色达到最强 */
+        #ff0000 70%,  /* 在180°（底部）位置，蓝色达到最强 */
+        #5dff2c       /* 黄色在起点/终点（顶部） */
+    );
+}
+
+.custom-color-picker:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.custom-color-picker.selected {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #4a90e2;
+}
+
+.custom-color-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.customize-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.local-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.local-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 33px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.local-upload-label:hover {
+    transform: scale(1.07);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background-color: #e9ecef;
+}
+
+.local-upload-label span {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+}
+
+.local-upload-input {
+    display: none;
+}
+
+.local-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 33px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
