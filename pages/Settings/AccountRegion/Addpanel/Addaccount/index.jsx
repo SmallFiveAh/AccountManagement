@@ -118,7 +118,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       const container = onlineIconsContainerRef.current;
       if (container) {
         container.scrollBy({
-          left: e.deltaY,
+          top: e.deltaY,
           behavior: 'smooth'
         });
       }
@@ -128,7 +128,10 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       container.addEventListener('wheel', handleWheel, { passive: false });
     }
     return () => {
-      container.removeEventListener('wheel', handleWheel);
+      // 在移除事件监听器前检查container是否存在
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
     };
   }, []);
 
