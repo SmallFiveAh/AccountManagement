@@ -112,26 +112,25 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
 
   // 添加useEffect来添加滚轮事件监听器
   useEffect(() => {
-    // 添加处理鼠标滚轮事件的函数
     const handleWheel = (e) => {
-      e.preventDefault();
-      const container = onlineIconsContainerRef.current;
-      if (container) {
-        container.scrollBy({
-          top: e.deltaY,
-          behavior: 'smooth'
-        });
-      }
+        e.preventDefault();
+        if (onlineIconsContainerRef.current) {
+            onlineIconsContainerRef.current.scrollBy({
+                top: e.deltaY,
+                behavior: 'smooth'
+            });
+        }
     };
+
     const container = onlineIconsContainerRef.current;
     if (container) {
-      container.addEventListener('wheel', handleWheel, { passive: false });
+        container.addEventListener('wheel', handleWheel, { passive: false });
     }
+
     return () => {
-      // 在移除事件监听器前检查container是否存在
-      if (container) {
-        container.removeEventListener('wheel', handleWheel);
-      }
+        if (container) {
+            container.removeEventListener('wheel', handleWheel);
+        }
     };
   }, []);
 
@@ -508,7 +507,11 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
                     {/* 显示在线图标选项 */}
                     {iconData.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0 && (
                       <div className="online-icons-section-container">
-                        <div className={`online-icons-container ${retrievedIcons.length === 1 ? 'single-icon' : ''}`} ref={onlineIconsContainerRef}>
+                        {/* 直接在滚动容器上应用ref，简化结构 */}
+                        <div 
+                          className="online-icons-container-scroll" 
+                          ref={onlineIconsContainerRef}
+                        >
                             {retrievedIcons.map((icon, index) => (
                                 <div 
                                     key={index}
