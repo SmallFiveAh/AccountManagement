@@ -3,7 +3,6 @@ import './index.css';
 
 function Partitionbar() { 
     const classificationRef = useRef(null);
-    
     const classificationicon = [
         { id: 1, icon: 'fa-solid fa-house', name: '首页' },
         { id: 2, icon: 'fa-solid fa-wallet', name: '钱包' },

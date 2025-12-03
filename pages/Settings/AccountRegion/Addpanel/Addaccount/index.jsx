@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import Customizeicons from './Customizeicons';
+import { useState, useEffect, useRef } from 'react';
 import './index.css';
 
 function Addaccount({ isOpen, onClose, onSave, editAccount }) {
@@ -14,7 +13,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       color: '#339aff',
       text: ''
     },
-    description: ''  // 确保description字段初始化
+    description: ''
   });
 
   // 添加编辑模式的状态
@@ -24,6 +23,32 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
   const [showPassword, setShowPassword] = useState(false);
   // 添加图标检索结果状态
   const [retrievedIcons, setRetrievedIcons] = useState([]);
+  
+  // 添加图标定制相关状态
+  const [iconData, setIconData] = useState({
+    source: '在线图标',
+    color: '#339aff',
+    text: ''
+  });
+  const [selectedOnlineIcon, setSelectedOnlineIcon] = useState(null);
+  const [localIcon, setLocalIcon] = useState(null);
+  const fileInputRef = useRef(null);
+  // 添加对图标容器的引用
+  const onlineIconsContainerRef = useRef(null);
+  
+  // 定义颜色选项数组
+  const colorOptions = [
+    '#339aff', '#3ac47d', '#00bfa5', 
+    '#9bdb07ff', '#6c6cff', '#ec407a', 
+    '#ff5f57', '#a19494ff', '#8b6868ff',
+    '#4e0606ff', '#808080', '#a01b8eff',
+    '#000', '#096e96ff', '#d400ffff',
+    '#5c0d9cff', '#00ff4cff', '#554a92ff',
+    '#295242ff', '#ff2effff', '#6269ccff',
+    '#4da512ff', '#02596eff', '#3a066bff',
+    '#c49c2fff', '#69cf0aff', '#20dff8ff'
+  ];
+
   // 当editAccount改变时，初始化编辑模式
   useEffect(() => {
     if (editAccount) {
@@ -40,6 +65,16 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       });
       setIsEditMode(true);
       setEditingAccountId(editAccount.id);
+      
+      // 初始化图标配置状态
+      if (editAccount.iconConfig) {
+        setIconData(editAccount.iconConfig);
+        if (editAccount.iconConfig.source === '在线图标') {
+          setSelectedOnlineIcon(editAccount.icon);
+        } else if (editAccount.iconConfig.source === '本地上传') {
+          setLocalIcon(editAccount.icon);
+        }
+      }
     } else {
       // 重置为添加模式
       setAccountData({
@@ -49,17 +84,116 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         url: '',
         icon: '../resource/img/icon-48.png',
         iconConfig: {
-          source: '在线图标', // 确保默认值一致
+          source: '在线图标',
           color: '#339aff',
           text: ''
         },
-        description: ''  // 确保description字段初始化
+        description: ''
       });
       setIsEditMode(false);
       setRetrievedIcons([]);
       setEditingAccountId(null);
+      
+      // 重置图标相关状态
+      setIconData({
+        source: '在线图标',
+        color: '#339aff',
+        text: ''
+      });
+      setSelectedOnlineIcon(null);
+      setLocalIcon(null);
     }
   }, [editAccount]);
+
+  // 创建一个useEffect来处理图标数据生成
+  useEffect(() => {
+    generateIconData(iconData);
+  }, [iconData]);
+
+  // 添加useEffect来添加滚轮事件监听器
+  useEffect(() => {
+    const handleWheel = (e) => {
+        e.preventDefault();
+        if (onlineIconsContainerRef.current) {
+            onlineIconsContainerRef.current.scrollBy({
+                top: e.deltaY,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    // 延迟执行确保DOM已渲染
+    const timeoutId = setTimeout(() => {
+      const container = onlineIconsContainerRef.current;
+      if (container) {
+          container.addEventListener('wheel', handleWheel, { passive: false });
+      }
+    }, 0);
+
+    return () => {
+        clearTimeout(timeoutId);
+        const container = onlineIconsContainerRef.current;
+        if (container) {
+            container.removeEventListener('wheel', handleWheel);
+        }
+    };
+  }, [retrievedIcons]); // 当retrievedIcons变化时重新绑定事件
+
+  // 添加一个函数来转义HTML/XML特殊字符
+  const escapeHtml = (unsafe) => {
+    if (!unsafe) return '';
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+  };
+
+  const generateIconData = (data) => {
+    if (data.source === '纯色图标') {
+      // 生成纯色图标，使用转义后的文本
+      const escapedText = escapeHtml(data.text.substring(0, 2));
+      const svgString = `
+        <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="15" fill="${data.color}" />
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+                font-family="Arial, sans-serif" font-size="30" fill="white">
+            ${escapedText}
+          </text>
+        </svg>
+      `;
+      const base64Icon = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgString)))}`;
+      // 更新账户数据中的图标信息
+      setAccountData(prev => ({
+        ...prev,
+        icon: base64Icon,
+        iconConfig: data
+      }));
+    } else if (data.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0) {
+      // 使用检索到的第一个图标作为默认图标
+      const iconUrl = selectedOnlineIcon || retrievedIcons[0].url;
+      setAccountData(prev => ({
+        ...prev,
+        icon: iconUrl,
+        iconConfig: data
+      }));
+    } else if (data.source === '本地上传' && localIcon) {
+      // 使用本地上传的图标
+      setAccountData(prev => ({
+        ...prev,
+        icon: localIcon,
+        iconConfig: data
+      }));
+    } else {
+      // 其他情况使用默认图标
+      setAccountData(prev => ({
+        ...prev,
+        icon: '../resource/img/icon-48.png',
+        iconConfig: data
+      }));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,15 +215,6 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         }
       }, 500);
     }
-  };
-
-  // 处理图标更改
-  const handleIconChange = (iconData) => {
-    setAccountData(prev => ({
-      ...prev,
-      icon: iconData.icon,
-      iconConfig: iconData.iconConfig
-    }));
   };
 
   const handleSubmit = (e) => {
@@ -135,6 +260,15 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       setIsEditMode(false);
       setRetrievedIcons([]);
       setEditingAccountId(null);
+      
+      // 重置图标相关状态
+      setIconData({
+        source: '在线图标',
+        color: '#339aff',
+        text: ''
+      });
+      setSelectedOnlineIcon(null);
+      setLocalIcon(null);
     }
   };
 
@@ -155,7 +289,79 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
     setIsEditMode(false);
     setEditingAccountId(null);
     setRetrievedIcons([]);
+    
+    // 重置图标相关状态
+    setIconData({
+      source: '在线图标',
+      color: '#339aff',
+      text: ''
+    });
+    setSelectedOnlineIcon(null);
+    setLocalIcon(null);
     onClose();
+  };
+
+  // 处理图标源切换
+  const handleSourceChange = (value) => {
+    const newData = { ...iconData, source: value };
+    setIconData(newData);
+    // 切换源时清除选中的在线图标
+    if (value !== '在线图标') {
+      setSelectedOnlineIcon(null);
+    }
+    // 切换到本地上传时重置文件输入
+    if (value === '本地上传' && fileInputRef.current) {
+      fileInputRef.current.value = '';
+      setLocalIcon(null);
+    }
+  };
+
+  // 处理颜色更改
+  const handleColorChange = (color) => {
+    const newData = { ...iconData, color };
+    setIconData(newData);
+  };
+
+  // 处理自定义颜色选择
+  const handleCustomColorChange = (event) => {
+    const newData = { ...iconData, color: event.target.value };
+    setIconData(newData);
+  };
+
+  // 处理在线图标选择
+  const handleOnlineIconSelect = (iconUrl) => {
+    // 设置选中的在线图标
+    setSelectedOnlineIcon(iconUrl);
+    setAccountData(prev => ({
+      ...prev,
+      icon: iconUrl,
+      iconConfig: {
+        source: '在线图标',
+        color: iconData.color,
+        text: iconData.text
+      }
+    }));
+  };
+
+  // 处理本地文件上传
+  const handleLocalFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLocalIcon(e.target.result);
+        setAccountData(prev => ({
+          ...prev,
+          icon: e.target.result,
+          iconConfig: {
+            source: '本地上传',
+            color: iconData.color,
+            text: iconData.text
+          }
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const Iconretrieval = async (url) => {
@@ -269,25 +475,120 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
             <div className="complete-btn" title="关闭" onClick={handleClose}>&times;</div>
             <h2 className="panel-title">{isEditMode ? '编辑账号' : '添加账号'}</h2>
             <form onSubmit={handleSubmit}>
-                <Customizeicons 
-                  onIconChange={handleIconChange} 
-                  initialText={accountData.iconConfig.text}
-                  retrievedIcons={retrievedIcons} // 将检索到的图标数据传递给组件
-                />
+                {/* 图标定制功能区域 */}
+                <div className="customize-icons">
+                    <div className="source-selection">
+                        <button 
+                            onClick={() => handleSourceChange('在线图标')} 
+                            className={iconData.source === '在线图标' ? 'selected' : ''}
+                            type="button"
+                        >
+                            在线图标
+                        </button>
+                        <button 
+                            onClick={() => handleSourceChange('纯色图标')} 
+                            className={iconData.source === '纯色图标' ? 'selected' : ''}
+                            type="button"
+                        >
+                            纯色图标
+                        </button>
+                        <button 
+                            onClick={() => handleSourceChange('本地上传')} 
+                            className={iconData.source === '本地上传' ? 'selected' : ''}
+                            type="button"
+                        >
+                            本地上传
+                        </button>
+                    </div>
+
+                    {/* 只有当不是在线图标时才显示selected-icon区域 */}
+                    {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
+                        <div className="selected-icon" style={{ backgroundColor: iconData.color }}>
+                            {/* 根据不同的source显示不同的内容 */}
+                            {iconData.source === '纯色图标' && <span>{iconData.text.substring(0, 2)}</span>}
+                        </div>
+                    )}
+
+                    {/* 显示在线图标选项 */}
+                    {iconData.source === '在线图标' && retrievedIcons && retrievedIcons.length > 0 && (
+                      <div className="online-icons-section-container">
+                        {/* 直接在滚动容器上应用ref，简化结构 */}
+                        <div 
+                          className="online-icons-container-scroll" 
+                          ref={onlineIconsContainerRef}
+                        >
+                            {retrievedIcons.map((icon, index) => (
+                                <div 
+                                    key={index}
+                                    onClick={() => handleOnlineIconSelect(icon.url)}
+                                    className={`online-icon-option ${selectedOnlineIcon === icon.url ? 'selected' : ''}`}
+                                >
+                                    <img src={icon.url} alt={`Icon ${index}`} />
+                                </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 本地上传功能 */}
+                    {iconData.source === '本地上传' && (
+                        <div className="local-upload-container">
+                            {localIcon ? (
+                                <img src={localIcon} alt="Uploaded icon" className="local-preview" />
+                            ) : (
+                                <label className="local-upload-label" htmlFor="local-icon-upload">
+                                    <span>点击上传图标</span>
+                                </label>
+                            )}
+                            <input
+                                ref={fileInputRef}
+                                id="local-icon-upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleLocalFileUpload}
+                                className="local-upload-input"
+                            />
+                        </div>
+                    )}
+
+                    {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
+                        <div className="color-selection">
+                            {/* 颜色选择器 */}
+                            {colorOptions.map((color, index) => (
+                                <div 
+                                    key={index}
+                                    onClick={() => handleColorChange(color)} 
+                                    style={{ backgroundColor: color }}
+                                    className={iconData.color === color ? 'selected' : ''}
+                                ></div>
+                            ))}
+                            {/* 自定义颜色选择器 */}
+                            <div 
+                                className={`custom-color-picker ${iconData.color === 'custom' ? 'selected' : ''}`}
+                                title="自定义颜色"
+                            >
+                                <input 
+                                    type="color" 
+                                    value={iconData.color} 
+                                    onChange={handleCustomColorChange}
+                                    className="custom-color-input"
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
+                
                 {/* 只有当图标来源不是"在线图标"时才显示文本输入框 */}
-                {accountData.iconConfig.source !== '在线图标' && accountData.iconConfig.source !== '本地上传' && (
+                {iconData.source !== '在线图标' && iconData.source !== '本地上传' && (
                     <div className="form-group">
                         <div className="input-with-icon">
                             <i className="icon-iconpath">🔤</i>
                             <input 
                                 type="text" 
-                                value={accountData.iconConfig.text}
+                                value={iconData.text}
                                 onChange={(e) => {
-                                    const updatedIconConfig = { ...accountData.iconConfig, text: e.target.value };
-                                    setAccountData(prev => ({
-                                        ...prev,
-                                        iconConfig: updatedIconConfig
-                                    }));
+                                    const updatedIconConfig = { ...iconData, text: e.target.value };
+                                    setIconData(updatedIconConfig);
                                 }}
                                 placeholder="显示图标文字，可选（建议1~2个字汉字）"
                                 className="input-field"
