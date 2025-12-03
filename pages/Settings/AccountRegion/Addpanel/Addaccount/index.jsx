@@ -122,17 +122,22 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         }
     };
 
-    const container = onlineIconsContainerRef.current;
-    if (container) {
-        container.addEventListener('wheel', handleWheel, { passive: false });
-    }
+    // 延迟执行确保DOM已渲染
+    const timeoutId = setTimeout(() => {
+      const container = onlineIconsContainerRef.current;
+      if (container) {
+          container.addEventListener('wheel', handleWheel, { passive: false });
+      }
+    }, 0);
 
     return () => {
+        clearTimeout(timeoutId);
+        const container = onlineIconsContainerRef.current;
         if (container) {
             container.removeEventListener('wheel', handleWheel);
         }
     };
-  }, []);
+  }, [retrievedIcons]); // 当retrievedIcons变化时重新绑定事件
 
   // 添加一个函数来转义HTML/XML特殊字符
   const escapeHtml = (unsafe) => {

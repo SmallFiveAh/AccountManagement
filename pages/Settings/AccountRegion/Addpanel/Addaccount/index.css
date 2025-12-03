@@ -293,7 +293,6 @@ textarea.input-field {
 }
 
 .online-icons-container-scroll {
-    background-color: #5dff2c3d;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 20px;
