@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
+import { syncToGist } from '../../GistAPI';
 import Addaccount from './Addpanel/Addaccount';
 import Mergecoverage from '../Mergecoverage';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
-import { syncToGist } from '../../GistAPI';
 import Addcategory from './Addpanel/Addcategory';
 import ChooseExport from './Addpanel/ChooseExport';
+import ImportAccount from './Addpanel/ImportAccount'; // 添加导入组件引入
 import './index.css'
 
 
@@ -38,6 +39,8 @@ function AccountRegion() {
   const [showAddCategory, setShowAddCategory] = useState(false);
   // 控制导出数据面板显示状态
   const [showChooseExport, setShowChooseExport] = useState(false);
+  // 控制导入数据面板显示状态（新增）
+  const [showImportAccount, setShowImportAccount] = useState(false);
 
   // 监听showMergeCoverage事件
   useEffect(() => {
@@ -335,6 +338,16 @@ function AccountRegion() {
     setShowChooseExport(false);
   };
 
+  // 处理关闭导入数据面板（新增）
+  const handleCloseImportAccount = () => {
+    setShowImportAccount(false);
+  };
+
+  // 处理导入数据点击事件（新增）
+  const handleImportDataClick = () => {
+    setShowImportAccount(true);
+  };
+
   // 处理页面切换
   const switchPage = (newPage) => {
     // 如果正在切换中，则忽略新的切换请求
@@ -490,7 +503,7 @@ function AccountRegion() {
               </svg>
             </div>
           </div>
-          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} onExportData={handleExportDataClick} />
+          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} onExportData={handleExportDataClick} onImportData={handleImportDataClick} />
         </div>
       </div>
       <ContextMenu 
@@ -509,6 +522,7 @@ function AccountRegion() {
       />
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} />}
       {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}
+      {showImportAccount && <ImportAccount onClose={handleCloseImportAccount} />} {/* 添加导入组件条件渲染 */}
       {showMergeCoverage && <Mergecoverage />}
     </>
   )

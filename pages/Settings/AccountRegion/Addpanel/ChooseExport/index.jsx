@@ -46,16 +46,25 @@ function ChooseExport({ onClose, Currentpagedata }) {
 
     // 导出为TXT格式
     const exportAsTXT = () => {
-        let txtContent = 'Account List\n=============\n\n';
-        Currentpagedata.forEach(account => {
-            txtContent += `ID: ${account.id}\n`;
-            txtContent += `Username: ${account.username}\n`;
-            txtContent += `Email: ${account.email}\n`;
-            txtContent += `Password: ${account.password}\n`;
-            txtContent += '------------------------\n';
-        });
+        const headers = ['id', 'username', 'password', 'name', 'usageCount', 'description', 'url', 'icon', 'iconConfig'];
+        const rows = Currentpagedata.map(account => 
+            [
+                account.id,
+                account.username,
+                account.password,
+                account.name,
+                account.usageCount,
+                account.description,
+                account.url,
+                account.icon,
+                JSON.stringify(account.iconConfig)
+            ].join('\t')
+        );
         
-        const blob = new Blob([txtContent], { type: 'text/plain' });
+        // 添加UTF-8 BOM以确保正确编码
+        const bom = '\uFEFF';
+        const txtContent = [headers.join('\t'), ...rows].join('\n');
+        const blob = new Blob([bom + txtContent], { type: 'text/plain;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
