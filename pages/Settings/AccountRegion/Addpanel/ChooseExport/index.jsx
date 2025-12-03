@@ -75,7 +75,7 @@ function ChooseExport({ onClose }) {
     };
 
     return (
-        <div className="choose-export-panel">
+        <div className="choose-export-panel" onClick={onClose}>
             <div className="Add-Account-Panel" onClick={(e) => e.stopPropagation()}>
                 <div className="complete-btn" title="关闭" onClick={onClose}>&times;</div>
                 <h2 className="panel-title">选择导出方式</h2>
