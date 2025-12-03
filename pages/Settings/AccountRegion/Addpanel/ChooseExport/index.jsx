@@ -1,17 +1,10 @@
 import { useState } from 'react';
 import './index.css';
 
-function ChooseExport({ onClose }) {
-    // 模拟账户数据
-    const mockAccounts = [
-        { id: 1, username: 'user1', email: 'user1@example.com', password: 'pass123' },
-        { id: 2, username: 'user2', email: 'user2@example.com', password: 'pass456' },
-        { id: 3, username: 'user3', email: 'user3@example.com', password: 'pass789' }
-    ];
-
+function ChooseExport({ onClose, Currentpagedata }) {
     // 导出为JSON格式
     const exportAsJSON = () => {
-        const dataStr = JSON.stringify(mockAccounts, null, 2);
+        const dataStr = JSON.stringify(Currentpagedata, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -23,12 +16,26 @@ function ChooseExport({ onClose }) {
 
     // 导出为CSV格式
     const exportAsCSV = () => {
-        const headers = ['ID', 'Username', 'Email', 'Password'];
-        const rows = mockAccounts.map(account => 
-            `${account.id},${account.username},${account.email},${account.password}`
-        );
+        const headers = ['id', 'username', 'password', 'name', 'usageCount', 'description', 'url', 'icon', 'iconConfig'];
+        const escapeCsvField = (field) => {
+            if (typeof field === 'string' && (field.includes(',') || field.includes('"') || field.includes('\n'))) {
+                return `"${field.replace(/"/g, '""')}"`;
+            }
+            return field;
+        };
+        const rows = Currentpagedata.map(account => [
+            account.id,
+            escapeCsvField(account.username),
+            escapeCsvField(account.password),
+            escapeCsvField(account.name),
+            account.usageCount,
+            escapeCsvField(account.description),
+            escapeCsvField(account.url),
+            escapeCsvField(account.icon),
+            escapeCsvField(JSON.stringify(account.iconConfig))
+        ].join(','));
         const csvContent = [headers.join(','), ...rows].join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -40,7 +47,7 @@ function ChooseExport({ onClose }) {
     // 导出为TXT格式
     const exportAsTXT = () => {
         let txtContent = 'Account List\n=============\n\n';
-        mockAccounts.forEach(account => {
+        Currentpagedata.forEach(account => {
             txtContent += `ID: ${account.id}\n`;
             txtContent += `Username: ${account.username}\n`;
             txtContent += `Email: ${account.email}\n`;

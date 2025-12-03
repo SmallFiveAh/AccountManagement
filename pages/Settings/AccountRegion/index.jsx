@@ -508,7 +508,7 @@ function AccountRegion() {
         editAccount={editAccount}
       />
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} />}
-      {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} />}
+      {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}
       {showMergeCoverage && <Mergecoverage />}
     </>
   )
