@@ -311,67 +311,6 @@ function AccountRegion() {
     handleCloseContextMenu();
   };
   
-  const handleAddAccount = () => {
-    // 检查是否达到最大页数限制
-    if (totalPages >= MAX_PAGES && currentAccounts.length >= ACCOUNTS_PER_PAGE) {
-      return // 达到最大限制，无法添加更多账号
-    }
-    
-    setPages(prevPages => {
-      const newPages = [...prevPages]
-      
-      // 如果当前页已满，则创建新页
-      if (currentAccounts.length >= ACCOUNTS_PER_PAGE) {
-        // 检查是否还能添加新页
-        if (totalPages >= MAX_PAGES) {
-          return prevPages // 已达最大页数限制
-        }
-        // 添加新的一页
-        newPages.push([{
-          id: Date.now(), // 使用时间戳作为唯一ID
-          name: `账号${newPages.flat().length + 1}`,
-          icon: '../resource/img/icon-48.png',
-          description: '',
-          username: '',
-          password: '',
-          iconConfig: {
-            source: '在线图标',
-            color: '#339aff',
-            text: ''
-          },
-          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
-          // 添加这一行以初始化 usageCount
-          usageCount: 0 // 初始化使用次数为0
-        }])
-        // 更新到新页
-        setCurrentPage(newPages.length - 1)
-      } else {
-        // 在当前页添加账号
-        const newAccount = {
-          id: Date.now(),
-          name: `账号${newPages.flat().length + 1}`,
-          icon: '../resource/img/icon-48.png',
-          description: '',
-          username: '',
-          password: '',
-          iconConfig: {
-            source: '在线图标',
-            color: '#339aff',
-            text: ''
-          },
-          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
-          // 添加这一行以初始化 usageCount
-          usageCount: 0 // 初始化使用次数为0
-        }
-        newPages[currentPage] = [...currentAccounts, newAccount]
-      }
-      // 保存到本地存储
-      const allAccounts = newPages.flat();
-      localStorage.setItem('accounts', JSON.stringify(allAccounts));
-      return newPages
-    })
-  }
-
   const handleAddAccountClick = () => {
     setShowAddAccount(true);
   };
