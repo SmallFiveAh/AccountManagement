@@ -5,6 +5,7 @@ import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
 import { syncToGist } from '../../GistAPI';
 import Addcategory from './Addpanel/Addcategory';
+import ChooseExport from './Addpanel/ChooseExport';
 import './index.css'
 
 
@@ -35,6 +36,8 @@ function AccountRegion() {
   const [showMergeCoverage, setShowMergeCoverage] = useState(false);
   // 控制添加分类面板显示状态
   const [showAddCategory, setShowAddCategory] = useState(false);
+  // 控制导出数据面板显示状态
+  const [showChooseExport, setShowChooseExport] = useState(false);
 
   // 监听showMergeCoverage事件
   useEffect(() => {
@@ -383,6 +386,16 @@ function AccountRegion() {
     setShowAddCategory(false);
   };
 
+  // 处理导出数据点击事件
+  const handleExportDataClick = () => {
+    setShowChooseExport(true);
+  };
+
+  // 处理关闭导出数据面板
+  const handleCloseChooseExport = () => {
+    setShowChooseExport(false);
+  };
+
   // 处理页面切换
   const switchPage = (newPage) => {
     // 如果正在切换中，则忽略新的切换请求
@@ -538,7 +551,7 @@ function AccountRegion() {
               </svg>
             </div>
           </div>
-          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} />
+          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} onExportData={handleExportDataClick} />
         </div>
       </div>
       <ContextMenu 
@@ -556,6 +569,7 @@ function AccountRegion() {
         editAccount={editAccount}
       />
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} />}
+      {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} />}
       {showMergeCoverage && <Mergecoverage />}
     </>
   )
