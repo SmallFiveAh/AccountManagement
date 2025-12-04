@@ -141,7 +141,7 @@
 }
 
 .Beautify-json-Import { 
-    margin-top: 10px;
+    margin-bottom: 12px;
     border-radius: 12px;
     background-color: rgba(87, 87, 87, 0.5);
     height: calc(100% - 280px);
@@ -182,7 +182,6 @@
 
 .import-instructions {
     display: flex;
-    margin: 20px;
     align-items: center;
     justify-content: center;
 }
