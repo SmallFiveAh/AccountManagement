@@ -27,14 +27,23 @@ function ImportAccount({ onClose }) {
     const handleImport = () => {
         // 在这里处理导入逻辑
         // 采用本地存储方式进行导入，导入时要读取本地存储中的accounts字段data，在最后面追加新导入的账号数据
-        const existingAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-        const newAccount = {
-            fileName,
-            content: fileContent,
-            description,
-        };
-        const updatedAccounts = [...existingAccounts, newAccount];
-        localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+        try {
+            const parsedData = JSON.parse(fileContent || description);
+            const existingAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            
+            let updatedAccounts = [];
+            if (Array.isArray(parsedData)) {
+                // 如果是数组，循环追加所有账号
+                updatedAccounts = [...existingAccounts, ...parsedData];
+            } else {
+                // 如果不是数组，直接追加单个账号
+                updatedAccounts = [...existingAccounts, parsedData];
+            }
+            localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+        } catch (error) {
+            console.error('导入失败:', error);
+            alert('导入失败，请检查文件格式是否正确');
+        }
     };
 
     return (
