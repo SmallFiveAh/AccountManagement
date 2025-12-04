@@ -42,6 +42,11 @@ function AccountRegion() {
   // 控制导入数据面板显示状态（新增）
   const [showImportAccount, setShowImportAccount] = useState(false);
 
+  // 每页最大账号数和最大页数
+  const ACCOUNTS_PER_PAGE = 59
+  const MAX_PAGES = 50
+
+
   // 监听showMergeCoverage事件
   useEffect(() => {
     const handleShowMergeCoverage = () => {
@@ -119,7 +124,7 @@ function AccountRegion() {
   // 处理保存账号
   const handleSaveAccount = (accountData, isEdit = false) => {
     // 检查是否达到最大页数限制
-    if (pages.length >= 50 && pages[pages.length - 1].length >= 59 && !isEdit) {
+    if (pages.length >= MAX_PAGES && pages[pages.length - 1].length >= ACCOUNTS_PER_PAGE && !isEdit) {
       return; // 达到最大限制，无法添加更多账号
     }
     
@@ -137,8 +142,8 @@ function AccountRegion() {
         
         // 重新组织为页面结构
         const updatedPages = [];
-        for (let i = 0; i < updatedAccounts.length; i += 59) {
-          updatedPages.push(updatedAccounts.slice(i, i + 59));
+        for (let i = 0; i < updatedAccounts.length; i += ACCOUNTS_PER_PAGE) {
+          updatedPages.push(updatedAccounts.slice(i, i + ACCOUNTS_PER_PAGE));
         }
         
         localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
@@ -148,9 +153,9 @@ function AccountRegion() {
       } else {
         // 添加模式：添加新账号
         // 如果当前页已满，则创建新页
-        if (currentPage.length >= 59) {
+        if (currentPage.length >= ACCOUNTS_PER_PAGE) {
           // 检查是否还能添加新页
-          if (newPages.length >= 50) {
+          if (newPages.length >= MAX_PAGES) {
             return prevPages; // 已达最大页数限制
           }
           // 添加新的一页
@@ -193,9 +198,7 @@ function AccountRegion() {
     setEditAccount(null); // 保存后清除编辑状态
   };
 
-  // 每页最大账号数和最大页数
-  const ACCOUNTS_PER_PAGE = 59
-  const MAX_PAGES = 50
+
   
   // 获取当前页的账号列表
   // 修复：确保即使pages[currentPage]不存在也返回空数组
