@@ -17,7 +17,7 @@ function ImportAccount({ onClose }) {
     };
 
     return (
-        <div className="choose-export-panel-Import" onClick={onClose}>
+        <div className="choose-export-panel-Import">
             <div className="Add-Account-Panel-Import" onClick={(e) => e.stopPropagation()}>
                 <div className="complete-btn" title="关闭" onClick={onClose}>&times;</div>
                 <h2 className="panel-title">导入账号</h2>
