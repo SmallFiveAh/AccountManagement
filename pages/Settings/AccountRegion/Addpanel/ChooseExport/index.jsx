@@ -95,6 +95,12 @@ function ChooseExport({ onClose, Currentpagedata }) {
             <div className="Add-Account-Panel-Export" onClick={(e) => e.stopPropagation()}>
                 <div className="complete-btn" title="关闭" onClick={onClose}>&times;</div>
                 <h2 className="panel-title">选择导出</h2>
+                <div className="Select-Export">
+                    <p >请选择您要导出的格式：</p>
+                    <div className="Select-Export-options">
+                        {/* 该位置实现显示出来的标签页面，用来选择对应的标签页面导出对应页面的数据 */}
+                    </div>
+                </div>
                 <div className="export-options">
                     <div className="option-item" onClick={() => handleChoose('json')}>
                         <div className="option-icon">📄</div>

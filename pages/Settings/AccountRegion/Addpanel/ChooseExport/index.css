@@ -79,3 +79,14 @@
     color: #fff;
     font-weight: 500;
 }
+
+.Select-Export {
+    display: flex;
+    background-color: rgba(87, 87, 87, 0.5);
+    border-radius: 12px;
+    height: 100%;
+    align-items: center;
+    /* 添加内间距 */
+    padding: 0 15px;
+    color: #fff;
+}
