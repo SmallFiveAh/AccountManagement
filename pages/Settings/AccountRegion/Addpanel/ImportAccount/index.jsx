@@ -3,12 +3,21 @@ import './index.css';
 
 function ImportAccount({ onClose }) {
     const [fileName, setFileName] = useState('');
+    const [fileContent, setFileContent] = useState(''); // 新增状态存储文件内容
     const [description, setDescription] = useState('');
     
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setFileName(file.name);
+            
+            // 使用 FileReader 读取文件内容
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setFileContent(event.target.result);
+                setDescription(event.target.result); // 将文件内容设置到textarea中
+            };
+            reader.readAsText(file);
         }
     };
 
