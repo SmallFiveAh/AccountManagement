@@ -1,0 +1,210 @@
+.Add-Account-Panel-Import {
+    background-color: rgba(185, 185, 185, 0.5);
+    width: 40%;
+    height: 850px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+/* 添加面板样式，与导出面板保持一致 */
+.choose-export-panel-Import {
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.complete-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+
+.export-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.export-options .option-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: rgba(165, 165, 165, 0.568);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.export-options .option-item:hover {
+    background-color: rgba(221, 221, 221, 0.877);
+    transform: translateY(-2px);
+}
+
+.export-options .option-icon {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.export-options .option-text {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.file-upload-container {
+    background-color: rgba(87, 87, 87, 0.5);
+    border-radius: 12px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgba(184, 184, 184, 0.5);
+    position: relative;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.file-upload-container:hover {
+    background-color: rgba(71, 71, 71, 0.5);
+}
+
+.file-upload-label {
+    height: 38px;
+    padding: 0 50px;
+    background: linear-gradient(135deg, #6ea5e4, #266bdb);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(53, 122, 232, 0.3);
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-name {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #ddd;
+    font-size: 14px;
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.Beautify-json-Import { 
+    margin-bottom: 12px;
+    border-radius: 12px;
+    background-color: rgba(87, 87, 87, 0.5);
+    height: calc(100% - 280px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.Beautify-json-Import-textarea {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 15px;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    border-radius: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.Beautify-json-Import-textarea::placeholder {
+    color: rgb(255, 255, 255);
+}
+
+.char-count {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 4px 10px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.import-instructions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.import-btn {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #4a90e2, #357ae8);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(53, 122, 232, 0.3);
+}
+
+.import-btn:hover {
+    background: linear-gradient(135deg, #357ae8, #2a65c0);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(53, 122, 232, 0.4);
+}
+
+.import-btn:active {
+    transform: translateY(0);
+}

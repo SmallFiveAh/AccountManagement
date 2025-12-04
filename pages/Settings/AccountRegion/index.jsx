@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
+import { syncToGist } from '../../GistAPI';
 import Addaccount from './Addpanel/Addaccount';
 import Mergecoverage from '../Mergecoverage';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
-import { syncToGist } from '../../GistAPI';
 import Addcategory from './Addpanel/Addcategory';
 import ChooseExport from './Addpanel/ChooseExport';
+import ImportAccount from './Addpanel/ImportAccount'; // 添加导入组件引入
 import './index.css'
 
 
@@ -38,6 +39,13 @@ function AccountRegion() {
   const [showAddCategory, setShowAddCategory] = useState(false);
   // 控制导出数据面板显示状态
   const [showChooseExport, setShowChooseExport] = useState(false);
+  // 控制导入数据面板显示状态（新增）
+  const [showImportAccount, setShowImportAccount] = useState(false);
+
+  // 每页最大账号数和最大页数
+  const ACCOUNTS_PER_PAGE = 59
+  const MAX_PAGES = 50
+
 
   // 监听showMergeCoverage事件
   useEffect(() => {
@@ -116,7 +124,7 @@ function AccountRegion() {
   // 处理保存账号
   const handleSaveAccount = (accountData, isEdit = false) => {
     // 检查是否达到最大页数限制
-    if (pages.length >= 50 && pages[pages.length - 1].length >= 59 && !isEdit) {
+    if (pages.length >= MAX_PAGES && pages[pages.length - 1].length >= ACCOUNTS_PER_PAGE && !isEdit) {
       return; // 达到最大限制，无法添加更多账号
     }
     
@@ -134,8 +142,8 @@ function AccountRegion() {
         
         // 重新组织为页面结构
         const updatedPages = [];
-        for (let i = 0; i < updatedAccounts.length; i += 59) {
-          updatedPages.push(updatedAccounts.slice(i, i + 59));
+        for (let i = 0; i < updatedAccounts.length; i += ACCOUNTS_PER_PAGE) {
+          updatedPages.push(updatedAccounts.slice(i, i + ACCOUNTS_PER_PAGE));
         }
         
         localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
@@ -145,9 +153,9 @@ function AccountRegion() {
       } else {
         // 添加模式：添加新账号
         // 如果当前页已满，则创建新页
-        if (currentPage.length >= 59) {
+        if (currentPage.length >= ACCOUNTS_PER_PAGE) {
           // 检查是否还能添加新页
-          if (newPages.length >= 50) {
+          if (newPages.length >= MAX_PAGES) {
             return prevPages; // 已达最大页数限制
           }
           // 添加新的一页
@@ -190,9 +198,7 @@ function AccountRegion() {
     setEditAccount(null); // 保存后清除编辑状态
   };
 
-  // 每页最大账号数和最大页数
-  const ACCOUNTS_PER_PAGE = 59
-  const MAX_PAGES = 50
+
   
   // 获取当前页的账号列表
   // 修复：确保即使pages[currentPage]不存在也返回空数组
@@ -311,67 +317,6 @@ function AccountRegion() {
     handleCloseContextMenu();
   };
   
-  const handleAddAccount = () => {
-    // 检查是否达到最大页数限制
-    if (totalPages >= MAX_PAGES && currentAccounts.length >= ACCOUNTS_PER_PAGE) {
-      return // 达到最大限制，无法添加更多账号
-    }
-    
-    setPages(prevPages => {
-      const newPages = [...prevPages]
-      
-      // 如果当前页已满，则创建新页
-      if (currentAccounts.length >= ACCOUNTS_PER_PAGE) {
-        // 检查是否还能添加新页
-        if (totalPages >= MAX_PAGES) {
-          return prevPages // 已达最大页数限制
-        }
-        // 添加新的一页
-        newPages.push([{
-          id: Date.now(), // 使用时间戳作为唯一ID
-          name: `账号${newPages.flat().length + 1}`,
-          icon: '../resource/img/icon-48.png',
-          description: '',
-          username: '',
-          password: '',
-          iconConfig: {
-            source: '在线图标',
-            color: '#339aff',
-            text: ''
-          },
-          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
-          // 添加这一行以初始化 usageCount
-          usageCount: 0 // 初始化使用次数为0
-        }])
-        // 更新到新页
-        setCurrentPage(newPages.length - 1)
-      } else {
-        // 在当前页添加账号
-        const newAccount = {
-          id: Date.now(),
-          name: `账号${newPages.flat().length + 1}`,
-          icon: '../resource/img/icon-48.png',
-          description: '',
-          username: '',
-          password: '',
-          iconConfig: {
-            source: '在线图标',
-            color: '#339aff',
-            text: ''
-          },
-          url: `https://example.com/account/${Date.now()}`, // 添加默认URL
-          // 添加这一行以初始化 usageCount
-          usageCount: 0 // 初始化使用次数为0
-        }
-        newPages[currentPage] = [...currentAccounts, newAccount]
-      }
-      // 保存到本地存储
-      const allAccounts = newPages.flat();
-      localStorage.setItem('accounts', JSON.stringify(allAccounts));
-      return newPages
-    })
-  }
-
   const handleAddAccountClick = () => {
     setShowAddAccount(true);
   };
@@ -396,6 +341,16 @@ function AccountRegion() {
     setShowChooseExport(false);
   };
 
+  // 处理关闭导入数据面板（新增）
+  const handleCloseImportAccount = () => {
+    setShowImportAccount(false);
+  };
+
+  // 处理导入数据点击事件（新增）
+  const handleImportDataClick = () => {
+    setShowImportAccount(true);
+  };
+
   // 处理页面切换
   const switchPage = (newPage) => {
     // 如果正在切换中，则忽略新的切换请求
@@ -415,6 +370,8 @@ function AccountRegion() {
       // 动画完成后重置切换状态
       setTimeout(() => {
         setIsTransitioning(false)
+        // 重置方向状态，避免动画重复触发
+        setDirection('')
       }, 300) // 与动画持续时间匹配
     }
   }
@@ -476,15 +433,6 @@ function AccountRegion() {
     }
   }, [currentPage, totalPages, isTransitioning, showContextMenu])
   
-  // 重置方向状态，避免动画重复触发
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDirection('')
-    }, 500) // 与动画持续时间匹配
-    
-    return () => clearTimeout(timer)
-  }, [currentPage])
-
   // 处理编辑账号
   const handleEditAccount = (e) => {
     if (e.target.name === 'edit-account') {
@@ -499,6 +447,7 @@ function AccountRegion() {
         className="header-container"
         data-page={currentPage}
         data-direction={direction}
+        key={currentPage} // 添加key属性强制重新渲染
       >
         {currentAccounts.map(account => {
           const label = account.name.length > 7 ? account.name.slice(0, 7) + '...' : account.name
@@ -551,7 +500,7 @@ function AccountRegion() {
               </svg>
             </div>
           </div>
-          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} onExportData={handleExportDataClick} />
+          <Addpanel onAddAccount={handleAddAccountClick} onAddCategory={handleAddCategoryClick} onExportData={handleExportDataClick} onImportData={handleImportDataClick} />
         </div>
       </div>
       <ContextMenu 
@@ -569,7 +518,8 @@ function AccountRegion() {
         editAccount={editAccount}
       />
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} />}
-      {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} />}
+      {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}
+      {showImportAccount && <ImportAccount onClose={handleCloseImportAccount} />} {/* 添加导入组件条件渲染 */}
       {showMergeCoverage && <Mergecoverage />}
     </>
   )
