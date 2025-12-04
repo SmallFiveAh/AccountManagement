@@ -10,7 +10,6 @@ function ImportAccount({ onClose }) {
         const file = e.target.files[0];
         if (file) {
             setFileName(file.name);
-            
             // 使用 FileReader 读取文件内容
             const reader = new FileReader();
             reader.onload = (event) => {
@@ -23,6 +22,19 @@ function ImportAccount({ onClose }) {
 
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
+    };
+
+    const handleImport = () => {
+        // 在这里处理导入逻辑
+        // 采用本地存储方式进行导入，导入时要读取本地存储中的accounts字段data，在最后面追加新导入的账号数据
+        const existingAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+        const newAccount = {
+            fileName,
+            content: fileContent,
+            description,
+        };
+        const updatedAccounts = [...existingAccounts, newAccount];
+        localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
     };
 
     return (
@@ -57,7 +69,7 @@ function ImportAccount({ onClose }) {
                     <div className="char-count">{description.length} 字</div>
                 </div>
                 <div className="import-instructions">
-                    <button className="import-btn">导入</button>
+                    <button className="import-btn" onClick={handleImport}>导入</button>
                 </div>
             </div>
         </div>
