@@ -6,6 +6,11 @@ function ImportAccount({ onClose }) {
     const [fileContent, setFileContent] = useState(''); // 新增状态存储文件内容
     const [description, setDescription] = useState('');
     
+    // 添加处理滚轮事件的函数，阻止事件冒泡
+    const handleWheel = (e) => {
+        e.stopPropagation();
+    };
+    
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -52,7 +57,8 @@ function ImportAccount({ onClose }) {
     };
 
     return (
-        <div className="choose-export-panel-Import">
+        // 在最外层容器上添加onWheel事件处理
+        <div className="choose-export-panel-Import" onWheel={handleWheel}>
             <div className="Add-Account-Panel-Import" onClick={(e) => e.stopPropagation()}>
                 <div className="complete-btn" title="关闭" onClick={onClose}>&times;</div>
                 <h2 className="panel-title">导入账号</h2>
