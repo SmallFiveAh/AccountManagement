@@ -41,6 +41,8 @@ function AccountRegion() {
   const [showChooseExport, setShowChooseExport] = useState(false);
   // 控制导入数据面板显示状态（新增）
   const [showImportAccount, setShowImportAccount] = useState(false);
+  // 分类数据状态
+  const [categories, setCategories] = useState([]);
 
   // 每页最大账号数和最大页数
   const ACCOUNTS_PER_PAGE = 59
@@ -88,6 +90,25 @@ function AccountRegion() {
       setPages(loadedPages);
     }
   }, []);
+
+  // 初始化时从本地存储加载分类数据
+  useEffect(() => {
+    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
+    setCategories(savedCategories);
+  }, []);
+
+  // 处理添加分类完成事件
+  const handleCategoryAdded = (newCategory) => {
+    setCategories(prev => [...prev, newCategory]);
+    
+    // 添加新的空白页面
+    setPages(prevPages => {
+      const newPages = [...prevPages];
+      // 添加一个新的空白页面
+      newPages.push([]);
+      return newPages;
+    });
+  };
 
   // 防抖同步函数
   const debounceSyncToGist = (accounts) => {
@@ -452,7 +473,7 @@ function AccountRegion() {
         {currentAccounts.map(account => {
           const label = account.name.length > 7 ? account.name.slice(0, 7) + '...' : account.name
           return (
-            <div className="account-container" key={account.id}>
+            <div className="account-container" key={`account-${account.id}`}>
               <div className="icon-container">
                 <div className="icon-box">
                   <img 
@@ -517,7 +538,8 @@ function AccountRegion() {
         onSave={handleSaveAccount}
         editAccount={editAccount}
       />
-      {showAddCategory && <Addcategory onClose={handleCloseAddCategory} />}
+      {/* 修改:Addcategory组件传递onCategoryAdded属性 */}
+      {showAddCategory && <Addcategory onClose={handleCloseAddCategory} onCategoryAdded={handleCategoryAdded} />}
       {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}
       {showImportAccount && <ImportAccount onClose={handleCloseImportAccount} />} {/* 添加导入组件条件渲染 */}
       {showMergeCoverage && <Mergecoverage />}
