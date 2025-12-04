@@ -156,12 +156,37 @@
     background-color: transparent;
     border: none;
     color: #ffffff;
-    padding: 15px;
+    padding: 15px 30px 15px 15px; /* 右侧增加padding为滚动条预留空间 */
     font-size: 14px;
     resize: none;
     outline: none;
     border-radius: 12px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: overlay; /* 使用overlay让滚动条悬浮在内容上 */
+}
+
+/* 自定义滚动条样式 */
+.Beautify-json-Import-textarea::-webkit-scrollbar {
+    width: 12px; /* 增加滚动条宽度以包含间距 */
+}
+
+.Beautify-json-Import-textarea::-webkit-scrollbar-track {
+    background: transparent; /* 轨道背景透明 */
+    border-radius: 6px;
+    margin: 5px 10px 5px 0; /* 上下留5px间距，右侧留10px间距 */
+}
+
+.Beautify-json-Import-textarea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    border: 3px solid transparent; /* 用透明边框创建左右间距 */
+    background-clip: padding-box;
+}
+
+.Beautify-json-Import-textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border: 3px solid transparent;
+    background-clip: padding-box;
 }
 
 .Beautify-json-Import-textarea::placeholder {
@@ -184,9 +209,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .import-btn {
+    width: 100%;
     padding: 12px 30px;
     background: linear-gradient(135deg, #4a90e2, #357ae8);
     color: white;

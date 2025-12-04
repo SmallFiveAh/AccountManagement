@@ -40,6 +40,11 @@ function ImportAccount({ onClose }) {
                 updatedAccounts = [...existingAccounts, parsedData];
             }
             localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+            
+            // 导入成功后调用Monitor显示导入成功消息
+            if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                window.Monitor.showMessage('导入成功');
+            }
         } catch (error) {
             console.error('导入失败:', error);
             alert('导入失败，请检查文件格式是否正确');
@@ -78,7 +83,7 @@ function ImportAccount({ onClose }) {
                     <div className="char-count">{description.length} 字</div>
                 </div>
                 <div className="import-instructions">
-                    <button className="import-btn" onClick={handleImport}>导入</button>
+                    <button className="import-btn" onClick={handleImport}>导入账号数据</button>
                 </div>
             </div>
         </div>
