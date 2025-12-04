@@ -370,6 +370,8 @@ function AccountRegion() {
       // 动画完成后重置切换状态
       setTimeout(() => {
         setIsTransitioning(false)
+        // 重置方向状态，避免动画重复触发
+        setDirection('')
       }, 300) // 与动画持续时间匹配
     }
   }
@@ -431,15 +433,6 @@ function AccountRegion() {
     }
   }, [currentPage, totalPages, isTransitioning, showContextMenu])
   
-  // 重置方向状态，避免动画重复触发
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDirection('')
-    }, 500) // 与动画持续时间匹配
-    
-    return () => clearTimeout(timer)
-  }, [currentPage])
-
   // 处理编辑账号
   const handleEditAccount = (e) => {
     if (e.target.name === 'edit-account') {
@@ -454,6 +447,7 @@ function AccountRegion() {
         className="header-container"
         data-page={currentPage}
         data-direction={direction}
+        key={currentPage} // 添加key属性强制重新渲染
       >
         {currentAccounts.map(account => {
           const label = account.name.length > 7 ? account.name.slice(0, 7) + '...' : account.name
