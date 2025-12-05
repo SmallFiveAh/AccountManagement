@@ -15,6 +15,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
     },
     description: '',
     pageIndex: 0,
+    usageCount: 0
   });
 
   // 添加编辑模式的状态
@@ -91,7 +92,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
           text: ''
         },
         description: '',
-        pageIndex: 0
+        pageIndex: 0,
+        usageCount: 0
       });
       setIsEditMode(false);
       setRetrievedIcons([]);

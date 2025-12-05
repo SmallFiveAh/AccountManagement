@@ -86,7 +86,7 @@ function AccountRegion() {
           // 添加这一行以确保 usageCount 被正确加载
           usageCount: account.usageCount || 0,
           // 记录第几的页面数
-          pageIndex: Math.floor(i / 59)
+          pageIndex: Math.floor(i / 59) + 1,
         }));
         loadedPages.push(pageAccounts);
       }
@@ -192,6 +192,7 @@ function AccountRegion() {
             icon: accountData.icon,
             iconConfig: accountData.iconConfig,
             pageIndex: newPages.length, // 新页的索引
+            usageCount: 0,
             url: accountData.url || `https://example.com/account/${accountData.id}`
           }]);
           // 切换到新页面
@@ -206,7 +207,8 @@ function AccountRegion() {
             name: accountData.name,
             icon: accountData.icon,
             iconConfig: accountData.iconConfig,
-            pageIndex: currentPageIndex,  // 记录所属页面索引
+            pageIndex: currentPageIndex + 1,  // 记录所属页面索引
+            usageCount: 0,
             url: accountData.url || `https://example.com/account/${accountData.id}`
           };
           newPages[currentPageIndex] = [...currentPage, newAccount];
@@ -323,7 +325,7 @@ function AccountRegion() {
           url: account.url || `https://example.com/account/${account.id}`,
           // 添加这一行以确保 usageCount 被正确加载
           usageCount: account.usageCount || 0,
-          pageIndex: math.floor(i / 59),
+          pageIndex: Math.floor(i / 59) + 1,
         }));
         loadedPages.push(pageAccounts);
       }
