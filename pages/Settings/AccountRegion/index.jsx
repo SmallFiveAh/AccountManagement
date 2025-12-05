@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
-import { syncToGist } from '../../GistAPI';
-import Addaccount from './Addpanel/Addaccount';
-import Mergecoverage from '../Mergecoverage';
 import Addpanel from './Addpanel';
 import ContextMenu from './ContextMenu';
+import Partitionbar from '../Partitionbar';
+import { syncToGist } from '../../GistAPI';
+import Mergecoverage from '../Mergecoverage';
+import Addaccount from './Addpanel/Addaccount';
 import Addcategory from './Addpanel/Addcategory';
 import ChooseExport from './Addpanel/ChooseExport';
+import { useState, useEffect, useRef } from 'react';
 import ImportAccount from './Addpanel/ImportAccount'; // 添加导入组件引入
 import './index.css'
 
@@ -83,7 +84,9 @@ function AccountRegion() {
           },
           url: account.url || `https://example.com/account/${account.id}`,
           // 添加这一行以确保 usageCount 被正确加载
-          usageCount: account.usageCount || 0
+          usageCount: account.usageCount || 0,
+          // 记录第几的页面数
+          pageIndex: Math.floor(i / 59)
         }));
         loadedPages.push(pageAccounts);
       }
@@ -538,6 +541,7 @@ function AccountRegion() {
         onSave={handleSaveAccount}
         editAccount={editAccount}
       />
+      <Partitionbar onSwitchPage={(newPage) => switchPage(newPage)} />
       {/* 修改:Addcategory组件传递onCategoryAdded属性 */}
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} onCategoryAdded={handleCategoryAdded} />}
       {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}
