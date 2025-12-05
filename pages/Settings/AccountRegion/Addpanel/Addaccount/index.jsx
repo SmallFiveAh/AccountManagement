@@ -220,6 +220,9 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (accountData.name.trim()) {
+      // 修改生成ID的方式，确保唯一性
+      const uniqueId = Date.now() + Math.random();
+      
       if (isEditMode && editingAccountId) {
         // 编辑模式：更新现有账户
         const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
@@ -235,7 +238,7 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
         const newAccount = {
           ...accountData,
-          id: Date.now(), // 添加唯一标识符
+          id: uniqueId, // 使用更强的唯一ID生成方式
           createdAt: new Date().toISOString()
         };
         accounts.push(newAccount);

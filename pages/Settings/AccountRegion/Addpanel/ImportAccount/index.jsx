@@ -6,6 +6,11 @@ function ImportAccount({ onClose }) {
     const [fileContent, setFileContent] = useState(''); // 新增状态存储文件内容
     const [description, setDescription] = useState('');
     
+    // 添加处理滚轮事件的函数，阻止事件冒泡
+    const handleWheel = (e) => {
+        e.stopPropagation();
+    };
+    
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -40,6 +45,11 @@ function ImportAccount({ onClose }) {
                 updatedAccounts = [...existingAccounts, parsedData];
             }
             localStorage.setItem('accounts', JSON.stringify(updatedAccounts));
+            
+            // 导入成功后调用Monitor显示导入成功消息
+            if (window.Monitor && typeof window.Monitor.showMessage === 'function') {
+                window.Monitor.showMessage('导入成功');
+            }
         } catch (error) {
             console.error('导入失败:', error);
             alert('导入失败，请检查文件格式是否正确');
@@ -47,7 +57,8 @@ function ImportAccount({ onClose }) {
     };
 
     return (
-        <div className="choose-export-panel-Import">
+        // 在最外层容器上添加onWheel事件处理
+        <div className="choose-export-panel-Import" onWheel={handleWheel}>
             <div className="Add-Account-Panel-Import" onClick={(e) => e.stopPropagation()}>
                 <div className="complete-btn" title="关闭" onClick={onClose}>&times;</div>
                 <h2 className="panel-title">导入账号</h2>
@@ -78,7 +89,7 @@ function ImportAccount({ onClose }) {
                     <div className="char-count">{description.length} 字</div>
                 </div>
                 <div className="import-instructions">
-                    <button className="import-btn" onClick={handleImport}>导入</button>
+                    <button className="import-btn" onClick={handleImport}>导入账号数据</button>
                 </div>
             </div>
         </div>

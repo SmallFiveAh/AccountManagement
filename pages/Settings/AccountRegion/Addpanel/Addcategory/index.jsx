@@ -29,13 +29,36 @@ const iconOptions = [
   { id: 24, name: '工具', icon: '📌' },
 ];
 
-function Addcategory({ onClose }) {
+function Addcategory({ onClose, onCategoryAdded }) {
   // 设置默认选中第一个图标
   const [categoryName, setCategoryName] = useState(iconOptions[0].name);
   const [selectedIcon, setSelectedIcon] = useState(iconOptions[0]);
 
   const handleSave = () => {
     if (!categoryName.trim()) return alert('请输入分类名称');
+    
+    // 创建新分类对象
+    const newCategory = {
+      id: Date.now(),
+      name: categoryName,
+      icon: selectedIcon.icon,
+      iconId: selectedIcon.id
+    };
+    
+    // 从localStorage获取现有的分类数据
+    const existingCategories = JSON.parse(localStorage.getItem('Category') || '[]');
+    
+    // 添加新分类
+    const updatedCategories = [...existingCategories, newCategory];
+    
+    // 保存到localStorage
+    localStorage.setItem('Category', JSON.stringify(updatedCategories));
+    
+    // 通知父组件分类已添加
+    if (onCategoryAdded) {
+      onCategoryAdded(newCategory);
+    }
+    
     console.log('保存分类:', { categoryName, selectedIcon });
     onClose();
   };
