@@ -45,9 +45,29 @@ function Addcategory({ onClose, onCategoryAdded }) {
       iconId: selectedIcon.id
     };
     
+    // 初始化账户数据结构
+    const accountData = {
+      id: 0,
+      name: "",
+      description: "",
+      username: "",
+      password: "",
+      icon: "",
+      iconConfig: {
+          source: "",
+          color: "",
+          text: ""
+      },
+      url: "",
+      usageCount: 0,
+      pageIndex: 0
+    };
+
     // 从localStorage获取现有的分类数据
     const existingCategories = JSON.parse(localStorage.getItem('Category') || '[]');
-    
+    // 从localStorage获取现有的账户数据
+    const existingAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+
     // 添加新分类
     const updatedCategories = [...existingCategories, newCategory];
     
@@ -59,6 +79,10 @@ function Addcategory({ onClose, onCategoryAdded }) {
       onCategoryAdded(newCategory);
     }
     
+    // 修改这里：正确地将accountData添加到现有账户数组中
+    const accountDataWithCategory = [...existingAccounts, accountData];
+    
+    localStorage.setItem('accounts', JSON.stringify(accountDataWithCategory));
     console.log('保存分类:', { categoryName, selectedIcon });
     onClose();
   };
