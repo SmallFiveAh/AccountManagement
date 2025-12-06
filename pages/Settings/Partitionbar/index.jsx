@@ -37,6 +37,7 @@ function Partitionbar({ onSwitchPage, categories: propCategories }) {
     useEffect(() => {
         const handleWheel = (e) => {
             e.preventDefault();
+            // e.stopPropagation(); // 阻止事件冒泡，避免触发AccountRegion的全局滚轮监听器
             if (classificationRef.current) {
                 classificationRef.current.scrollBy({
                     top: e.deltaY,
@@ -77,7 +78,7 @@ function Partitionbar({ onSwitchPage, categories: propCategories }) {
                             onClick={() => handleCategoryClick(index)}
                             title={category.name}
                         >
-                            <i className={category.icon}></i>
+                            <i className="classification-scroll-container-icon">{category.icon}</i>
                             <span>{category.name}</span>
                         </div>
                     ))}

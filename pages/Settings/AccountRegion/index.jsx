@@ -423,6 +423,15 @@ function AccountRegion() {
 
   // 处理鼠标滚轮事件
   const handleWheel = (e) => {
+    // 检查事件是否来自Partitionbar组件，如果是则跳过处理
+    let target = e.target;
+    while (target) {
+      if (target.classList && (target.classList.contains('classification-scroll-container') || target.closest('.classification-scroll-container'))) {
+        return; // 来自Partitionbar，不处理
+      }
+      target = target.parentElement;
+    }
+    
     e.preventDefault()
     
     // 节流处理，避免快速滚动导致连续翻页
