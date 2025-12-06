@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import './index.css';
 
-function Partitionbar({ onSwitchPage }) { 
+function Partitionbar({ onSwitchPage, categories: propCategories }) { 
     const classificationRef = useRef(null);
     const [categories, setCategories] = useState([]);
     // 加载分类数据
@@ -26,6 +26,13 @@ function Partitionbar({ onSwitchPage }) {
             window.removeEventListener('storage', handleStorageChange);
         };
     }, []);
+    
+    // 当props中的categories变化时更新本地状态
+    useEffect(() => {
+        if (propCategories && propCategories.length > 0) {
+            setCategories(propCategories);
+        }
+    }, [propCategories]);
 
     useEffect(() => {
         const handleWheel = (e) => {
@@ -52,9 +59,8 @@ function Partitionbar({ onSwitchPage }) {
 
     // 处理分类点击事件
     const handleCategoryClick = (index) => {
-        // index 0 是默认页面，分类从 index 1 开始
         if (onSwitchPage) {
-            onSwitchPage(index + 1);
+            onSwitchPage(index);
         }
     };
     

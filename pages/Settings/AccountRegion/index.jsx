@@ -63,12 +63,20 @@ function AccountRegion() {
     };
   }, []);
 
+  // 初始化时从本地存储加载分类数据
+  useEffect(() => {
+    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
+    setCategories(savedCategories);
+  }, []);
+
   // 初始化时从本地存储加载账号数据
   useEffect(() => {
     const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
+    
+    // 将账号数据转换为页面结构
+    const loadedPages = [];
     if (savedAccounts.length > 0) {
-      // 将账号数据转换为页面结构
-      const loadedPages = [];
       for (let i = 0; i < savedAccounts.length; i += 59) {
         const pageAccounts = savedAccounts.slice(i, i + 59).map(account => ({
           id: account.id,
@@ -90,14 +98,19 @@ function AccountRegion() {
         }));
         loadedPages.push(pageAccounts);
       }
-      setPages(loadedPages);
     }
-  }, []);
-
-  // 初始化时从本地存储加载分类数据
-  useEffect(() => {
-    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
-    setCategories(savedCategories);
+    
+    // 确保页面数量与分类数量一致
+    // 如果分类数量多于页面数量，添加足够的空白页面
+    const categoryCount = savedCategories.length;
+    const pageCount = loadedPages.length;
+    if (categoryCount > pageCount) {
+      for (let i = pageCount; i < categoryCount; i++) {
+        loadedPages.push([]);
+      }
+    }
+    
+    setPages(loadedPages);
   }, []);
 
   // 处理添加分类完成事件
@@ -111,6 +124,9 @@ function AccountRegion() {
       newPages.push([]);
       return newPages;
     });
+    
+    // 添加分类后自动跳转到新创建的页面
+    setCurrentPage(prev => prev + 1);
   };
 
   // 防抖同步函数
@@ -546,7 +562,7 @@ function AccountRegion() {
         onSave={handleSaveAccount}
         editAccount={editAccount}
       />
-      <Partitionbar onSwitchPage={(newPage) => switchPage(newPage)} />
+      <Partitionbar onSwitchPage={(newPage) => switchPage(newPage)} categories={categories} />
       {/* 修改:Addcategory组件传递onCategoryAdded属性 */}
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} onCategoryAdded={handleCategoryAdded} />}
       {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}
