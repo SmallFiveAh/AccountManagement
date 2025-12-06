@@ -63,12 +63,20 @@ function AccountRegion() {
     };
   }, []);
 
+  // 初始化时从本地存储加载分类数据
+  useEffect(() => {
+    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
+    setCategories(savedCategories);
+  }, []);
+
   // 初始化时从本地存储加载账号数据
   useEffect(() => {
     const savedAccounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
+    
+    // 将账号数据转换为页面结构
+    const loadedPages = [];
     if (savedAccounts.length > 0) {
-      // 将账号数据转换为页面结构
-      const loadedPages = [];
       for (let i = 0; i < savedAccounts.length; i += 59) {
         const pageAccounts = savedAccounts.slice(i, i + 59).map(account => ({
           id: account.id,
@@ -86,18 +94,23 @@ function AccountRegion() {
           // 添加这一行以确保 usageCount 被正确加载
           usageCount: account.usageCount || 0,
           // 记录第几的页面数
-          pageIndex: Math.floor(i / 59)
+          pageIndex: Math.floor(i / 59) + 1,
         }));
         loadedPages.push(pageAccounts);
       }
-      setPages(loadedPages);
     }
-  }, []);
-
-  // 初始化时从本地存储加载分类数据
-  useEffect(() => {
-    const savedCategories = JSON.parse(localStorage.getItem('Category') || '[]');
-    setCategories(savedCategories);
+    
+    // 确保页面数量与分类数量一致
+    // 如果分类数量多于页面数量，添加足够的空白页面
+    const categoryCount = savedCategories.length;
+    const pageCount = loadedPages.length;
+    if (categoryCount > pageCount) {
+      for (let i = pageCount; i < categoryCount; i++) {
+        loadedPages.push([]);
+      }
+    }
+    
+    setPages(loadedPages);
   }, []);
 
   // 处理添加分类完成事件
@@ -111,6 +124,9 @@ function AccountRegion() {
       newPages.push([]);
       return newPages;
     });
+    
+    // 添加分类后自动跳转到新创建的页面
+    setCurrentPage(prev => prev + 1);
   };
 
   // 防抖同步函数
@@ -191,6 +207,8 @@ function AccountRegion() {
             name: accountData.name,
             icon: accountData.icon,
             iconConfig: accountData.iconConfig,
+            pageIndex: newPages.length, // 新页的索引
+            usageCount: 0,
             url: accountData.url || `https://example.com/account/${accountData.id}`
           }]);
           // 切换到新页面
@@ -205,6 +223,8 @@ function AccountRegion() {
             name: accountData.name,
             icon: accountData.icon,
             iconConfig: accountData.iconConfig,
+            pageIndex: currentPageIndex + 1,  // 记录所属页面索引
+            usageCount: 0,
             url: accountData.url || `https://example.com/account/${accountData.id}`
           };
           newPages[currentPageIndex] = [...currentPage, newAccount];
@@ -320,7 +340,8 @@ function AccountRegion() {
           },
           url: account.url || `https://example.com/account/${account.id}`,
           // 添加这一行以确保 usageCount 被正确加载
-          usageCount: account.usageCount || 0
+          usageCount: account.usageCount || 0,
+          pageIndex: Math.floor(i / 59) + 1,
         }));
         loadedPages.push(pageAccounts);
       }
@@ -402,6 +423,15 @@ function AccountRegion() {
 
   // 处理鼠标滚轮事件
   const handleWheel = (e) => {
+    // 检查事件是否来自Partitionbar组件，如果是则跳过处理
+    let target = e.target;
+    while (target) {
+      if (target.classList && (target.classList.contains('classification-scroll-container') || target.closest('.classification-scroll-container'))) {
+        return; // 来自Partitionbar，不处理
+      }
+      target = target.parentElement;
+    }
+    
     e.preventDefault()
     
     // 节流处理，避免快速滚动导致连续翻页
@@ -541,7 +571,7 @@ function AccountRegion() {
         onSave={handleSaveAccount}
         editAccount={editAccount}
       />
-      <Partitionbar onSwitchPage={(newPage) => switchPage(newPage)} />
+      <Partitionbar onSwitchPage={(newPage) => switchPage(newPage)} categories={categories} />
       {/* 修改:Addcategory组件传递onCategoryAdded属性 */}
       {showAddCategory && <Addcategory onClose={handleCloseAddCategory} onCategoryAdded={handleCategoryAdded} />}
       {showChooseExport && <ChooseExport onClose={handleCloseChooseExport} Currentpagedata={currentAccounts} />}

@@ -13,7 +13,9 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
       color: '#339aff',
       text: ''
     },
-    description: ''
+    description: '',
+    pageIndex: 0,
+    usageCount: 0
   });
 
   // 添加编辑模式的状态
@@ -61,7 +63,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
           text: ''
         },
         // 确保description字段存在
-        description: editAccount.description || ''
+        description: editAccount.description || '',
+        pageIndex: editAccount.pageIndex || 0
       });
       setIsEditMode(true);
       setEditingAccountId(editAccount.id);
@@ -88,7 +91,9 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
           color: '#339aff',
           text: ''
         },
-        description: ''
+        description: '',
+        pageIndex: 0,
+        usageCount: 0
       });
       setIsEditMode(false);
       setRetrievedIcons([]);
@@ -258,7 +263,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
           color: '#339aff',
           text: ''
         },
-        description: ''
+        description: '',
+        pageIndex: 0,
       });
       setIsEditMode(false);
       setRetrievedIcons([]);
@@ -287,7 +293,8 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
         color: '#339aff',
         text: ''
       },
-      description: ''
+      description: '',
+      pageIndex: 0,
     });
     setIsEditMode(false);
     setEditingAccountId(null);
@@ -469,6 +476,26 @@ function Addaccount({ isOpen, onClose, onSave, editAccount }) {
     
     return uniqueIcons;
   };
+
+  // 添加useEffect来处理模态框打开时阻止滚轮事件传播
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const modalOverlay = document.querySelector('.modal-overlay.open');
+    const handleWheel = (e) => {
+      e.stopPropagation();
+    };
+
+    if (modalOverlay) {
+      modalOverlay.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (modalOverlay) {
+        modalOverlay.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

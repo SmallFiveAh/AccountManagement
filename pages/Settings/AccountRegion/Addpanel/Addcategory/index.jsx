@@ -47,7 +47,7 @@ function Addcategory({ onClose, onCategoryAdded }) {
     
     // 从localStorage获取现有的分类数据
     const existingCategories = JSON.parse(localStorage.getItem('Category') || '[]');
-    
+
     // 添加新分类
     const updatedCategories = [...existingCategories, newCategory];
     
@@ -58,7 +58,6 @@ function Addcategory({ onClose, onCategoryAdded }) {
     if (onCategoryAdded) {
       onCategoryAdded(newCategory);
     }
-    
     console.log('保存分类:', { categoryName, selectedIcon });
     onClose();
   };

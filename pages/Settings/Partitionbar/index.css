@@ -71,9 +71,15 @@
     opacity: 0; /* 默认隐藏 */
 }
 
+.classification-scroll-container-icon {
+    transform: translateY(10px);
+    font-size: 20px;
+}
+
+
 /* 修改：当鼠标悬停在滚动容器上时，只显示图标名称并向右移动 */
 .classification-scroll-container:hover .classification-icon span {
     opacity: 1; /* 显示图标名称 */
-    transform: translateX(25px);
+    transform: translateY(12px);
     transition: none;
 }
